@@ -9,21 +9,20 @@
 
 1장에는 13개의 챕터가 있습니다.
 
-```text
-1.1 Instroduction (RED)
-1.2 Eight Great Ideas in Computer Architecture (Strong)
-1.3 Below Your Program (weak)
-1.4 Under the Covers (weak)
-1.5 Technologies for building Processors and Memory (weak)
-1.6 Performance (Strong)
-1.7 The Power Wall (weak)
-1.8 The Sea Change: The Switch from Uniprocessors to Multiprocessors (weak)
-1.9 Real Stuff: Benchmarking the Intel Core i7 (weak)
-1.10 Fallacies and pitfalls (weak)
-1.11 Concluding Remarks (weak)
-1.12 Historical Perspective and Further Reading (Strong)
-1.13 Exercises (weak)
-```
+- **1.1 Instroduction (RED)**
+- **1.2 Eight Great Ideas in Computer Architecture**
+- 1.3 Below Your Program (weak)
+- 1.4 Under the Covers (weak)
+- 1.5 Technologies for building Processors and Memory (weak)
+- **1.6 Performance**
+- 1.7 The Power Wall (weak)
+- 1.8 The Sea Change: The Switch from Uniprocessors to Multiprocessors (weak)
+- 1.9 Real Stuff: Benchmarking the Intel Core i7 (weak)
+- 1.10 Fallacies and pitfalls (weak)
+- 1.11 Concluding Remarks (weak)
+- **1.12 Historical Perspective and Further Reading**
+- 1.13 Exercises (weak)
+
 이렇게 흐리게(weak) 한거는 다루지 않을 부분이고 진하게 되있는것은 강의에서 다루는 부분이고 빨간색은 이번강의 렉쳐1에서 다루는 부분입니다.
 
 책의 모든 부분에서 뒷부분에 Real Stuff, Fallacies and Pitfalls, Concluding Remarks, Historical Perspective and Further Reading, Exercises 이런 부분이 있습니다.
