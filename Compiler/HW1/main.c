@@ -20,6 +20,12 @@ typedef struct number_record {
     NUMBER_TYPE type;
 } number_record_t;
 
+typedef struct number {
+    NUMBER_TYPE type;
+    int int_val;
+    double float_val;
+} number_t;
+
 void number_record_push(number_record_t *this, char val) {
     this->body[this->len++] = val;
 }
@@ -31,18 +37,49 @@ void number_record_clear(number_record_t *this) {
     memset(this->body, 0, MAX_NUMBER_LEN);
 }
 
-double number_eval(number_record_t *this) {
-    double res = atof(this->body);
-    return atof(this->body);
+number_t number_eval(const number_record_t *this) {
+    if (this->type == FLOAT) {
+        return (number_t) {
+            .type = FLOAT,
+            .int_val = 0,
+            .float_val = atof(this->body),
+        };
+    }
+    return (number_t) {
+        .type = INTEGER,
+        .int_val = atoi(this->body),
+        .float_val = 0,
+    };
 }
 
-typedef struct number {
-    NUMBER_TYPE type;
-    int int_val;
-    double float_val;
-} number_t;
+number_t number_plus(number_t n1, number_t n2) {
+    double double_sum = 0;
+    int int_sum = 0;
+    if (n1.type == FLOAT) double_sum += n1.float_val;
+    if (n2.type == FLOAT) double_sum += n2.float_val;
+    if (n1.type == INTEGER) int_sum += n1.int_val;
+    if (n2.type == INTEGER) int_sum += n2.int_val;
 
-void print_number(number_t *this) {
+    if (n1.type == FLOAT || n2.type == FLOAT)
+        return (number_t) { .type = FLOAT, .float_val = double_sum + int_sum, .int_val = 0 };
+    return (number_t) { .type = INTEGER, .float_val = 0, .int_val = int_sum };
+}
+
+number_t number_mul(number_t n1, number_t n2) {
+    double double_mul = 0;
+    int int_mul = 0;
+    if (n1.type == FLOAT) {
+        if (n2.type == FLOAT)
+            return (number_t) {.type = FLOAT, .float_val = n1.float_val * n2.float_val, .int_val = 0 };
+        if (n2.type == INTEGER)
+            return (number_t) {.type = FLOAT, .float_val = n1.float_val * n2.int_val, .int_val = 0 };
+    }
+    if (n2.type == FLOAT)
+        return (number_t) {.type = FLOAT, .float_val = n1.int_val * n2.float_val, .int_val = 0 };
+    return (number_t) {.type = INTEGER, .float_val = 0, .int_val = n1.int_val * n2.int_val };
+}
+
+void number_print(const number_t *this) {
     if (this->type == INTEGER) {
         printf("%d", this->int_val);
         return;
@@ -53,10 +90,10 @@ void print_number(number_t *this) {
 TOKEN g_token;
 number_record_t number_record;
 
-int expr();
-int term();
-int factor();
-double number();
+number_t expr();
+number_t term();
+number_t factor();
+number_t number();
 void error(char *error_message);
 
 void get_token() {
@@ -72,7 +109,7 @@ void get_token() {
         case '\n': g_token = END; break;
         case EOF: g_token = END; break;
         default:
-        if (c >= '0' && c < '9') {
+        if (c >= '0' && c <= '9') {
             g_token = NUMBER;
             number_record.curr = c;
             break;
@@ -82,30 +119,30 @@ void get_token() {
     }
 }
 
-int expr() {
-    int ret = 0;
+number_t expr() {
+    number_t ret;
     ret = term();
     while (g_token == PLUS) {
         get_token();
-        ret += term();
+        ret = number_plus(ret, term());
     }
     return ret;
 }
 
-int term() {
-    int ret = 0;
+number_t term() {
+    number_t ret;
     ret = factor();
     while (g_token == STAR) {
         get_token();
-        ret *= factor();
+        ret = number_mul(ret, factor());
     }
     return ret;
 }
 
-int factor() {
-    int ret = 0;
+number_t factor() {
+    number_t ret;
     if (g_token == NUMBER) {
-        double evaluated_number = number();
+        number_t evaluated_number = number();
         return evaluated_number;
     }
     else if (g_token == LP) {
@@ -122,23 +159,21 @@ int factor() {
     else { error("factor() line 75"); }
 }
 
-double number() {
-    int ret = 0;
-    
+number_t number() {
     do {
-        number_push(&number_record, number_record.curr);
+        number_record_push(&number_record, number_record.curr);
         get_token();
     } while (g_token == NUMBER || g_token == DOT);
-    double res = number_eval(&number_record);
-    number_clear(&number_record);
-    return res;
+    number_t ret = number_eval(&number_record);
+    number_record_clear(&number_record);
+    return ret;
 }
 
 int main() {
-    number_clear(&number_record);
+    number_record_clear(&number_record);
     get_token();
-    int res = expr();
-    printf("result: %d \n", res);
+    number_t result = expr();
+    number_print(&result);
 }
 
 void error(char *error_message) {
