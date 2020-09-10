@@ -39,17 +39,9 @@ void number_record_clear(number_record_t *this) {
 
 number_t number_eval(const number_record_t *this) {
     if (this->type == FLOAT) {
-        return (number_t) {
-            .type = FLOAT,
-            .int_val = 0,
-            .float_val = atof(this->body),
-        };
+        return (number_t) { .type = FLOAT, .int_val = 0, .float_val = atof(this->body) };
     }
-    return (number_t) {
-        .type = INTEGER,
-        .int_val = atoi(this->body),
-        .float_val = 0,
-    };
+    return (number_t) { .type = INTEGER, .int_val = atoi(this->body), .float_val = 0 };
 }
 
 number_t number_plus(number_t n1, number_t n2) {
@@ -71,8 +63,7 @@ number_t number_mul(number_t n1, number_t n2) {
     if (n1.type == FLOAT) {
         if (n2.type == FLOAT)
             return (number_t) {.type = FLOAT, .float_val = n1.float_val * n2.float_val, .int_val = 0 };
-        if (n2.type == INTEGER)
-            return (number_t) {.type = FLOAT, .float_val = n1.float_val * n2.int_val, .int_val = 0 };
+        return (number_t) {.type = FLOAT, .float_val = n1.float_val * n2.int_val, .int_val = 0 };
     }
     if (n2.type == FLOAT)
         return (number_t) {.type = FLOAT, .float_val = n1.int_val * n2.float_val, .int_val = 0 };
@@ -81,8 +72,7 @@ number_t number_mul(number_t n1, number_t n2) {
 
 void number_print(const number_t *this) {
     if (this->type == INTEGER) {
-        printf("%d", this->int_val);
-        return;
+        printf("%d", this->int_val); return;
     }
     printf("%f", this->float_val);
 }
@@ -120,8 +110,7 @@ void get_token() {
 }
 
 number_t expr() {
-    number_t ret;
-    ret = term();
+    number_t ret = term();
     while (g_token == PLUS) {
         get_token();
         ret = number_plus(ret, term());
@@ -130,8 +119,7 @@ number_t expr() {
 }
 
 number_t term() {
-    number_t ret;
-    ret = factor();
+    number_t ret = factor();
     while (g_token == STAR) {
         get_token();
         ret = number_mul(ret, factor());
