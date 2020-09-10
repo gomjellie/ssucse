@@ -3,7 +3,7 @@
 #include <string.h>
 #include <stdbool.h>
 
-#define STRING_LENGTH 64
+#define MAX_NUMBER_LEN 128
 
 typedef enum _token {
     EMPTY, PLUS, STAR, NUMBER, DOT, LP, RP, END
@@ -15,7 +15,7 @@ typedef enum number_type {
 
 typedef struct number_record {
     size_t len;
-    char body[128];
+    char body[MAX_NUMBER_LEN];
     char curr; // current input char, get_token 에서만 값 세팅함.
     NUMBER_TYPE type;
 } number_record_t;
@@ -28,7 +28,7 @@ void number_record_clear(number_record_t *this) {
     this->len = 0;
     this->curr = 0;
     this->type = INTEGER;
-    memset(this->body, 0, 128);
+    memset(this->body, 0, MAX_NUMBER_LEN);
 }
 
 double number_eval(number_record_t *this) {
