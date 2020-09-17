@@ -2,7 +2,6 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
-#include <math.h>
 
 #define SWAP(x, y) do { typeof(x) SWAP = x; x = y; y = SWAP; } while (0)
 #define MAX(a,b) ((a) > (b) ? a : b)
@@ -38,10 +37,11 @@ void merge_sort(void *arr, size_t p, size_t r, size_t sz, cmp_f cmp);
 void __merge(void *arr, size_t p, size_t q, size_t r, size_t sz, cmp_f cmp);
 
 int main() {
-    int arr_q1[8] = {
+    int arr_q1[MAX_ARR_LEN] = {
         12, 70, 30, 20, 55, 25, 40, 50,
     };
-    int arr[8];
+    int arr[MAX_ARR_LEN];
+
     memcpy(arr, arr_q1, sizeof(int) * 8);
     selection_sort(arr, MAX_ARR_LEN, sizeof(int), cmp_int);
     puts("선택정렬 결과");
@@ -60,7 +60,6 @@ int main() {
     for (int i = 0; i < MAX_ARR_LEN; i++)
         printf("%d\n", arr[i]);
     
-
     memcpy(arr, arr_q1, sizeof(int) * 8);
     merge_sort(arr, 0, MAX_ARR_LEN - 1, sizeof(int), cmp_int);
     puts("합병정렬 결과");
@@ -128,13 +127,10 @@ void merge_sort(void *arr, size_t p, size_t r, size_t sz, cmp_f cmp) {
     __merge(arr, p, q, r, sz, cmp);
 }
 
-/* 투포인터 알고리즘 */
 void __merge(void *arr, size_t p, size_t q, size_t r, size_t sz, cmp_f cmp) {
     size_t len = r - p + 1;
-    void *res = malloc(len * sz);
-
     size_t start = p, mid = q;
-    // size_t start2 = q + 1, end = r;
+    void *res = malloc(len * sz);
     
     for (int i = 0; i < len; i++) {
         void *p1 = (char *)arr + p * sz;
