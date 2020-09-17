@@ -10,7 +10,8 @@
 #define MIN(a,b) ((a) < (b) ? a : b)
 #define RAND_HALF (RAND_MAX / 2)
 
-#define MAX_ARR_LEN 8
+#define MAX_ARR_LEN 10000
+//#define PRINT_STEP
 
 typedef int (*cmp_f)(const void *a, const void *b);
 
@@ -51,37 +52,37 @@ void __merge(void *arr, size_t p, size_t q, size_t r, size_t sz, cmp_f cmp);
 
 int main() {
     srand((unsigned int)time(NULL));
-    int arr_q1[MAX_ARR_LEN] = {
-        12, 70, 30, 20, 55, 25, 40, 50,
-    };
+//    int arr_q1[MAX_ARR_LEN] = {
+//        12, 70, 30, 20, 55, 25, 40, 50,
+//    };
     double arr[MAX_ARR_LEN];
     double arr_q2[MAX_ARR_LEN];
     for (int i = 0; i < MAX_ARR_LEN; i++) {
         arr_q2[i] = (double)(rand() - RAND_HALF) / RAND_HALF;
-        printf("%.3lf ", arr_q2[i]);
-    } puts("");
+    }
+    arr_print_double(arr_q2, sizeof(arr_q2) / sizeof(double));
     
-    memcpy(arr, arr_q2, sizeof(double) * 8);
+    memcpy(arr, arr_q2, sizeof(double) * MAX_ARR_LEN);
     puts("선택정렬");
     selection_sort(arr, MAX_ARR_LEN, sizeof(double), cmp_double);
     arr_print_double(arr, MAX_ARR_LEN);
     
-    memcpy(arr, arr_q2, sizeof(double) * 8);
+    memcpy(arr, arr_q2, sizeof(double) * MAX_ARR_LEN);
     puts("삽입정렬");
     insertion_sort(arr, MAX_ARR_LEN, sizeof(double), cmp_double);
     arr_print_double(arr, MAX_ARR_LEN);
     
-    memcpy(arr, arr_q2, sizeof(double) * 8);
+    memcpy(arr, arr_q2, sizeof(double) * MAX_ARR_LEN);
     puts("버블정렬");
     bubble_sort(arr, MAX_ARR_LEN, sizeof(double), cmp_double);
     arr_print_double(arr, MAX_ARR_LEN);
     
-    memcpy(arr, arr_q2, sizeof(double) * 8);
+    memcpy(arr, arr_q2, sizeof(double) * MAX_ARR_LEN);
     puts("합병정렬");
     merge_sort(arr, 0, MAX_ARR_LEN - 1, sizeof(double), cmp_double);
     arr_print_double(arr, MAX_ARR_LEN);
 
-    memcpy(arr, arr_q2, sizeof(double) * 8);
+    memcpy(arr, arr_q2, sizeof(double) * MAX_ARR_LEN);
     puts("힙소트");
     heap_sort(arr, MAX_ARR_LEN, sizeof(double), cmp_double);
     arr_print_double(arr, MAX_ARR_LEN);
@@ -118,10 +119,12 @@ void selection_sort(void *arr, size_t arr_len, size_t sz, cmp_f cmp) {
         void *tar = (char *)arr + slit * sz;
         if (tar != biggest)
             swap(tar, biggest, sz);
+#ifdef PRINT_STEP
         if (counter < 5) {
             printf("%d번째 step: ", counter ++);
             arr_print_double(arr, arr_len);
         }
+#endif /* PRINT_STEP */
     }
 }
 
@@ -140,10 +143,12 @@ void insertion_sort(void *arr, size_t arr_len, size_t sz, cmp_f cmp) {
                 swap(ptr1, ptr2, sz);
             }
         }
+#ifdef PRINT_STEP
         if (counter < 5) {
             printf("%d번째 step: ", counter ++);
             arr_print_double(arr, arr_len);
         }
+#endif /* PRINT_STEP */
     }
 }
 
@@ -156,10 +161,12 @@ void bubble_sort(void *arr, size_t arr_len, size_t sz, cmp_f cmp) {
             if (cmp(addr1, addr2) <= 0) continue;
             swap(addr1, addr2, sz);
         }
+#ifdef PRINT_STEP
         if (counter < 5) {
             printf("%d번째 step: ", counter ++);
             arr_print_double(arr, arr_len);
         }
+#endif /* PRINT_STEP */
     }
 }
 
@@ -171,10 +178,12 @@ void merge_sort(void *arr, size_t p, size_t r, size_t sz, cmp_f cmp) {
     merge_sort(arr, p, q, sz, cmp);
     merge_sort(arr, q + 1, r, sz, cmp);
     __merge(arr, p, q, r, sz, cmp);
+#ifdef PRINT_STEP
     if (counter < 5) {
         printf("%d번째 step: ", counter ++);
         arr_print_double((char *)arr + p * sz, r - p + 1);
     }
+#endif /* PRINT_STEP */
 }
 
 void __merge(void *arr, size_t p, size_t q, size_t r, size_t sz, cmp_f cmp) {
@@ -278,11 +287,13 @@ void heap_sort(void *arr, size_t arr_len, size_t sz, cmp_f cmp) {
         void *res = heap_top(heap);
         memcpy((char *)arr + i * sz, res, sz);
         heap_pop(heap);
-        
+
+#ifdef PRINT_STEP
         if (i < 5) {
             printf("%d번째 step: ", i);
             arr_print_double(arr, arr_len);
         }
+#endif /* PRINT_STEP */
     }
     
     heap_destroy(heap);
