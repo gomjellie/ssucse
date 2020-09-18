@@ -2,27 +2,37 @@
 #include <stdlib.h>
 #include <ctype.h>
 
+#define FF 0
+
 typedef enum _token {
-    NUMBER = 256, PLUS, STAR, LP, RP, END,
+    NUMBER, PLUS, STAR, LP, RP, END,
 } TOKEN;
 
 enum {
      EXPRESSION, TERM, FACTOR, ACC = 999,
 };
 
+enum { // shifts
+    S1 = 1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11,
+};
+
+enum { // reduce
+    R6 = -6, R5, R4, R3, R2, R1,
+};
+
 int action[12][6] = {
-    {5, 0, 0, 4, 0, 0},
-    {0, 6, 0, 0, 0, ACC},
-    {0, -2, 7, 0, -2, -2},
-    {0, -4, -4, 0, -4, -4},
-    {5, 0, 0, 4, 0, 0},
-    {0, -6, -6, 0, -6, -6},
-    {5, 0, 0, 4, 0, 0},
-    {5, 0, 0, 4, 0, 0},
-    {0, 6, 0, 0, 11, 0},
-    {0, -1, 7, 0, -1, -1},
-    {0, -3, -3, 0, -3, -3},
-    {0, -5, -5, 0, -5, -5},
+    {S5, FF, FF, S4, FF, FF},
+    {FF, S6, FF, FF, FF, ACC},
+    {FF, R2, S7, FF, R2, R2},
+    {FF, R4, R4, FF, R4, R4},
+    {S5, FF, FF, FF, FF, FF},
+    {FF, R6, R6, FF, R6, R6},
+    {S5, FF, FF, S4, FF, FF},
+    {S5, FF, FF, S4, FF, FF},
+    {FF, S6, FF, FF, S11,FF},
+    {FF, R1, S7, FF, R1, R1},
+    {FF, R3, R3, FF, R3, R3},
+    {FF, R5, R5, FF, R5, R5},
 };
 
 int go_to[12][3] = {
@@ -41,13 +51,27 @@ int go_to[12][3] = {
 };
 
 int prod_left[7] = {
-    0, EXPRESSION, EXPRESSION, TERM, TERM, FACTOR, FACTOR,
+    0,
+    EXPRESSION,
+    EXPRESSION,
+    TERM,
+    TERM,
+    FACTOR,
+    FACTOR,
 };
+
 int prod_length[7] = {
-    0, 3, 1, 3, 1, 3, 1,
+    0,
+    3, // "E+T".length == 3
+    1, // "T".length == 1
+    3, // T*F
+    1, // F
+    3, // (E)
+    1, // n
 };
 
 int stack[1000]; int top = -1; int sym;
+char ERROR_MSG_BUFF[64];
 
 int yylex();
 void yyparse();
@@ -66,7 +90,7 @@ void yyparse() {
     stack[++top] = 0;
     sym = yylex();
     do {
-        i = action[stack[top]][sym-256]; // get relation
+        i = action[stack[top]][sym]; // get relation
         if (i == ACC)
             puts("success !");
         else if (i > 0) shift(i);
@@ -112,6 +136,7 @@ int yylex() {
     else if (ch == '(') { ch = getchar(); return LP; }
     else if (ch == ')') { ch = getchar(); return RP; }
     else if (ch == EOF || ch == '\n') return END;
-    error("lex error");
+    sprintf(ERROR_MSG_BUFF, "lex error! failed to handle character: [%c]", ch);
+    error(ERROR_MSG_BUFF);
     return -1;
 }
