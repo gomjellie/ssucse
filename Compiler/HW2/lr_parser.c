@@ -71,6 +71,32 @@ int prod_length[7] = {
 };
 
 int stack[1000]; int top = -1; int sym;
+int value[1000];
+char yytext[32];
+int yylval;
+
+typedef struct {
+    size_t counter;
+    char msg[64];
+} error_handler_t;
+error_handler_t error_handler;
+
+void error_handler_init(error_handler_t *this);
+void error_handler_count();
+
+typedef enum number_type {
+    FLOAT, INTEGER,
+} NUMBER_TYPE;
+
+typedef union real_number {
+    int int_val;
+    double float_val;
+} real_number_t;
+
+typedef struct number {
+    NUMBER_TYPE type;
+    real_number_t data;
+} number_t;
 
 int yylex();
 void yyparse();
@@ -80,21 +106,6 @@ void reduce(int i);
 void lex_error(const char *msg);
 void error(const char *msg);
 int _getchar();
-
-typedef struct {
-    size_t counter;
-    char msg[64];
-} error_handler_t;
-error_handler_t error_handler;
-
-void error_handler_init(error_handler_t *this) {
-    this->counter = 0;
-    this->msg[0] = '\0';
-}
-
-void error_handler_count() {
-    error_handler.counter ++;    
-}
 
 int main() {
     error_handler_init(&error_handler);
@@ -107,8 +118,10 @@ void yyparse() {
     sym = yylex();
     do {
         i = action[stack[top]][sym]; // get relation
-        if (i == ACC)
+        if (i == ACC) {
             puts("success !");
+            printf("evaluated result: %d\n", value[1]);
+        }
         else if (i > 0) shift(i);
         else if (i < 0) reduce(-i);
         else error("yyerror!");
@@ -121,6 +134,7 @@ void push(int i) {
 
 void shift(int i) {
     push(i);
+    value[top] = yylval;
     sym = yylex();
 }
 
@@ -129,10 +143,26 @@ void reduce(int i) {
     top -= prod_length[i];
     old_top = top;
     push(go_to[stack[old_top]][prod_left[i]]);
+    switch (i) {
+        case 1:
+        value[top] = value[old_top + 1] + value[old_top + 3]; break;
+        case 2:
+        value[top] = value[old_top + 1]; break;
+        case 3:
+        value[top] = value[old_top + 1] * value[old_top + 3];
+        case 4:
+        value[top] = value[old_top + 1]; break;
+        case 5:
+        value[top] = value[old_top + 2]; break;
+        case 6:
+        value[top] = value[old_top + 1]; break;
+        default:
+        error("yyerror: parsing table error"); break;
+    }
 }
 
 void error(const char *msg) {
-    for (size_t i = 1; i < error_handler.counter; i++)
+    for (size_t i = 2; i < error_handler.counter; i++)
         fprintf(stderr, "%s", " ");
     fprintf(stderr, "^ ~~ %s\n", msg);
     exit(1);
@@ -145,8 +175,11 @@ int yylex() {
     
     if (isdigit(ch)) {
         do {
+            yytext[i++] = ch;
             ch = _getchar();
         } while (isdigit(ch));
+        yytext[i] = 0;
+        yylval = atoi(yytext);
         return NUMBER;
     }
     else if (ch == '+') { ch = _getchar(); return PLUS; }
@@ -162,4 +195,13 @@ int yylex() {
 int _getchar() {
     error_handler_count();
     return getchar();
+}
+
+void error_handler_init(error_handler_t *this) {
+    this->counter = 0;
+    this->msg[0] = '\0';
+}
+
+void error_handler_count() {
+    error_handler.counter ++;    
 }
