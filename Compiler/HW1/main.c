@@ -20,10 +20,14 @@ typedef struct number_record {
     NUMBER_TYPE type;
 } number_record_t;
 
-typedef struct number {
-    NUMBER_TYPE type;
+typedef union real_number {
     int int_val;
     double float_val;
+} real_number_t;
+
+typedef struct number {
+    NUMBER_TYPE type;
+    real_number_t data;
 } number_t;
 
 void number_record_push(number_record_t *this, char val) {
@@ -39,22 +43,22 @@ void number_record_clear(number_record_t *this) {
 
 number_t number_eval(const number_record_t *this) {
     if (this->type == FLOAT) {
-        return (number_t) { .type = FLOAT, .int_val = 0, .float_val = atof(this->body) };
+        return (number_t) { .type = FLOAT, .data.float_val = atof(this->body) };
     }
-    return (number_t) { .type = INTEGER, .int_val = atoi(this->body), .float_val = 0 };
+    return (number_t) { .type = INTEGER, .data.int_val = atoi(this->body) };
 }
 
 number_t number_plus(number_t n1, number_t n2) {
     double double_sum = 0;
     int int_sum = 0;
-    if (n1.type == FLOAT) double_sum += n1.float_val;
-    if (n2.type == FLOAT) double_sum += n2.float_val;
-    if (n1.type == INTEGER) int_sum += n1.int_val;
-    if (n2.type == INTEGER) int_sum += n2.int_val;
+    if (n1.type == FLOAT) double_sum += n1.data.float_val;
+    if (n2.type == FLOAT) double_sum += n2.data.float_val;
+    if (n1.type == INTEGER) int_sum += n1.data.int_val;
+    if (n2.type == INTEGER) int_sum += n2.data.int_val;
 
     if (n1.type == FLOAT || n2.type == FLOAT)
-        return (number_t) { .type = FLOAT, .float_val = double_sum + int_sum, .int_val = 0 };
-    return (number_t) { .type = INTEGER, .float_val = 0, .int_val = int_sum };
+        return (number_t) { .type = FLOAT, .data.float_val = double_sum + int_sum };
+    return (number_t) { .type = INTEGER, .data.int_val = int_sum };
 }
 
 number_t number_mul(number_t n1, number_t n2) {
@@ -62,19 +66,19 @@ number_t number_mul(number_t n1, number_t n2) {
     int int_mul = 0;
     if (n1.type == FLOAT) {
         if (n2.type == FLOAT)
-            return (number_t) {.type = FLOAT, .float_val = n1.float_val * n2.float_val, .int_val = 0 };
-        return (number_t) {.type = FLOAT, .float_val = n1.float_val * n2.int_val, .int_val = 0 };
+            return (number_t) {.type = FLOAT, .data.float_val = n1.data.float_val * n2.data.float_val };
+        return (number_t) {.type = FLOAT, .data.float_val = n1.data.float_val * n2.data.int_val };
     }
     if (n2.type == FLOAT)
-        return (number_t) {.type = FLOAT, .float_val = n1.int_val * n2.float_val, .int_val = 0 };
-    return (number_t) {.type = INTEGER, .float_val = 0, .int_val = n1.int_val * n2.int_val };
+        return (number_t) {.type = FLOAT, .data.float_val = n1.data.int_val * n2.data.float_val };
+    return (number_t) {.type = INTEGER, .data.int_val = n1.data.int_val * n2.data.int_val };
 }
 
 void number_print(const number_t *this) {
     if (this->type == INTEGER) {
-        printf("%d", this->int_val); return;
+        printf("%d", this->data.int_val); return;
     }
-    printf("%f", this->float_val);
+    printf("%f", this->data.float_val);
 }
 
 TOKEN g_token;
@@ -162,9 +166,11 @@ int main() {
     get_token();
     number_t result = expr();
     number_print(&result);
+
+    return 0;
 }
 
 void error(char *error_message) {
-    fprintf(stderr, error_message);
+    fprintf(stderr, "%s", error_message);
     exit(1);
 }
