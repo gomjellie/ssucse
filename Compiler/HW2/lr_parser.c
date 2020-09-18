@@ -159,7 +159,6 @@ void reduce(int i) {
         value[top] = value[old_top + 1]; break;
         case 3:
         value[top] = number_mul(value[old_top + 1], value[old_top + 3]); break;
-        // value[top] = value[old_top + 1] * value[old_top + 3];
         case 4:
         value[top] = value[old_top + 1]; break;
         case 5:
