@@ -71,7 +71,6 @@ int prod_length[7] = {
 };
 
 int stack[1000]; int top = -1; int sym;
-char ERROR_MSG_BUFF[64];
 
 int yylex();
 void yyparse();
@@ -80,8 +79,25 @@ void shift(int i);
 void reduce(int i);
 void lex_error(const char *msg);
 void error(const char *msg);
+int _getchar();
+
+typedef struct {
+    size_t counter;
+    char msg[64];
+} error_handler_t;
+error_handler_t error_handler;
+
+void error_handler_init(error_handler_t *this) {
+    this->counter = 0;
+    this->msg[0] = '\0';
+}
+
+void error_handler_count() {
+    error_handler.counter ++;    
+}
 
 int main() {
+    error_handler_init(&error_handler);
     yyparse();
 }
 
@@ -116,27 +132,34 @@ void reduce(int i) {
 }
 
 void error(const char *msg) {
-    fprintf(stderr, "%s", msg);
+    for (size_t i = 1; i < error_handler.counter; i++)
+        fprintf(stderr, "%s", " ");
+    fprintf(stderr, "^ ~~ %s\n", msg);
     exit(1);
 }
 
 int yylex() {
     static char ch = ' ';
     int i = 0;
-    while (ch == ' ' || ch == '\t') ch = getchar();
+    while (ch == ' ' || ch == '\t') ch = _getchar();
     
     if (isdigit(ch)) {
         do {
-            ch = getchar();
+            ch = _getchar();
         } while (isdigit(ch));
         return NUMBER;
     }
-    else if (ch == '+') { ch = getchar(); return PLUS; }
-    else if (ch == '*') { ch = getchar(); return STAR; }
-    else if (ch == '(') { ch = getchar(); return LP; }
-    else if (ch == ')') { ch = getchar(); return RP; }
+    else if (ch == '+') { ch = _getchar(); return PLUS; }
+    else if (ch == '*') { ch = _getchar(); return STAR; }
+    else if (ch == '(') { ch = _getchar(); return LP; }
+    else if (ch == ')') { ch = _getchar(); return RP; }
     else if (ch == EOF || ch == '\n') return END;
-    sprintf(ERROR_MSG_BUFF, "lex error! failed to handle character: [%c]", ch);
-    error(ERROR_MSG_BUFF);
+    sprintf(error_handler.msg, "lex error! failed to handle character: [%c]", ch);
+    error(error_handler.msg);
     return -1;
+}
+
+int _getchar() {
+    error_handler_count();
+    return getchar();
 }
