@@ -10,8 +10,8 @@
 #define MIN(a,b) ((a) < (b) ? a : b)
 #define RAND_HALF (RAND_MAX / 2)
 
-#define MAX_ARR_LEN 10000
-//#define PRINT_STEP
+#define MAX_ARR_LEN 10
+#define PRINT_STEP
 
 typedef int (*cmp_f)(const void *a, const void *b);
 
@@ -40,11 +40,32 @@ void swap(void *a, void *b, size_t sz) {
     free(tmp);
 }
 
+/**
+ * arr: 소팅할 배열의 시작 주소값
+ * arr_len: 소팅할 배열의 길이 ex) sizeof(arr) / sizeof(int)
+ * sz: 배열 원소하나의 크기 ex) sizeof(int)
+ * cmp: 배열 원소의 비교함수
+ */
 void selection_sort(void *arr, size_t arr_len, size_t sz, cmp_f cmp);
 void insertion_sort(void *arr, size_t arr_len, size_t sz, cmp_f cmp);
 void bubble_sort(void *arr, size_t arr_len, size_t sz, cmp_f cmp);
 void heap_sort(void *arr, size_t arr_len, size_t sz, cmp_f cmp);
+void quick_sort(void *arr, int l, int r, size_t sz, cmp_f cmp);
+
+/**
+ * 최초 호출시 넘겨줘야 하는 값은 다음과 같다
+ * arr: 배열의 시작 주소값
+ * p: 0
+ * r: length - 1
+ * sz: 원소 하나의 크기
+ * cmp: 비교함수
+ */
 void merge_sort(void *arr, size_t p, size_t r, size_t sz, cmp_f cmp);
+
+/**
+ * arr: 프린트할 배열의 시작 주소값
+ * arr_len: 배열의 길이 ex) sizeof(arr) / sizeof(int)
+ */
 void arr_print_int(void *arr, size_t arr_len);
 void arr_print_double(void *arr, size_t arr_len);
 
@@ -86,8 +107,11 @@ int main() {
     puts("힙소트");
     heap_sort(arr, MAX_ARR_LEN, sizeof(double), cmp_double);
     arr_print_double(arr, MAX_ARR_LEN);
-    
-    // double r = rand() / INT_MAX;
+
+    memcpy(arr, arr_q2, sizeof(double) * MAX_ARR_LEN);
+    puts("퀵소트");
+    quick_sort(arr, 0, MAX_ARR_LEN - 1, sizeof(double), cmp_double);
+    arr_print_double(arr, MAX_ARR_LEN);
 }
 
 void arr_print_int(void *arr, size_t arr_len) {
@@ -290,7 +314,7 @@ void heap_sort(void *arr, size_t arr_len, size_t sz, cmp_f cmp) {
 
 #ifdef PRINT_STEP
         if (i < 5) {
-            printf("%d번째 step: ", i);
+            printf("%zu번째 step: ", i);
             arr_print_double(arr, arr_len);
         }
 #endif /* PRINT_STEP */
@@ -299,3 +323,28 @@ void heap_sort(void *arr, size_t arr_len, size_t sz, cmp_f cmp) {
     heap_destroy(heap);
 }
 
+void quick_sort(void *arr, int l, int r, size_t sz, cmp_f cmp) {
+    static int counter = 0;
+    if (l >= r) return;
+    size_t pivot;
+
+#ifdef PRINT_STEP
+    if (counter < 5) {
+        printf("%d번째 step: ", counter ++);
+        arr_print_double((char *)arr + l * sz, r - l);
+    }
+#endif /* PRINT_STEP */
+
+    void *std = (char *)arr + r * sz;
+    for (int i = 0, j = 0; j <= r; j++) {
+        void *elem = (char *)arr + j * sz;
+        if (cmp(elem, std) > 0) { // *elem > *std
+            continue;
+        }
+        swap((char *)arr + i * sz, (char *)arr + j * sz, sz);
+        pivot = i++;
+    }
+
+    quick_sort(arr, l, pivot - 1, sz, cmp);
+    quick_sort(arr, pivot + 1, r, sz, cmp);
+}
