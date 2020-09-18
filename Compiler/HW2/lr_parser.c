@@ -74,7 +74,7 @@ int stack[1000]; int top = -1; int sym;
 
 typedef struct {
     size_t counter;
-    char msg[64];
+    char msg[256];
 } error_handler_t;
 error_handler_t error_handler;
 
@@ -225,28 +225,34 @@ number_t number_parse(const char *text) {
 }
 
 number_t number_plus(number_t n1, number_t n2) {
-    double double_sum = 0;
-    int int_sum = 0;
-    if (n1.type == FLOAT) double_sum += n1.data.float_val;
-    if (n2.type == FLOAT) double_sum += n2.data.float_val;
-    if (n1.type == INTEGER) int_sum += n1.data.int_val;
-    if (n2.type == INTEGER) int_sum += n2.data.int_val;
-
-    if (n1.type == FLOAT || n2.type == FLOAT)
-        return (number_t) { .type = FLOAT, .data.float_val = double_sum + int_sum };
-    return (number_t) { .type = INTEGER, .data.int_val = int_sum };
+    if (n1.type == FLOAT) {
+        if (n2.type == FLOAT)
+            return (number_t) {.type = FLOAT, .data.float_val = n1.data.float_val + n2.data.float_val };
+        sprintf(error_handler.msg, "%.2lf(실수) 와 %d(정수)의 연산은 허용되지 않습니다.", n1.data.float_val, n2.data.int_val);
+        error(error_handler.msg);
+        return (number_t) {.type = FLOAT, .data.float_val = n1.data.float_val + n2.data.int_val };
+    }
+    if (n2.type == FLOAT) {
+        sprintf(error_handler.msg, "%d(정수) 와 %.2lf(실수)의 연산은 허용되지 않습니다.", n1.data.int_val, n2.data.float_val);
+        error(error_handler.msg);
+        return (number_t) {.type = FLOAT, .data.float_val = n1.data.int_val + n2.data.float_val };
+    }
+    return (number_t) {.type = INTEGER, .data.int_val = n1.data.int_val + n2.data.int_val };
 }
 
 number_t number_mul(number_t n1, number_t n2) {
-    double double_mul = 0;
-    int int_mul = 0;
     if (n1.type == FLOAT) {
         if (n2.type == FLOAT)
             return (number_t) {.type = FLOAT, .data.float_val = n1.data.float_val * n2.data.float_val };
+        sprintf(error_handler.msg, "(실수)%.2lf 와 (정수)%d의 연산은 허용되지 않습니다.", n1.data.float_val, n2.data.int_val);
+        error(error_handler.msg);
         return (number_t) {.type = FLOAT, .data.float_val = n1.data.float_val * n2.data.int_val };
     }
-    if (n2.type == FLOAT)
+    if (n2.type == FLOAT) {
+        sprintf(error_handler.msg, "%d(정수) 와 %.2lf(실수)의 연산은 허용되지 않습니다.", n1.data.int_val, n2.data.float_val);
+        error(error_handler.msg);
         return (number_t) {.type = FLOAT, .data.float_val = n1.data.int_val * n2.data.float_val };
+    }
     return (number_t) {.type = INTEGER, .data.int_val = n1.data.int_val * n2.data.int_val };
 }
 
