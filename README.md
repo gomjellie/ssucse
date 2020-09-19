@@ -10,7 +10,7 @@
  - 선형대수
 
 # 2-2학기
- - [컴퓨터구조](./Computer\ Architecture)
+ - [컴퓨터구조](./Computer%20Architecture)
  - [알고리즘](./algorithm)
  - 오토마타
 
