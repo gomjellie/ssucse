@@ -11,7 +11,7 @@
 
 # 2-2학기
  - [컴퓨터구조](./Computer%20Architecture)
- - [알고리즘](./algorithm)
+ - [알고리즘](./Algorithm)
  - 오토마타
 
 # 3-1학기
