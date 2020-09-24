@@ -4,6 +4,7 @@
 
 #include "error_handler.h"
 #include "number.h"
+#include "syntax_tree.h"
 
 extern error_handler_t *error_handler;
 
@@ -77,7 +78,7 @@ int prod_length[7] = {
 
 int stack[1000]; int top = -1; int sym;
 
-number_t value[1000];
+node_t *value[1000];
 char yytext[32];
 number_t yylval;
 NUMBER_TYPE yytype;
@@ -93,6 +94,7 @@ int _getchar();
 int main() {
     error_handler = error_handler_new();
     yyparse();
+    // TODO: value[1] 에서부터 트리 그리기
     error_handler_del(error_handler);
 }
 
@@ -105,8 +107,7 @@ void yyparse() {
         if (i == ACC) {
             puts("success !");
             printf("evaluated result: ");
-            number_print(&value[1]);
-            // printf("evaluated result: %d\n", value[1]);
+            number_print(&value[1]->val);
         }
         else if (i > 0) shift(i);
         else if (i < 0) reduce(-i);
@@ -120,28 +121,36 @@ void push(int i) {
 
 void shift(int i) {
     push(i);
-    value[top] = yylval;
+    // value[top]->val = yylval;
+    value[top] = node_new(INT_VAL, yylval, NULL, NULL);
     sym = yylex();
 }
 
 void reduce(int i) {
     int old_top;
+    number_t int_zero = {
+        .type = INTEGER,
+        .data.int_val = 0,
+    };
     top -= prod_length[i];
     old_top = top;
     push(go_to[stack[old_top]][prod_left[i]]);
     switch (i) {
         case 1:
-        value[top] = number_plus(value[old_top + 1], value[old_top + 3]); break;
+        value[top] = node_new(ADD, int_zero, value[old_top + 1], value[old_top + 3]); break;
+        // value[top] = number_plus(value[old_top + 1], value[old_top + 3]); break;
         case 2:
         value[top] = value[old_top + 1]; break;
         case 3:
-        value[top] = number_mul(value[old_top + 1], value[old_top + 3]); break;
+        value[top] = node_new(MUL, int_zero, value[old_top + 1], value[old_top + 3]); break;
+        // value[top] = number_mul(value[old_top + 1], value[old_top + 3]); break;
         case 4:
         value[top] = value[old_top + 1]; break;
         case 5:
         value[top] = value[old_top + 2]; break;
         case 6:
-        value[top] = value[old_top + 1]; break;
+        value[top] = node_new(INT_VAL, value[old_top + 1]->val, NULL, NULL); break;
+        // value[top] = value[old_top + 1]; break;
         default:
         error(error_handler, "yyerror: parsing table error"); break;
     }
