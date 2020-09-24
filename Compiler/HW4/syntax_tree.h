@@ -12,5 +12,6 @@ typedef struct node {
 } node_t;
 
 node_t *node_new(NODE_NAME name, number_t v, node_t *p, node_t *q);
+void node_print(node_t *this);
 
 #endif /* __SYNTAX_TREE_H__ */

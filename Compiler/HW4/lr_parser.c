@@ -90,11 +90,11 @@ void shift(int i);
 void reduce(int i);
 void lex_error(const char *msg);
 int _getchar();
+void render_postfix(node_t *node);
 
 int main() {
     error_handler = error_handler_new();
     yyparse();
-    // TODO: value[1] 에서부터 트리 그리기
     error_handler_del(error_handler);
 }
 
@@ -105,9 +105,13 @@ void yyparse() {
     do {
         i = action[stack[top]][sym]; // get relation
         if (i == ACC) {
-            puts("success !");
-            printf("evaluated result: ");
-            number_print(&value[1]->val);
+            printf("infix: ");
+            render_infix(value[1]);
+            puts("");
+
+            printf("postfix: ");
+            render_postfix(value[1]);
+            puts("");
         }
         else if (i > 0) shift(i);
         else if (i < 0) reduce(-i);
@@ -187,4 +191,12 @@ int yylex() {
 int _getchar() {
     error_handler_count(error_handler);
     return getchar();
+}
+
+void render_postfix(node_t *node) {
+    if (node == NULL) return;
+
+    render_postfix(node->llink);
+    render_postfix(node->rlink);
+    node_print(node);
 }
