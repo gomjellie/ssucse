@@ -1,4 +1,4 @@
-#include "syntax_tree.h"
+#include "node.h"
 
 #include <stdlib.h>
 #include <stdio.h>

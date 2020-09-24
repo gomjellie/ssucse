@@ -4,7 +4,7 @@
 
 #include "error_handler.h"
 #include "number.h"
-#include "syntax_tree.h"
+#include "node.h"
 
 extern error_handler_t *error_handler;
 
@@ -105,10 +105,6 @@ void yyparse() {
     do {
         i = action[stack[top]][sym]; // get relation
         if (i == ACC) {
-            printf("infix: ");
-            render_infix(value[1]);
-            puts("");
-
             printf("postfix: ");
             render_postfix(value[1]);
             puts("");

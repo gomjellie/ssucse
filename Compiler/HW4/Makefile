@@ -1,7 +1,7 @@
 CC = gcc
 CC = gcc
 TARGET = run
-SRCS = lr_parser.c error_handler.c number.c syntax_tree.c
+SRCS = lr_parser.c error_handler.c number.c node.c
 OPT = -Wall -pedantic 
 
 all:
