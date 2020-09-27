@@ -19,7 +19,7 @@ void hash_table_del(hash_table_t *this) {
     free(this);
 }
 
-void hash_table_set(hash_table_t *this, element_t elem) {
+void hash_table_linear_set(hash_table_t *this, element_t elem) {
     for (size_t i = 0; i < this->capacity; i++) {
         size_t target_idx = (elem + i) % this->capacity;
         if (__hash_table_is_slot_empty(this, target_idx) == false) continue;
@@ -30,6 +30,10 @@ void hash_table_set(hash_table_t *this, element_t elem) {
         };
         return;
     }
+}
+
+void hash_table_quadratic_set(hash_table_t *this, element_t elem) {
+    // 구현하기.
 }
 
 bool hash_table_get(hash_table_t *this, size_t idx, element_t *result) {

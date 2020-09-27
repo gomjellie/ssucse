@@ -9,7 +9,7 @@ int main() {
     hash_table_t *hash_table = hash_table_new(13);
 
     for (int i = 0; i < arr_len; i++) {
-        hash_table_set(hash_table, arr[i]);
+        hash_table_linear_set(hash_table, arr[i]);
     }
 
     for (int i = 0; i < 13; i++) {
