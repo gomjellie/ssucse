@@ -1,19 +1,19 @@
 %{
 #include  "y.tab.h"
+#include <math.h>
 #include <stdlib.h>
 #include <stdio.h>
-extern int  yylval;
-char *var_name;
+#include <string.h>
+
+extern double vbltable[333];
 %}
 
-DIGIT    [0-9]
-ID       [a-z][a-z0-9]*
-
 %%
-{DIGIT}+ { yylval = atoi(yytext); return NUMBER;  }
-{ID} { var_name = strdup(yytext); return NAME; }
-[\t ]+ ;
-\n return 0;
+([0-9]+|([0-9]*\.[0-9]+))  { yylval.dval = atof(yytext); return NUMBER; }
+[ \t]   ;
+[a-z]    {      yylval.vblno = yytext[0] - 'a'; return NAME; }
+"$"      { return 0; }
+\n |
 . return  yytext[0];
 %%
 
