@@ -25,14 +25,16 @@ void hash_table_del(hash_table_t *this);
 /**
  * this->body[elem] 에 elem을 설정함.
  * 만약 idx자리에 넣을 수 없다면 선형으로 조사해서 넣는다.
+ * 성공시 true, 실패시 false 반환
  */
-void hash_table_linear_set(hash_table_t *this, element_t elem);
+bool hash_table_linear_set(hash_table_t *this, element_t elem);
 
 /**
  * this->body[elem] 에 elem을 설정함.
  * 만약 idx자리에 넣을 수 없다면 2차원 조사를해서 넣는다.
+ * 성공시 true, 실패시 false 반환
  */
-void hash_table_quadratic_set(hash_table_t *this, element_t elem);
+bool hash_table_quadratic_set(hash_table_t *this, element_t elem);
 
 /**
  * this->body[idx] 가 값이 있는 상태면 result에 담아서 전달하고 return true.
