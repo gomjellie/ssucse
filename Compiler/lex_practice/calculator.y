@@ -15,9 +15,10 @@ double vbltable[333];
 }
 %token    <vblno> NAME
 %token    <dval> NUMBER
+
 %left '-' '+'
 %left '*' '/'
-%nonassoc UMINUS
+%nonassoc UMINUS /* no associativity: unary minus */
 %type <dval> expression
 
 %%
@@ -35,7 +36,7 @@ expression: expression '+' expression  { $$ = $1 + $3;  }
                              yyerror("divide by zero");
                        else   $$ = $1 /$3;
                     }
-           |  '-' expression  %prec UMINUS   { $$ = -$2; }
+           |  '-' expression  %prec UMINUS   { $$ = -$2; } /* The keyword %prec changes the precedence level associated with a particular grammar rule */
            |  '(' expression ')'     { $$ = $2; }
            |       NUMBER     { $$ = $1; }
            |       NAME       { $$ = vbltable[$1]; }
