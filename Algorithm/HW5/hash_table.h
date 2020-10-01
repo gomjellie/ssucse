@@ -6,14 +6,14 @@
 
 typedef int element_t;
 
-typedef struct _slot {
+typedef struct _bucket {
     bool is_set;
     element_t elem;
-} slot_t;
+} bucket_t;
 
 typedef struct _hash {
     size_t capacity;
-    slot_t *body;
+    bucket_t *body;
 } hash_table_t;
 
 /* 생성자 */

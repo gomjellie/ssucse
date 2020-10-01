@@ -26,7 +26,7 @@ bool hash_table_linear_set(hash_table_t *this, element_t elem) {
         size_t slot_idx = (key + i) % this->capacity;
         if (__hash_table_is_slot_empty(this, slot_idx) == false) continue;
         
-        this->body[slot_idx] = (slot_t) {
+        this->body[slot_idx] = (bucket_t) {
             .elem = elem,
             .is_set = true,
         };
@@ -43,7 +43,7 @@ bool hash_table_quadratic_set(hash_table_t *this, element_t elem) {
         size_t slot_idx = (key + jump) % this->capacity;
         if (__hash_table_is_slot_empty(this, slot_idx) == false) continue;
         
-        this->body[slot_idx] = (slot_t) {
+        this->body[slot_idx] = (bucket_t) {
             .elem = elem,
             .is_set = true,
         };
