@@ -2,6 +2,7 @@
 
 #include <stdlib.h>
 #include <stdbool.h>
+#include <stdio.h>
 #include <math.h>
 
 /* body[idx]에 설정된값이 없어서 비었다면 true, 아니면 false */
@@ -59,6 +60,18 @@ bool hash_table_get(hash_table_t *this, size_t idx, element_t *result) {
 
     *result = this->body[idx].elem;
     return true;
+}
+
+void hash_table_show(hash_table_t *this) {
+    for (int i = 0; i < 13; i++) {
+        int result;
+        if (hash_table_get(this, i, &result)) {
+            printf("|%2d | %3d|\n", i, result);
+            continue;
+        }
+        printf("|%2d | N/A|\n", i);
+    }
+    puts("+---+----+");
 }
 
 static bool __hash_table_is_slot_empty(hash_table_t *this, size_t idx) {

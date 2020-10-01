@@ -1,6 +1,6 @@
 CC = gcc
 TAR = run
-SRCS = hash_table.c main.c
+SRCS = chain_htable.c hash_table.c main.c
 OPTS = -Wall -pedantic
 
 all:

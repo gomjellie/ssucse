@@ -3,6 +3,7 @@
 
 #include <ctype.h>
 #include <stdbool.h>
+#include <stddef.h>
 
 typedef int element_t;
 
@@ -12,7 +13,7 @@ typedef struct _bucket {
 } bucket_t;
 
 typedef struct _hash {
-    size_t capacity;
+    size_t capacity; // 적재 가능한 크기
     bucket_t *body;
 } hash_table_t;
 
@@ -41,5 +42,7 @@ bool hash_table_quadratic_set(hash_table_t *this, element_t elem);
  * 값이 없는 상태면 false를 return한다.
 */
 bool hash_table_get(hash_table_t *this, size_t idx, element_t *result);
+
+void hash_table_show(hash_table_t *this);
 
 #endif /* __HASH_TABLE_H__ */
