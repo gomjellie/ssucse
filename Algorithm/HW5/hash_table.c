@@ -37,7 +37,6 @@ bool hash_table_linear_set(hash_table_t *this, element_t elem) {
 }
 
 bool hash_table_quadratic_set(hash_table_t *this, element_t elem) {
-    // 구현하기.
     size_t key = (size_t)elem;
     for (size_t i = 0; i < this->capacity; i++) {
         size_t jump = (size_t)pow(i, 2); // i ^ 2 만큼 점프 하면서 탐색
