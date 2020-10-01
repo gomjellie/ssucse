@@ -2,9 +2,9 @@
 #include "hash_table.h"
 #include "chain_htable.h"
 
-// #define Q3
+#define Q3
 // #define Q4
-#define Q5
+// #define Q5
 
 int main() {
     int arr[8] = {

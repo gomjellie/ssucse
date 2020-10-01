@@ -10,7 +10,7 @@ static bool __hash_table_is_slot_empty(hash_table_t *this, size_t idx);
 
 hash_table_t *hash_table_new(size_t capacity) {
     hash_table_t *this = malloc(sizeof(hash_table_t));
-    this->body = calloc(capacity, sizeof(element_t));
+    this->body = calloc(capacity, sizeof(bucket_t));
     this->capacity = capacity;
 
     return this;
