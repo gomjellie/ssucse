@@ -352,3 +352,172 @@ set salary = case
              end;
 ```
 
+모든학생의 이수학점을 업데이트하기
+
+```sql
+Update student S
+set S.totalCredit =
+      (select sum(credit)
+      from takes natural join course
+      where S.sID=takes.sID and grade <> 'F' and grade is not null
+      );
+
+Update student
+set totalCredit = 0
+where totalCredit is null;
+```
+
+takes table
+
+| sID | cID | year | semester | year |
+| --- | --- | ---  | ---      | ---- |
+
+course table
+
+| cID | title | deptName | credit |
+| --- | ---   | -------  | -----  |
+
+
+
+1. natural join 한다.
+
+takes 테이블과 and course 테이블의 natural join table
+
+공통되는 칼럼은 한번만 쓴다(cID)
+
+| sID | cID | year | semester | year | title | depthName | credit |
+| --- | --- | ---  | ---      | ---- | ----  | ---       | ---    |
+
+2. student S.sID 와 sID가 같고 grade 가 F가 아닌것들만 뽑는다.
+
+3. credit을 합계내서 totalCredit을 업데이트한다.
+
+# 3.4 Select SQL Statement
+
+## Select 절
+
+### select 다음에는 attribute-list 가 온다.
+
+attribute 는 관계대수에서 project에 대응된다. 즉 모든 칼럼을 뽑느것이 아니라 특정 칼럼만 뽑음.
+
+결과 테이블은 해당 칼럼만 존재한다.
+
+### attribute-list 자리에 * 를 사용하면 모든 attribute 를 가져온다.
+
+```sql
+Select * from ${table_name}
+```
+
+### select 절은 arithmetic 표현을 포함할 수 잇다.
+
+```sql
+Select pID, salary/12 from professor;
+```
+
+연봉을 12로 나눠서 가져옴. 즉 월급을 가져올 수 있음.
+
+### SQL은 튜플의 중복을 허용한다.
+
+한 테이블에서도 중복된 튜플을 허용한다.
+
+앞서서 2장에서 배울때 관계형 데이터 모델에서는 튜플의 중복을 허용하지 않는다고 했는데, 어떻게 된것인가?
+
+여기서 얘기하는 SQL은 관계형 데이터 모델의 확장된 버전이기 때문에 허용한다.
+
+지금부터 다룰 모든 SQL은 테이블, 결과테이블에서 중복된 튜플이 존재 할 수 있다.
+
+### distinct 키워드
+
+중복된 튜플을 허용하지 않기 위해서는 distinct 키워드를 사용한다.
+
+```sql
+Select distinct deptName from professor;
+```
+
+위 쿼리의 결과 테이블
+
+| deptName |
+| ---      |
+|  CS      |
+|  EE      |
+|  ...     |
+
+
+### all 키워드
+
+all은 default로 설정된다. (all을 안써도 all로 동작)
+
+```sql
+Select all deptName from professor;
+```
+
+위 쿼리의 결과 테이블 (중복을 허용함)
+| deptName |
+| :--: |
+| CS |
+| CS |
+| EE |
+| EE |
+| .. |
+
+## where 절
+
+where절은 `조건`을 표현하기위해 존재한다. 
+
+관계대수에서 select pair 절에 대응됨. (sigma p 에서 p)
+
+CS학과에서 연봉이 8000이상인 교수이름 찾기
+
+```sql
+Select name from professor where deptName = 'CS' and salary > 8000;
+```
+
+### and or not 을 사용해서 조건을 표현 할 수 있다.
+
+not (salary > 8000) 이런 표현이 가능함.
+
+위 예제에서 and가 쓰임.
+
+## from 절
+
+from절에는 relation list가 온다. 
+
+관계대수에서 cartesian product 에 대응됨.
+
+```sql
+Select * from professor, teaches;
+```
+
+위 질의를 처리할때 professor 테이블과 teaches를 cartesian product함.
+
+professor의 칼럼과 teaches의 칼럼이 전부 포함되며 
+
+공통되는 칼럼명은 p.칼럼명, t.칼럼명 과 같이 구분되어서 생성된다.
+
+대부분의경우 두개이상의 테이블이 오는경우 where절이 온다.
+
+## SQL 실행 모델
+
+질의문을 어떻게 처리하는가?
+
+- select
+- from
+- where
+- groupby
+- order by
+- having
+
+논리적으로 어떻게 처리되는가? db system이 실제적으로 어떻게 처리하느냐는 또다른 문제이다 (최적화)
+
+논리적으로 어떻게 처리되는지를 다룰것임.
+
+1. 각 테이블에서 튜플을 하나 뽑는다 (from 절)
+
+2. 뽑은 튜플을 where절로 검사한다
+
+3. 만약 true면 결과 테이블에 넣음
+
+1, 2, 3을 튜플이 더 안뽑힐때까지 반복
+
+group by, having은 나중에 설명함. 끝.
+
