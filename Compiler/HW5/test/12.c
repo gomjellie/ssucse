@@ -3,3 +3,7 @@ void func1() {
     int asdf = 10;
     int asdf = 20;
 }
+
+struct nomad {
+    char *name;
+};
