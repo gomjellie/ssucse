@@ -100,6 +100,6 @@ int checkIdentifier(char *s) {
     }
 }
 
-yywrap() {
+int yywrap() {
     return 1;
 }

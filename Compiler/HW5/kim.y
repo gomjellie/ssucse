@@ -10,6 +10,10 @@ extern A_ID *current_id;
 extern int current_level;
 extern A_TYPE *int_type;
 extern char *yytext;
+void yyerror(char *s);
+
+extern FILE *yyin;
+void initialize();
 
 %}
 
@@ -330,7 +334,24 @@ type_name
 ;
 %%
 
-yyerror(char *s) {
+void yyerror(char *s) {
     syntax_err++;
     printf("line %d: %s near %s \n", line_no, s, yytext);
+}
+
+int main(int argc, char *argv[]) {
+	if (argc<2) {
+		printf("source file not given\n");
+		exit(1);
+	}
+	if ((yyin=fopen(argv[argc-1],"r"))==NULL) {
+		printf("cannot open input file: %s\n",argv[argc-1]);
+		exit(1);
+	}
+	
+	initialize();
+	yyparse();
+	if (syntax_err) exit(1);
+	printf("\n");
+	return 0;
 }

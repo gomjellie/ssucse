@@ -48,7 +48,6 @@ BOOLEAN isNotSameType(A_TYPE *, A_TYPE *);
 BOOLEAN isPointerOrArrayType(A_TYPE *);
 void syntax_error();
 void initialize();
-BOOLEAN isPointerOrArrayType(A_TYPE *);
 
 // make new node for syntax tree
 A_NODE *makeNode(NODE_NAME n, A_NODE *a, A_NODE *b, A_NODE *c) {
@@ -63,6 +62,7 @@ A_NODE *makeNode(NODE_NAME n, A_NODE *a, A_NODE *b, A_NODE *c) {
     m->value = 0;
     return (m);
 }
+
 A_NODE *makeNodeList(NODE_NAME n, A_NODE *a, A_NODE *b) {
     A_NODE *m, *k;
     k = a;
@@ -588,4 +588,11 @@ void syntax_error(int i, char *s) {
         printf(" at end\n");
     else
         printf(" near %s\n", yytext);
+}
+
+BOOLEAN isPointerOrArrayType(A_TYPE *t) {
+	if(t && (t->kind == T_POINTER || t->kind == T_ARRAY))
+		return(TRUE);
+	else
+		return(FALSE);
 }

@@ -1,6 +1,6 @@
 
 all:
-	yacc -d ./c.y
-	lex ./c.l
-	gcc -m32 main.c syntax.c lex.yy.c y.tab.c -o run
+	yacc -d ./kim.y
+	lex ./kim.l
+	gcc -m32 syntax.c lex.yy.c y.tab.c -o run
 

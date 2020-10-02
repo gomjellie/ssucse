@@ -1,7 +1,7 @@
 #ifndef type_h
 #define type_h
 
-#define NIL 0
+#define NIL (void *)0
 
 typedef enum {FALSE,TRUE} BOOLEAN;
 
