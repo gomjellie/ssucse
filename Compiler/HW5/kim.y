@@ -1,16 +1,14 @@
 %{ 
-#include "type.h"
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
 
-extern int line_no, syntax_err;
+int line_no, syntax_err;
 extern char *yytext;
 void yyerror(char *s);
 
 extern FILE *yyin;
 extern int yylex();
-extern void initialize();
 
 %}
 
@@ -331,7 +329,6 @@ int main(int argc, char *argv[]) {
 		exit(1);
 	}
 	
-	initialize();
 	yyparse();
 	if (syntax_err) {
 		printf("%s fail\n", argv[argc - 1]);
