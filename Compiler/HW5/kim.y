@@ -51,7 +51,8 @@ function_definition
 ;
 
 declaration
-: declaration_specifiers init_declarator_list SEMICOLON
+: declaration_specifiers SEMICOLON
+| declaration_specifiers init_declarator_list SEMICOLON
 ;
 
 declaration_specifiers
