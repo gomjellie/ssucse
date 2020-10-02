@@ -75,11 +75,11 @@ init_declarator
 ;
 
 type_specifier
-: struct_type_specifier
-| enum_type_specifier
+: struct_specifier
+| enum_specifier
 | TYPE_IDENTIFIER
 ;
-struct_type_specifier
+struct_specifier
 : struct_or_union IDENTIFIER LR struct_declaration_list RR
 | struct_or_union LR struct_declaration_list RR
 | struct_or_union IDENTIFIER
@@ -88,12 +88,12 @@ struct_or_union
 : STRUCT_SYM
 | UNION_SYM
 ;
-struct_declaration
-: type_specifier struct_declarator_list SEMICOLON
-;
 struct_declaration_list
 : struct_declaration
 | struct_declaration_list struct_declaration
+;
+struct_declaration
+: type_specifier struct_declarator_list SEMICOLON
 ;
 struct_declarator_list
 : struct_declarator
@@ -102,7 +102,7 @@ struct_declarator_list
 struct_declarator
 : declarator
 ;
-enum_type_specifier
+enum_specifier
 : ENUM_SYM IDENTIFIER LR enumerator_list RR
 | ENUM_SYM LR enumerator_list RR
 | ENUM_SYM IDENTIFIER
@@ -149,10 +149,7 @@ parameter_declaration
 | declaration_specifiers abstract_declarator
 | declaration_specifiers // 
 ;
-/* abstract_declarator_opt
-: %empty
-| abstract_declarator
-; */
+
 abstract_declarator
 : direct_abstract_declarator
 | pointer
