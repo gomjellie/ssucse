@@ -5,10 +5,6 @@
 #include <stdio.h>
 
 extern int line_no, syntax_err;
-extern A_NODE *root;
-extern A_ID *current_id;
-extern int current_level;
-extern A_TYPE *int_type;
 extern char *yytext;
 void yyerror(char *s);
 

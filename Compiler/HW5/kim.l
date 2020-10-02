@@ -11,9 +11,7 @@ ws {delim}+
 #include <string.h>
 extern int yylval;
 extern int line_no;
-extern A_ID *current_id;
-char *makeString();
-int checkIdentifier();
+int check_identifier();
 %}
 
 %%
@@ -71,13 +69,13 @@ while { return WHILE_SYM; }
 
 {digit}+ { return INTEGER_CONSTANT;}
 {digit}+\.{digit}+ { return FLOAT_CONSTANT;}
-{letter}({letter}|{digit})* { return checkIdentifier(yytext); }
+{letter}({letter}|{digit})* { return check_identifier(yytext); }
 \"([^"\n]|\\["\n])*\" { return(STRING_LITERAL); }
 \'([^'\n]|\'\')\' { return CHARACTER_CONSTANT; }
 "//"[^\n]* { }
 %%
 
-int checkIdentifier(char *s) {
+int check_identifier(char *s) {
     char *table[] = {
         "int", "float", "char", "void",
     };
