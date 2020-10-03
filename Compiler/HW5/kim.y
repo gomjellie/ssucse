@@ -307,6 +307,7 @@ constant_expression
 ;
 expression
 : assignment_expression
+;
 assignment_expression
 : logical_or_expression
 | unary_expression ASSIGN expression
