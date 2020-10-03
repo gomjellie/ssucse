@@ -1,13 +1,12 @@
-void func1() {
-    // 12: redeclaration of identifier
-    int asdf = 10;
-    int asdf = 20;
-    struct node *n;
-}
-
 typedef struct node {
     char *name;
 } node_t;
+
+void func1() {
+    // this is comment
+    int asdf = 10;
+    struct node *n;
+}
 
 struct nope {
     char *name;
