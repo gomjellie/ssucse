@@ -16,6 +16,7 @@ typedef struct _disjoint_set {
 disjoint_set_t *set_alloc();
 struct element *set_find(disjoint_set_t *this, int elem);
 int set_union(disjoint_set_t *this, int e1, int e2);
+void set_print(disjoint_set_t *this);
 void set_free(disjoint_set_t *this);
 
 int main(int argc, char *argv[]) {
@@ -41,14 +42,10 @@ int main(int argc, char *argv[]) {
             element_t *q = set_find(djset, (int)e2);
             set_union(djset, p->parent, q->parent);
         }
-    }
-
-    for (int i = (int)'a'; i <= (int)'z'; i++) {
-        element_t *e = set_find(djset, i);
-        if (e == NULL) continue;
-
-        printf("%c belongs to %c group\n", i, e->parent);
-    }
+        if (cmd == 'p') {
+            set_print(djset);
+        }
+    }    
 }
 
 // disjoint set 생성.
@@ -92,4 +89,14 @@ int set_union(disjoint_set_t *this, int e1, int e2) {
 
 void set_free(disjoint_set_t *this) {
     free(this);
+}
+
+void set_print(disjoint_set_t *this) {
+    for (int i = (int)'a'; i <= (int)'z'; i++) {
+        element_t *e = set_find(this, i);
+        if (e == NULL) continue;
+
+        printf("%c belongs to %c group\n", i, e->parent);
+    }
+    puts("");
 }

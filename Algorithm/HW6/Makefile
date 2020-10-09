@@ -6,8 +6,8 @@ OPTS = -Wall -pedantic
 all:
 	$(CC) $(SRCS) -o $(TAR) $(OPTS)
 
-run:
-	./$(TAR)
+test:
+	cat input.txt | ./$(TAR)
 
 test: all run
 
