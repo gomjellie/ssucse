@@ -171,7 +171,7 @@ ISO 표준 SQL들
 relation 사이의 관계를 표현함. 각각의 스키마 생성.
 
 - 도메인(타입)이 있어야한다.
-- Integrity constraints 필요 (null 처리명시, 참조 무결성)
+- `Integrity constraints` 필요 (null 처리명시, 참조 무결성)
 - 인덱스
 - 물리적 저장 구조
 - Authorization, security (DDL에 있다고 보기도 한다)
@@ -261,7 +261,7 @@ primary key로 4개 튜플이 필요한 이유 : pID, cID, semester, year 를 �
 생성된 테이블을 변경: alter
 더 사용하지않는 테이블 제거: drop
 
-Drop table student; 라고하면 데이터 딕셔너리에서 student 스키마를 삭제한다.
+Drop table student; 라고하면 `데이터 딕셔너리`에서 student 스키마를 삭제한다.
 
 Alter table statement
 
