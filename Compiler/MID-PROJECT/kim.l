@@ -7,6 +7,7 @@ ws {delim}+
 
 %{
 #include "y.tab.h"
+#include "type.h"
 #include <string.h>
 
 #ifndef YYSTYPE_IS_DECLARED
@@ -16,6 +17,8 @@ typedef long YYSTYPE;
 
 extern int yylval;
 extern int line_no;
+extern A_ID *current_id;
+
 int check_identifier();
 %}
 
@@ -81,14 +84,27 @@ while     { return WHILE_SYM; }
 %%
 
 int check_identifier(char *s) {
-    char *table[] = {
-        "int", "float", "char", "void",
-    };
-    size_t table_len = sizeof(table) / sizeof(char *);
-    for (size_t i = 0 ; i < table_len; i++) {
-        if (strcmp(table[i], s) == 0) return TYPE_IDENTIFIER;
+    A_ID *id; 
+    char *t; 
+    id = current_id; 
+    while (id) {
+        if (strcmp(id->name, s) == 0) 
+            break;
+        id = id->prev; 
+    } 
+    
+    if (id == 0) {
+        yylval = strdup(s);
+        return IDENTIFIER;
+    } 
+    else if (id->kind == ID_TYPE) {
+        yylval = id->type;
+        return TYPE_IDENTIFIER;
+    } 
+    else {
+        yylval = id->name; 
+        return IDENTIFIER;
     }
-    return IDENTIFIER;
 }
 
 int yywrap() {
