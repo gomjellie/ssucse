@@ -51,10 +51,10 @@ external_declaration
     ;
 function_definition
     : declaration_specifiers declarator     {$$ = setFunctionDeclaratorSpecifier($2, $1);}
-        compound_statement                  {$$ = setFunctionDeclaratorBody($3,$4); current_id = $2;}
+        compound_statement                  {$$ = setFunctionDeclaratorBody($3,$4);;}
     | declarator                            {$$ = setFunctionDeclaratorSpecifier($1, makeSpecifier(int_type, 0));}
-        compound_statement                  {$$ = setFunctionDeclaratorBody($2,$3);current_id=$1;}
-;   
+        compound_statement                  {$$ = setFunctionDeclaratorBody($2,$3);}
+;
 declaration_list_opt
     :                                       {$$ = NIL;}
     | declaration_list                      {$$ = $1;}
@@ -165,7 +165,7 @@ declarator
     | direct_declarator                         {$$ = $1;}
     ;
 pointer
-    : STAR
+    : STAR                                      {$$ = makeType(T_POINTER);}
     | STAR pointer                              {$$ = setTypeElementType($2,makeType(T_POINTER));}
     ;
 direct_declarator
@@ -173,7 +173,8 @@ direct_declarator
     | LP declarator RP {$$ = $2;}
     | direct_declarator LB constant_expression_opt RB
                                                 {$$ = setDeclaratorElementType($1, setTypeExpr(makeType(T_ARRAY),$3));} 
-    | direct_declarator LP                      {$$ = current_id; current_level++;} parameter_type_list_opt RP              {checkForwardReference(); current_id=$3; current_level--; $$ = setDeclaratorElementType($1,setTypeField(makeType(T_FUNC),$4));}
+    | direct_declarator LP                      {$$ = current_id; current_level++;} parameter_type_list_opt RP 
+	{checkForwardReference(); current_id=$3; current_level--; $$ = setDeclaratorElementType($1,setTypeField(makeType(T_FUNC),$4));}
     ;
 parameter_type_list_opt
     :                                           {$$ = NIL;}

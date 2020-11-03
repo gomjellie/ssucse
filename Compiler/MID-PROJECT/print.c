@@ -284,7 +284,7 @@ void prt_A_TYPE(A_TYPE *t, int s)
     else if (t == void_type)
         printf("(void)\n");
     else if (t->kind == T_NULL)
-        printf("(null)");
+        printf("(null)\n");
     else if (t->prt)
         printf("(DONE:%x)\n", t);
     else

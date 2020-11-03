@@ -1,4 +1,5 @@
-main()
+
+void main()
 {
     int a = 10;
     float pi = 3.14;
