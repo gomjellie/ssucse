@@ -1,15 +1,19 @@
-%{ 
-#include <string.h>
-#include <stdlib.h>
+%{
 #include <stdio.h>
+#include "type.h"
 
 #ifndef YYSTYPE_IS_DECLARED
 #define YYSTYPE_IS_DECLARED 1
 typedef long YYSTYPE;
 #endif /* YYSTYPE_IS_DECLARED */
 
-int line_no, syntax_err;
+extern int line_no, syntax_err;
 extern char *yytext;
+extern A_NODE *root;
+extern A_ID *current_id;
+extern int current_level;
+extern A_TYPE *int_type;
+
 void yyerror(char *s);
 
 extern FILE *yyin;
@@ -324,22 +328,3 @@ void yyerror(char *s) {
     syntax_err++;
     printf("line %d: %s near %s \n", line_no, s, yytext);
 }
-/* 
-int main(int argc, char *argv[]) {
-	if (argc<2) {
-		printf("source file not given\n");
-		exit(1);
-	}
-	if ((yyin=fopen(argv[argc-1],"r")) == NULL) {
-		printf("cannot open input file: %s\n", argv[argc - 1]);
-		exit(1);
-	}
-	
-	yyparse();
-	if (syntax_err) {
-		printf("%s fail\n", argv[argc - 1]);
-		exit(1);
-	}
-	printf("%s success\n", argv[argc - 1]);
-	return 0;
-} */
