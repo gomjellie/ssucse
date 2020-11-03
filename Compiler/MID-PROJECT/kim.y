@@ -3,8 +3,10 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+#ifndef YYSTYPE_IS_DECLARED
 #define YYSTYPE_IS_DECLARED 1
 typedef long YYSTYPE;
+#endif /* YYSTYPE_IS_DECLARED */
 
 int line_no, syntax_err;
 extern char *yytext;
@@ -322,7 +324,7 @@ void yyerror(char *s) {
     syntax_err++;
     printf("line %d: %s near %s \n", line_no, s, yytext);
 }
-
+/* 
 int main(int argc, char *argv[]) {
 	if (argc<2) {
 		printf("source file not given\n");
@@ -340,4 +342,4 @@ int main(int argc, char *argv[]) {
 	}
 	printf("%s success\n", argv[argc - 1]);
 	return 0;
-}
+} */
