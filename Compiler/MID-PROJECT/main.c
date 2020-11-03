@@ -8,8 +8,6 @@ extern int syntax_err;
 extern A_NODE *root;
 extern FILE *yyin;
 
-FILE *fout;
-
 void initialize();
 void print_ast();
 
@@ -20,7 +18,7 @@ int main(int argc, char *argv[]) {
     }
     
     if ((yyin = fopen(argv[argc-1], "r")) == NULL) {
-        printf("can not open input file: %s\n",argv[argc-1]);
+        printf("can not open input file: %s\n", argv[argc-1]);
         exit(1);
     }
     
