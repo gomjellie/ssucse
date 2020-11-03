@@ -11,8 +11,8 @@ ws {delim}+
 #include <string.h>
 
 #ifndef YYSTYPE_IS_DECLARED
-#define YYSTYPE_IS_DECLARED 1
-typedef long YYSTYPE;
+// #define YYSTYPE_IS_DECLARED 1
+// typedef long YYSTYPE;
 #endif /* YYSTYPE_IS_DECLARED */
 
 extern int yylval;

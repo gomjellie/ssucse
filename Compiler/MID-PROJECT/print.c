@@ -282,7 +282,7 @@ void prt_A_TYPE(A_TYPE *t, int s)
     else if (t == char_type)
         printf("(char %d)\n", t->size);
     else if (t == void_type)
-        printf("(void)");
+        printf("(void)\n");
     else if (t->kind == T_NULL)
         printf("(null)");
     else if (t->prt)
