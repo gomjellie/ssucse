@@ -4,8 +4,10 @@ typedef struct node {
 
 typedef struct nope {
     char *name;
-} k;
+} nope_t;
 
 void func1() {
-    int asdf = 10;
+    nope_t k;
+    k.name = "asdf";
+    printf(k.name);
 }
