@@ -1,6 +1,4 @@
 
-#include <string.h>
-#include <stdlib.h>
 
 void main() {
     int i = 10;
