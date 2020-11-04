@@ -9,6 +9,7 @@ ws {delim}+
 #include "y.tab.h"
 #include "type.h"
 #include <string.h>
+#include <stdlib.h>
 
 #ifndef YYSTYPE_IS_DECLARED
 // #define YYSTYPE_IS_DECLARED 1
@@ -75,11 +76,25 @@ while     { return WHILE_SYM; }
 "\-"      { return MINUS; }
 "\="      { return ASSIGN; }
 
-{digit}+ { return INTEGER_CONSTANT;}
-{digit}+\.{digit}+ { return FLOAT_CONSTANT;}
-{letter}({letter}|{digit})* { return check_identifier(yytext); }
-\"([^"\n]|\\["\n])*\" { return(STRING_LITERAL); }
-\'([^'\n]|\'\')\' { return CHARACTER_CONSTANT; }
+{digit}+ {
+    yylval = atoi(yytext);
+    return INTEGER_CONSTANT;
+}
+{digit}+\.{digit}+ {
+    yylval = strdup(yytext);
+    return FLOAT_CONSTANT;
+}
+{letter}({letter}|{digit})* {
+    return check_identifier(yytext);
+}
+\"([^"\n]|\\["\n])*\" {
+    yylval = strdup(yytext);
+    return(STRING_LITERAL);
+}
+\'([^'\n]|\'\')\' {
+    yylval = *(yytext + 1);
+    return CHARACTER_CONSTANT;
+}
 "//"[^\n]* { }
 %%
 
