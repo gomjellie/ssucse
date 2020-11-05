@@ -1,7 +1,3 @@
-typedef struct node {
-    char *name;
-} node_t;
-
 typedef struct nope {
     char *name;
 } nope_t;

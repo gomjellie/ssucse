@@ -5,5 +5,5 @@ typedef enum _number {
 } NUMBER;
 
 void func(NUMBER n) {
-	return 0;
+	return;
 }

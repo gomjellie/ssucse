@@ -1,1 +1,1 @@
-static int *kim[10];
+static int *kim[10 + (5 * 3)];
