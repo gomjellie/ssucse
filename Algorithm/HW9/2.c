@@ -8,10 +8,10 @@ typedef struct tuple {
 } tuple_t;
 
 bool cmp_tuple(tuple_t t1, tuple_t t2) {
-    if (t1.e1 > t2.e1) {
+    if (t1.e1 < t2.e1) {
         return true;
     } else if (t1.e1 == t2.e1) {
-        if (t1.e2 > t2.e2)
+        if (t1.e2 < t2.e2)
             return true;
     }
     return false;
@@ -27,8 +27,9 @@ typedef struct priority_queue {
     cmp_f cmp;
 } pq_t;
 
-void pq_init(pq_t *this) {
+void pq_init(pq_t *this, cmp_f cmp) {
     this->length = 0;
+    this->cmp = cmp;
 }
 
 tuple_t pq_top(pq_t *this) {
@@ -81,7 +82,7 @@ void merge(int p, int q) {
 
 void q2() {
     int N, M;
-    pq_t pq; pq_init(&pq);
+    pq_t pq; pq_init(&pq, cmp_tuple);
     scanf("%d %d", &N, &M);
     int ans = 0;
     for (int i = 0; i <= N; i++) {

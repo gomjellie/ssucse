@@ -2,7 +2,7 @@
 #include "1.h"
 #include "2.h"
 
-#define Q1
+#define Q2
 
 int main(int argc, const char * argv[]) {
 #ifdef Q1
