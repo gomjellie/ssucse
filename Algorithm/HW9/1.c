@@ -1,5 +1,3 @@
-// #include <bits/stdc++.h>
-// #define PII pair<int,int>
 #include <stdlib.h>
 #include <stdbool.h>
 #include <stdio.h>

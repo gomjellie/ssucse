@@ -11,9 +11,5 @@ int main(int argc, const char * argv[]) {
 #ifdef Q2
     q2();
 #endif
-#ifdef Q3
-    q3();
-#endif
-    
     return 0;
 }
