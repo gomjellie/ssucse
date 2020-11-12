@@ -171,8 +171,9 @@ CREATE TABLE `Section` (
   KEY `course_id_idx` (`course_id`),
   KEY `course_rfed_idx_1` (`semester`),
   KEY `course_rfed_idx_2` (`year`),
+  KEY `course_rfed_idx_3` (`section_id`),
   CONSTRAINT `section_ibfk_1` FOREIGN KEY (`course_id`) REFERENCES `Course` (`course_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `section_chk_1` CHECK ((`semester` in (_utf8mb4'Spring',_utf8mb4'Fall')))
+  CONSTRAINT `section_chk_1` CHECK ((`semester` in (_utf8mb3'Spring',_utf8mb3'Fall')))
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -182,7 +183,7 @@ CREATE TABLE `Section` (
 
 LOCK TABLES `Section` WRITE;
 /*!40000 ALTER TABLE `Section` DISABLE KEYS */;
-INSERT INTO `Section` VALUES ('가','CS101','Spring','2018'),('가','CS201','Spring','2018'),('가','CS202','Fall','2018'),('가','CS203','Spring','2018'),('가','CS204','Spring','2018'),('가','CS301','Fall','2018'),('가','CS302','Fall','2018'),('가','CS303','Spring','2018'),('나','CS301','Fall','2018'),('나','CS303','Spring','2018'),('가','CS101','Spring','2019'),('가','CS201','Spring','2019'),('가','CS202','Fall','2019'),('가','CS203','Spring','2019'),('가','CS204','Spring','2019'),('가','CS301','Fall','2019'),('가','CS302','Fall','2019'),('가','CS303','Spring','2019'),('가','MD101','Spring','2019'),('가','MD201','Spring','2019'),('가','MD202','Fall','2019'),('가','MD204','Spring','2019'),('가','MD301','Fall','2019'),('가','MD303','Spring','2019'),('가','SW101','Spring','2019'),('가','SW201','Spring','2019'),('가','SW202','Fall','2019'),('가','SW204','Spring','2019'),('가','SW301','Fall','2019'),('가','SW303','Spring','2019'),('나','CS301','Fall','2019'),('나','CS303','Spring','2019'),('나','MD301','Fall','2019'),('나','MD303','Spring','2019'),('나','SW301','Fall','2019'),('나','SW303','Spring','2019'),('가','CS201','Spring','2020'),('가','MD201','Spring','2020'),('가','SW201','Spring','2020');
+INSERT INTO `Section` VALUES ('가','CS101','Spring','2017'),('가','CS201','Spring','2017'),('가','CS202','Fall','2017'),('가','CS203','Spring','2017'),('가','CS204','Spring','2017'),('가','CS301','Fall','2017'),('가','CS302','Fall','2017'),('가','CS303','Spring','2017'),('나','CS301','Fall','2017'),('나','CS303','Spring','2017'),('가','CS101','Spring','2018'),('가','CS201','Spring','2018'),('가','CS202','Fall','2018'),('가','CS203','Spring','2018'),('가','CS204','Spring','2018'),('가','CS301','Fall','2018'),('가','CS302','Fall','2018'),('가','CS303','Spring','2018'),('나','CS301','Fall','2018'),('나','CS303','Spring','2018'),('가','CS101','Spring','2019'),('가','CS201','Spring','2019'),('가','CS202','Fall','2019'),('가','CS203','Spring','2019'),('가','CS204','Spring','2019'),('가','CS301','Fall','2019'),('가','CS302','Fall','2019'),('가','CS303','Spring','2019'),('가','MD101','Spring','2019'),('가','MD201','Spring','2019'),('가','MD202','Fall','2019'),('가','MD204','Spring','2019'),('가','MD301','Fall','2019'),('가','MD303','Spring','2019'),('가','SW101','Spring','2019'),('가','SW201','Spring','2019'),('가','SW202','Fall','2019'),('가','SW204','Spring','2019'),('가','SW301','Fall','2019'),('가','SW303','Spring','2019'),('나','CS301','Fall','2019'),('나','CS303','Spring','2019'),('나','MD301','Fall','2019'),('나','MD303','Spring','2019'),('나','SW301','Fall','2019'),('나','SW303','Spring','2019'),('가','CS201','Spring','2020'),('가','MD201','Spring','2020'),('가','SW201','Spring','2020');
 /*!40000 ALTER TABLE `Section` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -248,6 +249,7 @@ CREATE TABLE `Takes` (
 
 LOCK TABLES `Takes` WRITE;
 /*!40000 ALTER TABLE `Takes` DISABLE KEYS */;
+INSERT INTO `Takes` VALUES ('20160318','CS202','가','Fall','2017','A'),('20160318','CS301','가','Fall','2017','A'),('20160318','CS302','가','Fall','2017','A'),('20160318','CS203','가','Spring','2017','A'),('20160318','CS101','가','Spring','2018','A'),('20160318','CS204','가','Spring','2018','A'),('20160318','CS303','가','Fall','2019','A'),('20160318','CS201','가','Spring','2019','A'),('20160418','CS302','가','Fall','2017','A'),('20160418','SW202','가','Fall','2017','A'),('20160418','SW301','가','Fall','2017','A'),('20160418','CS203','가','Spring','2017','A'),('20160418','SW101','가','Spring','2018','A'),('20160418','SW204','가','Spring','2018','A'),('20160418','SW303','가','Fall','2019','A'),('20160418','SW201','가','Spring','2019','A'),('20160518','CS302','가','Fall','2017','A'),('20160518','MD202','가','Fall','2017','A'),('20160518','MD301','가','Fall','2017','A'),('20160518','CS203','가','Spring','2017','A'),('20160518','MD101','가','Spring','2018','A'),('20160518','MD204','가','Spring','2018','A'),('20160518','MD303','가','Fall','2019','A'),('20160518','MD201','가','Spring','2019','A');
 /*!40000 ALTER TABLE `Takes` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -295,4 +297,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-11-12 16:05:02
+-- Dump completed on 2020-11-12 18:05:08
