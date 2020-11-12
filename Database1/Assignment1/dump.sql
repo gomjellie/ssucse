@@ -285,6 +285,7 @@ CREATE TABLE `Teaches` (
 
 LOCK TABLES `Teaches` WRITE;
 /*!40000 ALTER TABLE `Teaches` DISABLE KEYS */;
+INSERT INTO `Teaches` VALUES ('CS1000','CS204','가','Spring','2017'),('CS1000','CS301','가','Fall','2017'),('CS1000','CS301','나','Fall','2017'),('CS1001','CS201','가','Spring','2017'),('CS1001','CS202','가','Fall','2017'),('CS1001','CS203','가','Spring','2017'),('CS1002','CS303','가','Spring','2017'),('CS1002','CS303','나','Fall','2017'),('CS1003','CS302','가','Fall','2017'),('CS1004','CS101','가','Spring','2017'),('CS1000','CS204','가','Spring','2018'),('CS1000','CS301','가','Fall','2018'),('CS1000','CS301','나','Fall','2018'),('CS1001','CS201','가','Spring','2018'),('CS1001','CS202','가','Fall','2018'),('CS1001','CS203','가','Spring','2018'),('CS1002','CS303','가','Spring','2018'),('CS1002','CS303','나','Fall','2018'),('CS1003','CS302','가','Fall','2018'),('CS1004','CS101','가','Spring','2018'),('CS1000','CS204','가','Spring','2019'),('CS1000','CS301','가','Fall','2019'),('CS1000','CS301','나','Fall','2019'),('CS1001','CS201','가','Spring','2019'),('CS1001','CS202','가','Fall','2019'),('CS1001','CS203','가','Spring','2019'),('CS1002','CS303','가','Spring','2019'),('CS1002','CS303','나','Fall','2019'),('CS1003','CS302','가','Fall','2019'),('CS1004','CS101','가','Spring','2019'),('MD1000','MD202','가','Fall','2019'),('MD1000','MD204','가','Spring','2019'),('MD1000','MD301','가','Fall','2019'),('MD1000','MD301','나','Fall','2019'),('MD1001','MD201','가','Spring','2019'),('MD1002','MD303','가','Spring','2019'),('MD1002','MD303','나','Fall','2019'),('MD1004','MD101','가','Spring','2019'),('SW1000','SW201','가','Spring','2019'),('SW1000','SW202','가','Fall','2019'),('SW1000','SW204','가','Spring','2019'),('SW1000','SW301','가','Fall','2019'),('SW1000','SW301','나','Fall','2019'),('SW1002','SW303','가','Spring','2019'),('SW1002','SW303','나','Fall','2019'),('SW1004','SW101','가','Spring','2019'),('CS1003','CS201','가','Spring','2020'),('MD1003','MD201','가','Spring','2020'),('SW1003','SW201','가','Spring','2020');
 /*!40000 ALTER TABLE `Teaches` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -297,4 +298,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-11-12 18:05:08
+-- Dump completed on 2020-11-12 18:51:37
