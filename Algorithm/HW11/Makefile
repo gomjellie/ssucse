@@ -1,6 +1,6 @@
 CC = gcc
 TAR = run
-SRCS = main.c
+SRCS = main.c queue.c
 OPTS = --std=c11 -Wall -pedantic
 
 all:

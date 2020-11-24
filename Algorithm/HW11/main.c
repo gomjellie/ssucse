@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdbool.h>
+#include <stdlib.h>
 
 struct pair {
     int price;
@@ -57,12 +58,84 @@ void dfs(int i, int profit, int weight) {
     }
 }
 
+#include "queue.h"
+#include <string.h>
+
+struct node {
+    int level;
+    int profit;
+    int weight;
+};
+
+struct node *node_new(int level, int profit, int weight) {
+    struct node *this = malloc(sizeof(struct node));
+
+    this->level = level;
+    this->profit = profit;
+    this->weight = weight;
+
+    return this;
+}
+
+struct node *node_dup(struct node *u) {
+    struct node *this = malloc(sizeof(struct node));
+
+    memcpy(this, u, sizeof(struct node));
+    return this;
+}
+
+double bound(struct node *u) {
+    int j, k;
+    int totweight; double result;
+    if (u->weight >= W)
+        return 0;
+    
+    result = u->profit;
+    j = u->level + 1;
+    totweight = u->weight;
+
+    while ((j <= N) && (totweight + products[j].weight <= W)) {
+        totweight = totweight + products[j].weight;
+        result = result + products[j].price;
+        j ++;
+    }
+    k = j;
+    if (k <= N)
+        result = result + (W - totweight) * products[k].price / products[k].weight;
+    
+    return result;
+}
+
+void bfs() {
+    queue *q = queue_new(sizeof(struct node));
+    struct node *u, *v;
+
+    u = node_new(0, 0, 0);
+    v = node_new(-1, 0, 0); maxprofit = 0;
+    queue_push(q, v);
+    while (!queue_empty(q)) {
+        v = queue_front(q); queue_pop(q);
+        printf("%d %d %d\n", v->level, v->profit, v->weight);
+        u->level = v->level + 1;
+        u->profit = v->profit + products[u->level].price;
+        u->weight = v->weight + products[u->level].weight;
+
+        if ((u->weight <= W) && (u->profit > maxprofit))
+            maxprofit = u->profit;
+        if (bound(u) > maxprofit) queue_push(q, u);
+        u->weight = v->weight;
+        u->profit = v->profit;
+        if (bound(u) > maxprofit) queue_push(q, u);
+    }
+}
 
 int main() {
-    dfs(-1, 0, 0);
+    // dfs(-1, 0, 0);
 
+    // printf("%d", maxprofit);
+
+    bfs();
     printf("%d", maxprofit);
 
     return 0;
 }
-
