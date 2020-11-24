@@ -4,6 +4,7 @@
 #include <string.h>
 
 void queue_destructor(queue *this) {
+    free(this->body);
     free(this);
 }
 

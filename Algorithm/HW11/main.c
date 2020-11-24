@@ -132,6 +132,8 @@ void breadth_first_search() {
         u->profit = v->profit;
         if (bound(u) > maxprofit) queue_push(q, u);
     }
+
+    queue_destructor(q);
 }
 
 int cmp_node(const void *a, const void *b) {
@@ -169,7 +171,11 @@ void best_first_search() {
         u->profit = _v->profit;
         if (bound(u) > maxprofit)
             pq_push(pq, u);
+        free(v);
+        free(_v);
     }
+
+    pq_destroy(pq);
 }
 
 int main() {
