@@ -41,8 +41,6 @@ from (
 
 /* 10. 2018년도 가을학기에 컴퓨터학부 소속 교수들 중 성이 박씨인 교수가 가르친 교과목의 이름, 해당 수업에서의 그 학생이 받은 성적을 출력하시오. */
 
-select * from Professor where professor_name LIKE "박%" AND dept_name = "컴퓨터학부";
-
 INSERT INTO `Teaches` VALUES ('CS1002','CS303','가','Fall','2019');
 select title, grade from (select * from Teaches where professor_id = 'CS1002') as T natural inner join Takes left join Course using(course_id);
 
