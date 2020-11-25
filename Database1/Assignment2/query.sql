@@ -2,7 +2,7 @@
 /* 1. 부산에 사는 모든 학생들의 학번과 이름을 출력하시오 (5) */
 select student_id, student_name from Student where home_address='부산';
 
-/* 2. 학생 상담을 맡고 있지 ㅇ낳은 교수의 이름과 학과이름을 출력하시오 (5) */
+/* 2. 학생 상담을 맡고 있지 않은 교수의 이름과 학과이름을 출력하시오 (5) */
 select professor_name, dept_name from Professor where professor_id not in (select professor_id from Advisor);
 
 /* 3. 전체 교수들의 평균 연봉보다 높은(초과) 교수의 이름, 학과이름, 연봉을 출력하시오 (5)*/
@@ -48,9 +48,23 @@ select title, grade from (select * from Teaches where professor_id = 'CS1002') a
 
 /* 11. 알고리즘 교과목을 수강하기 위해 선수강이 되어야 하는 과목의 이름을 출력하시오. (출력 시 중복 제거, 재귀적 질의 추천) (10) */
 
-select distinct title from (select * from (select course_id from Course where title='알고리즘') as C natural join Prereq) as R join Course on prereq_id=Course.course_id;
+select distinct title from (
+with recursive rcs(course_id, prereq_id) as (
+    select course_id, prereq_id 
+    from Prereq
+    where course_id in (select course_id from Course where title='알고리즘')
+    union all 
+    select r.course_id, r.prereq_id 
+    from Prereq r
+    inner join rcs
+        on r.course_id = rcs.prereq_id
+) select * from rcs
+) as R join Course on prereq_id=Course.course_id;
 
 /* 12. 교수들의 연봉에서 7,000만원보다 적은(미만) 교수는 연봉을 5% 인상, 그렇지 않은 교수들의 연봉은 3% 인하되도록 변경하시오. (10) */
 
+update Professor set salary = case when salary < 70 then salary * 1.05 else salary * 0.97 end;
+
 /* 13. 2020년 기준 입학한지 4년이 넘은(초과) 학생들은 삭제하시오. (10) */
 
+delete from Student where timestampdiff(year, admission_date, now()) > 4;
