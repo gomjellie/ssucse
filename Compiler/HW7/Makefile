@@ -2,7 +2,7 @@ YACC = yacc
 LEX = lex
 
 all: y.tab.c lex.yy.c
-	gcc lex.yy.c y.tab.c main.c print.c syntax.c -o run -m32 -w
+	gcc lex.yy.c y.tab.c print_sem.c print.c syntax.c semantic.c main.c -o run -m32 -w
 
 y.tab.c: kim.y
 	$(YACC) -d kim.y

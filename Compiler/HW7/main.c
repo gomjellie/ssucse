@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include "y.tab.h"
 #include "type.h"
+#include "semantic.h"
 
 extern FILE *yyin;
 extern int syntax_err;
@@ -10,6 +11,7 @@ extern FILE *yyin;
 
 void initialize();
 void print_ast();
+void print_sem_ast(A_NODE *);
 
 int main(int argc, char *argv[]) {
     if (argc < 2) {
@@ -25,9 +27,12 @@ int main(int argc, char *argv[]) {
     initialize();
     yyparse();
     
+    print_ast(root);
+    semantic_analysis(root);
+    
     if (syntax_err)
         return 1;
     
-    print_ast(root);
+    print_sem_ast(root);
     return 0;
 }

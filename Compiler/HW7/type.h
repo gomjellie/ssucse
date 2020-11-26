@@ -1,3 +1,6 @@
+#ifndef TYPE_H
+#define TYPE_H
+
 #define NIL 0
 typedef enum {
     FALSE,
@@ -159,3 +162,4 @@ typedef struct {
     int line;
 } A_SPECIFIER;
 
+#endif /* TYPE_H */
