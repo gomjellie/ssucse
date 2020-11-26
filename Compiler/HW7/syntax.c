@@ -3,6 +3,7 @@
 #include <string.h>
 #include "type.h"
 #include "y.tab.h"
+#include "semantic.h"
 
 extern char *yytext;
 
@@ -43,9 +44,9 @@ A_TYPE *setTypeField(A_TYPE *, A_ID *);
 A_TYPE *setTypeExpr(A_TYPE *, A_NODE *);
 A_TYPE *setTypeAndKindOfDeclarator(A_TYPE *, ID_KIND, A_ID *);
 A_TYPE *setTypeStructOrEnumIdentifier(T_KIND, char *, ID_KIND);
-BOOLEAN isNotSameFormalParameters(A_ID *, A_ID *);
-BOOLEAN isNotSameType(A_TYPE *, A_TYPE *);
-BOOLEAN isPointerOrArrayType(A_TYPE *);
+// BOOLEAN isNotSameFormalParameters(A_ID *, A_ID *);
+// BOOLEAN isNotSameType(A_TYPE *, A_TYPE *);
+// BOOLEAN isPointerOrArrayType(A_TYPE *);
 
 void syntax_error();
 void initialize();
