@@ -29,15 +29,19 @@ int main(int argc, char *argv[]) {
     initialize();
     yyparse();
     
-    if (syntax_err)
+    if (syntax_err) {
+        puts("syntax_err");
         return 1;
+    }
     print_ast(root);
     
     puts("\nstart semantic analysis");
     semantic_analysis(root);
     
-    if (semantic_err)
+    if (semantic_err) {
+        puts("semantic_err");
         return 1;
+    }
     
     print_sem_ast(root);
     return 0;
