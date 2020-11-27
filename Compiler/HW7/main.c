@@ -6,6 +6,7 @@
 
 extern FILE *yyin;
 extern int syntax_err;
+extern int semantic_err;
 extern A_NODE *root;
 extern FILE *yyin;
 
@@ -24,13 +25,18 @@ int main(int argc, char *argv[]) {
         exit(1);
     }
     
+    puts("\nstart syntax analysis");
     initialize();
     yyparse();
     
+    if (syntax_err)
+        return 1;
     print_ast(root);
+    
+    puts("\nstart semantic analysis");
     semantic_analysis(root);
     
-    if (syntax_err)
+    if (semantic_err)
         return 1;
     
     print_sem_ast(root);

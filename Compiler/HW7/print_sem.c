@@ -56,7 +56,7 @@ void prt_sem_initializer(A_NODE *node, int s)
     case N_INIT_LIST_NIL:
         break;
     default:
-        printf("****semantic tree error******");
+        printf("****syntax tree error******");
     }
 }
 
@@ -111,7 +111,7 @@ void prt_sem_expression(A_NODE *node, int s)
     case N_EXP_SIZE_TYPE:
         prt_sem_integer(node->clink, s + 1);
         break;
-    N_EXP_CAST:
+    case N_EXP_CAST:
         prt_sem_A_TYPE(node->llink, s + 1);
         prt_sem_expression(node->rlink, s + 1);
         break;
@@ -133,7 +133,7 @@ void prt_sem_expression(A_NODE *node, int s)
         prt_sem_expression(node->rlink, s + 1);
         break;
     default:
-        printf("****semantic tree error******");
+        printf("****syntax tree error******");
     }
 }
 
@@ -149,7 +149,7 @@ void prt_sem_arg_expr_list(A_NODE *node, int s)
     case N_ARG_LIST_NIL:
         break;
     default:
-        printf("****semantic tree error******");
+        printf("****syntax tree error******");
     }
 }
 
@@ -209,7 +209,7 @@ void prt_sem_statement(A_NODE *node, int s)
             prt_sem_expression(node->clink, s + 1);
         break;
     default:
-        printf("****semantic tree error******");
+        printf("****syntax tree error******");
     }
 }
 
@@ -225,7 +225,7 @@ void prt_sem_statement_list(A_NODE *node, int s)
     case N_STMT_LIST_NIL:
         break;
     default:
-        printf("****semantic tree error******");
+        printf("****syntax tree error******");
     }
 }
 
@@ -243,7 +243,7 @@ void prt_sem_for_expression(A_NODE *node, int s)
             prt_sem_expression(node->rlink, s + 1);
         break;
     default:
-        printf("****semantic tree error******");
+        printf("****syntax tree error******");
     }
 }
 
@@ -351,8 +351,8 @@ void prt_sem_A_ID_LIST(A_ID *id, int s)
 void prt_sem_A_ID_NAME(A_ID *id, int s)
 {
     print_space(s);
-    printf("(ID=\"%s\") TYPE:%x KIND:%s SPEC=%s LEV=%d VAL=%d ADDR=%d \n", id->name, id->type,
-           id_kind_name[id->kind], spec_name[id->specifier], id->level, id->value, id->address);
+    printf("(ID=\"%s\") TYPE:%x KIND:%s SPEC=%s LEV=%d VAL=%d ADDR=%d \n ",
+           id->name, id->type, id_kind_name[id->kind], spec_name[id->specifier], id->level, id->value, id->address);
 }
 
 void prt_sem_A_ID(A_ID *id, int s)
