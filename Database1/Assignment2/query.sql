@@ -20,11 +20,14 @@ select student_name, student_id, sum(CASE WHEN grade = 'F' THEN 0 ELSE credit EN
 
 /* 6. 학과별 학생들의 평균이수학점을 출력하시오(학과이름도 출력되어야함) (5) */
 
-select dept_name, sum(CASE WHEN grade = 'F' THEN 0 ELSE credit END) / count(distinct student_id) from Student left join  Department using(dept_name) left join Takes using(student_id) left join (select course_id, credit from Course) as Course using(course_id) GROUP BY dept_name;
+select dept_name, sum(CASE WHEN grade = 'F' THEN 0 ELSE credit END) / count(distinct student_id) from Student left join  Department using(dept_name) natural join Takes left join (select course_id, credit from Course) as Course using(course_id) GROUP BY dept_name;
 
 /* 7. 전체 학생의 평균이수학점보다 같거나 높은 학생들의 학번, 이름, 소속학과이름, 총이수학점을 출력하시오. (10) */
 
-select student_id, student_name, dept_name, sum(CASE WHEN grade = 'F' THEN 0 ELSE credit END) from Student natural join Takes natural join Course GROUP BY student_id having sum(CASE WHEN grade = 'F' THEN 0 ELSE credit END) > (select sum(CASE WHEN grade = 'F' THEN 0 ELSE credit END) / count(distinct student_id) from Student left join  Department using(dept_name) left join Takes using(student_id) left join (select course_id, credit from Course) as Course using(course_id));
+select student_id, student_name, dept_name, sum(CASE WHEN grade = 'F' THEN 0 ELSE credit END)
+from Student natural join Takes natural join Course GROUP BY student_id having sum(CASE WHEN grade = 'F' THEN 0 ELSE credit END) > (
+    select sum(CASE WHEN grade = 'F' THEN 0 ELSE credit END) / count(distinct student_id)
+    from Student left join  Department using(dept_name) natural join Takes left join (select course_id, credit from Course) as Course using(course_id));
 
 /* 8. 학과 예산이 가장 많은 학과에 소속된 모든 학생들의 이름을 출력하시오. (5) */
 
