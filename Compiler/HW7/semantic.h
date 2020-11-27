@@ -1,6 +1,6 @@
+// resource & copyright : 책, C언어와 컴파일러, 2015, (유재우, 최재영, 신경희), SSU Press
 #ifndef SEMANTIC_H
 #define SEMANTIC_H
-// resource & copyright : 책, C언어와 컴파일러, 2015, (유재우, 최재영, 신경희), SSU Press
 
 // included by student
 #include <stdio.h>
