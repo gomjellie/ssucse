@@ -1,9 +1,7 @@
+#include "syntax.h"
 #include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
-#include "type.h"
-#include "y.tab.h"
-#include "semantic.h"
+#include <stdlib.h>
 
 extern char *yytext;
 
@@ -14,46 +12,7 @@ int syntax_err = 0;
 int line_no = 1;
 int current_level = 0;
 
-A_NODE *makeNode(NODE_NAME, A_NODE *, A_NODE *, A_NODE *);
-A_NODE *makeNodeList(NODE_NAME, A_NODE *, A_NODE *);
-A_ID *makeIdentifier(char *);
-A_ID *makeDummyIdentifier();
-A_TYPE *makeType(T_KIND);
-A_SPECIFIER *makeSpecifier(A_TYPE *, S_KIND);
-A_ID *searchIdentifier(char *, A_ID *);
-A_ID *searchIdentifierAtCurrentLevel(char *, A_ID *);
-A_SPECIFIER *updateSpecifier(A_SPECIFIER *, A_TYPE *, S_KIND);
-void checkForwardReference();
-void setDefaultSpecifier(A_SPECIFIER *);
-A_ID *linkDeclaratorList(A_ID *, A_ID *);
-A_ID *getIdentifierDeclared(char *);
-A_TYPE *getTypeOfStructOrEnumRefIdentifier(T_KIND, char *, ID_KIND);
-A_ID *setDeclaratorInit(A_ID *, A_NODE *);
-A_ID *setDeclaratorKind(A_ID *, ID_KIND);
-A_ID *setDeclaratorType(A_ID *, A_TYPE *);
-A_ID *setDeclaratorElementType(A_ID *, A_TYPE *);
-A_ID *setDeclaratorTypeAndKind(A_ID *, A_TYPE *, ID_KIND);
-A_ID *setDeclaratorListSpecifier(A_ID *, A_SPECIFIER *);
-A_ID *setFunctionDeclaratorSpecifier(A_ID *, A_SPECIFIER *);
-A_ID *setFunctionDeclaratorBody(A_ID *, A_NODE *);
-A_ID *setParameterDeclaratorSpecifier(A_ID *, A_SPECIFIER *);
-A_ID *setStructDeclaratorListSpecifier(A_ID *, A_TYPE *);
-A_TYPE *setTypeNameSpecifier(A_TYPE *, A_SPECIFIER *);
-A_TYPE *setTypeElementType(A_TYPE *, A_TYPE *);
-A_TYPE *setTypeField(A_TYPE *, A_ID *);
-A_TYPE *setTypeExpr(A_TYPE *, A_NODE *);
-A_TYPE *setTypeAndKindOfDeclarator(A_TYPE *, ID_KIND, A_ID *);
-A_TYPE *setTypeStructOrEnumIdentifier(T_KIND, char *, ID_KIND);
-BOOLEAN isNotSameFormalParameters(A_ID *, A_ID *);
-// BOOLEAN isNotSameType(A_TYPE *, A_TYPE *);
-BOOLEAN isPointerOrArrayType(A_TYPE *);
-
-void syntax_error();
-void initialize();
-
-/*
- * make new node for syntax tree
-*/
+// make new node for syntax tree
 A_NODE *makeNode(NODE_NAME n, A_NODE *a, A_NODE *b, A_NODE *c)
 {
     A_NODE *m;
@@ -217,7 +176,7 @@ A_SPECIFIER *updateSpecifier(A_SPECIFIER *p, A_TYPE *t, S_KIND s)
             if (p->type == t)
                 ;
             else
-                syntax_error(24, 0);
+                syntax_error(24, "");
         else
             p->type = t;
 
@@ -227,7 +186,7 @@ A_SPECIFIER *updateSpecifier(A_SPECIFIER *p, A_TYPE *t, S_KIND s)
             if (s == p->stor)
                 ;
             else
-                syntax_error(24, 0);
+                syntax_error(24, "");
         else
             p->stor = s;
     }
@@ -303,11 +262,10 @@ A_ID *setDeclaratorType(A_ID *id, A_TYPE *t)
 // set declarator type (or element type)
 A_ID *setDeclaratorElementType(A_ID *id, A_TYPE *t)
 {
-    // ** to be completed ** -> completed
     A_TYPE *tt;
-    if (id->type == NIL) // if id has no type, then assign that by argument immediately
+    if (id->type == NIL)
         id->type = t;
-    else // else type will be added into the tail of the id
+    else
     {
         tt = id->type;
         while (tt->element_type)
@@ -331,13 +289,12 @@ A_ID *setFunctionDeclaratorSpecifier(A_ID *id, A_SPECIFIER *p)
     A_ID *a;
     // check storage class
     if (p->stor)
-        syntax_error(25, 0);
+        syntax_error(25, "");
     setDefaultSpecifier(p);
-    // check check if there is a function identifier immediately before '('
-    // ** to be completed ** -> completed, (and this was the midterm ex. t_t)
+    // check function identifier immediately before '('
     if (id->type->kind != T_FUNC)
     {
-        syntax_error(21, 0);
+        syntax_error(21, "");
         return id;
     }
     else
@@ -351,14 +308,10 @@ A_ID *setFunctionDeclaratorSpecifier(A_ID *id, A_SPECIFIER *p)
         if (a->kind != ID_FUNC || a->type->expr)
             syntax_error(12, id->name);
         else
-        {
-            // check prototype: parameters and return type
-            // ** to be completed ** -> completed
+        { // check prototype: parameters and return type
             if (isNotSameFormalParameters(a->type->field, id->type->field))
-                // check all the field elements about types and different parmeter numbers
-                syntax_error(22, a->name);
+                syntax_error(22, id->name);
             if (isNotSameType(a->type->element_type, id->type->element_type))
-                // return type is located in id->type->element_type.
                 syntax_error(26, a->name);
         }
     // change parameter scope and check empty name
@@ -368,7 +321,7 @@ A_ID *setFunctionDeclaratorSpecifier(A_ID *id, A_SPECIFIER *p)
         if (strlen(a->name))
             current_id = a;
         else if (a->type)
-            syntax_error(23, 0);
+            syntax_error(23, "");
         a = a->link;
     }
     return id;
@@ -395,7 +348,7 @@ A_ID *setDeclaratorListSpecifier(A_ID *id, A_SPECIFIER *p)
         if (p->stor == S_TYPEDEF)
             a->kind = ID_TYPE;
         else if (a->type->kind == T_FUNC)
-            a->kind = ID_TYPE;
+            a->kind = ID_FUNC;
         else
             a->kind = ID_VAR;
         a->specifier = p->stor; // id's specifier should be storage class of A_SPECIFIER's stor
@@ -414,11 +367,7 @@ A_ID *setParameterDeclaratorSpecifier(A_ID *id, A_SPECIFIER *p)
         syntax_error(12, id->name);
     // check papameter storage class && void type
     if (p->stor || p->type == void_type)
-        syntax_error(14, 0);
-    // ** to be completed ** -> completed
-    // check parameter storage class && void type
-    if (p->stor || p->type == void_type)
-        syntax_error(14, 0);
+        syntax_error(14, "");
     setDefaultSpecifier(p);
     id = setDeclaratorElementType(id, p->type);
     id->kind = ID_PARM;
@@ -446,7 +395,7 @@ A_TYPE *setTypeNameSpecifier(A_TYPE *t, A_SPECIFIER *p)
 {
     // check storage class in type name
     if (p->stor)
-        syntax_error(20, 0);
+        syntax_error(20, "");
     setDefaultSpecifier(p);
     t = setTypeElementType(t, p->type);
     return t;
@@ -561,49 +510,30 @@ void initialize()
     void_type->check = TRUE;
     string_type->size = 4;
     string_type->check = TRUE;
-
     // printf(char *, ...) library function
-
     setDeclaratorTypeAndKind(
         makeIdentifier("printf"),
         setTypeField(
             setTypeElementType(makeType(T_FUNC), void_type),
             linkDeclaratorList(
-                setDeclaratorTypeAndKind(
-                    makeDummyIdentifier(),
-                    string_type,
-                    ID_PARM),
-                setDeclaratorKind(
-                    makeDummyIdentifier(),
-                    ID_PARM))),
+                setDeclaratorTypeAndKind(makeDummyIdentifier(), string_type, ID_PARM),
+                setDeclaratorKind(makeDummyIdentifier(), ID_PARM))),
         ID_FUNC);
     // scanf(char *, ...) library function
     setDeclaratorTypeAndKind(
         makeIdentifier("scanf"),
         setTypeField(
-            setTypeElementType(
-                makeType(T_FUNC),
-                void_type),
+            setTypeElementType(makeType(T_FUNC), void_type),
             linkDeclaratorList(
-                setDeclaratorTypeAndKind(
-                    makeDummyIdentifier(),
-                    string_type,
-                    ID_PARM),
-                setDeclaratorKind(
-                    makeDummyIdentifier(),
-                    ID_PARM))),
+                setDeclaratorTypeAndKind(makeDummyIdentifier(), string_type, ID_PARM),
+                setDeclaratorKind(makeDummyIdentifier(), ID_PARM))),
         ID_FUNC);
     // malloc(int) library function
     setDeclaratorTypeAndKind(
         makeIdentifier("malloc"),
         setTypeField(
-            setTypeElementType(
-                makeType(T_FUNC),
-                string_type),
-            setDeclaratorTypeAndKind(
-                makeDummyIdentifier(),
-                int_type,
-                ID_PARM)),
+            setTypeElementType(makeType(T_FUNC), string_type),
+            setDeclaratorTypeAndKind(makeDummyIdentifier(), int_type, ID_PARM)),
         ID_FUNC);
 }
 void syntax_error(int i, char *s)
@@ -631,7 +561,7 @@ void syntax_error(int i, char *s)
         printf("illegal function declarator");
         break;
     case 22:
-        printf("conflicting parameter type in prototype function %s", s);
+        printf("conflicting parm type in prototype function %s", s);
         break;
     case 23:
         printf("empty parameter name");
@@ -643,7 +573,7 @@ void syntax_error(int i, char *s)
         printf("illegal function specifiers");
         break;
     case 26:
-        printf("illegal or conflicting return type in prototype function %s", s);
+        printf("illegal or conflicting return type in function %s", s);
         break;
     case 31:
         printf("undefined type for identifier %s", s);

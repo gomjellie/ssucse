@@ -1,0 +1,2362 @@
+[amp.c test start]
+[original source code]
+
+int a;
+void *b = &a;
+[original source code end]
+[syntax tree]
+
+start syntax analysis
+======= syntax tree ==========
+N_PROGRAM (0,0)
+| (ID="a") TYPE:57cc9300 KIND:VAR SPEC=AUTO LEV=0 VAL=0 ADDR=0 
+| | TYPE
+| | | (int)
+| (ID="b") TYPE:57cce770 KIND:VAR SPEC=AUTO LEV=0 VAL=0 ADDR=0 
+| | TYPE
+| | | POINTER
+| | | | ELEMENT_TYPE
+| | | | | (void)
+| | INIT
+| | | N_INIT_LIST_ONE (0,0)
+| | | | N_EXP_AMP (0,0)
+| | | | | N_EXP_IDENT (0,0)
+| | | | | | (ID="a") TYPE:57cc9300 KIND:VAR SPEC=AUTO LEV=0 VAL=0 ADDR=0 
+
+start semantic analysis
+======= semantic tree ==========
+N_PROGRAM (0,20)
+| (ID="a") TYPE:57cc9300 KIND:VAR SPEC=AUTO LEV=0 VAL=0 ADDR=12 
+| | TYPE
+| | | (int)
+| (ID="b") TYPE:57cce770 KIND:VAR SPEC=AUTO LEV=0 VAL=0 ADDR=16 
+| | TYPE
+| | | POINTER
+| | | | ELEMENT_TYPE
+| | | | | (void)
+| | INIT
+| | | N_INIT_LIST_ONE (0,0)
+| | | | N_EXP_AMP (57cce850,0)
+| | | | | N_EXP_IDENT (57cc9300,1)
+| | | | | | (ID="a") TYPE:57cc9300 KIND:VAR SPEC=AUTO LEV=0 VAL=0 ADDR=12 
+ [syntax tree end]
+[amp.c test end]
+[array_of_pointer.c test start]
+[original source code]
+static int *kim[10 + (5 * 3)];
+[original source code end]
+[syntax tree]
+
+start syntax analysis
+======= syntax tree ==========
+N_PROGRAM (0,0)
+| (ID="kim") TYPE:567dc820 KIND:VAR SPEC=STATIC LEV=0 VAL=0 ADDR=0 
+| | TYPE
+| | | ARRAY
+| | | | INDEX
+| | | | | N_EXP_ADD (0,0)
+| | | | | | N_EXP_INT_CONST (0,0)
+| | | | | | | 10
+| | | | | | N_EXP_MUL (0,0)
+| | | | | | | N_EXP_INT_CONST (0,0)
+| | | | | | | | 5
+| | | | | | | N_EXP_INT_CONST (0,0)
+| | | | | | | | 3
+| | | | ELEMENT_TYPE
+| | | | | POINTER
+| | | | | | ELEMENT_TYPE
+| | | | | | | (int)
+
+start semantic analysis
+======= semantic tree ==========
+N_PROGRAM (0,112)
+| (ID="kim") TYPE:567dc820 KIND:VAR SPEC=STATIC LEV=0 VAL=0 ADDR=12 
+| | TYPE
+| | | ARRAY
+| | | | INDEX
+| | | | | INT=25
+| | | | ELEMENT_TYPE
+| | | | | POINTER
+| | | | | | ELEMENT_TYPE
+| | | | | | | (int)
+[syntax tree end]
+[array_of_pointer.c test end]
+[arrow.c test start]
+[original source code]
+
+
+struct pp {
+    int a;
+};
+
+struct pp *a;
+
+int main() {
+    int k = a->a;
+}
+[original source code end]
+[syntax tree]
+
+start syntax analysis
+======= syntax tree ==========
+N_PROGRAM (0,0)
+| (ID="") TYPE:570cb740 KIND:VAR SPEC=AUTO LEV=0 VAL=0 ADDR=0 
+| | TYPE
+| | | STRUCT
+| | | | FIELD
+| | | | | (ID="a") TYPE:570c6300 KIND:FIELD SPEC=NULL LEV=1 VAL=0 ADDR=0 
+| | | | | | TYPE
+| | | | | | | (int)
+| (ID="a") TYPE:570cb810 KIND:VAR SPEC=AUTO LEV=0 VAL=0 ADDR=0 
+| | TYPE
+| | | POINTER
+| | | | ELEMENT_TYPE
+| | | | | (DONE:570cb740)
+| (ID="main") TYPE:570cb8c0 KIND:FUNC SPEC=NULL LEV=0 VAL=0 ADDR=0 
+| | TYPE
+| | | FUNCTION
+| | | | PARAMETER
+| | | | TYPE
+| | | | | (int)
+| | | | BODY
+| | | | | N_STMT_COMPOUND (0,0)
+| | | | | | (ID="k") TYPE:570c6300 KIND:VAR SPEC=AUTO LEV=1 VAL=0 ADDR=0 
+| | | | | | | TYPE
+| | | | | | | | (int)
+| | | | | | | INIT
+| | | | | | | | N_INIT_LIST_ONE (0,0)
+| | | | | | | | | N_EXP_ARROW (0,0)
+| | | | | | | | | | N_EXP_IDENT (0,0)
+| | | | | | | | | | | (ID="a") TYPE:570cb810 KIND:VAR SPEC=AUTO LEV=0 VAL=0 ADDR=0 
+| | | | | | | | | | a
+| | | | | | N_STMT_LIST_NIL (0,0)
+
+start semantic analysis
+======= semantic tree ==========
+N_PROGRAM (0,20)
+| (ID="") TYPE:570cb740 KIND:VAR SPEC=AUTO LEV=0 VAL=0 ADDR=12 
+| | TYPE
+| | | STRUCT
+| | | | FIELD
+| | | | | (ID="a") TYPE:570c6300 KIND:FIELD SPEC=NULL LEV=1 VAL=0 ADDR=0 
+| | | | | | TYPE
+| | | | | | | (int)
+| (ID="a") TYPE:570cb810 KIND:VAR SPEC=AUTO LEV=0 VAL=0 ADDR=16 
+| | TYPE
+| | | POINTER
+| | | | ELEMENT_TYPE
+| | | | | (DONE:570cb740)
+| (ID="main") TYPE:570cb8c0 KIND:FUNC SPEC=NULL LEV=0 VAL=0 ADDR=0 
+| | TYPE
+| | | FUNCTION
+| | | | PARAMETER
+| | | | TYPE
+| | | | | (int)
+| | | | BODY
+| | | | | N_STMT_COMPOUND (0,4)
+| | | | | | (ID="k") TYPE:570c6300 KIND:VAR SPEC=AUTO LEV=1 VAL=0 ADDR=12 
+| | | | | | | TYPE
+| | | | | | | | (int)
+| | | | | | | INIT
+| | | | | | | | N_INIT_LIST_ONE (0,0)
+| | | | | | | | | N_EXP_ARROW (570c6300,1)
+| | | | | | | | | | N_EXP_IDENT (570cb810,1)
+| | | | | | | | | | | (ID="a") TYPE:570cb810 KIND:VAR SPEC=AUTO LEV=0 VAL=0 ADDR=16 
+ | | | | | | | | | | (ID="a") TYPE:570c6300 KIND:FIELD SPEC=NULL LEV=1 VAL=0 ADDR=0 
+ | | | | | | N_STMT_LIST_NIL (0,0)
+[syntax tree end]
+[arrow.c test end]
+[break.c test start]
+[original source code]
+
+int main() {
+    int i = 0;
+    for (i = 0; i < 10; i++) {
+        if (i == 1)
+            break;
+    }
+}
+[original source code end]
+[syntax tree]
+
+start syntax analysis
+======= syntax tree ==========
+N_PROGRAM (0,0)
+| (ID="main") TYPE:56c07750 KIND:FUNC SPEC=NULL LEV=0 VAL=0 ADDR=0 
+| | TYPE
+| | | FUNCTION
+| | | | PARAMETER
+| | | | TYPE
+| | | | | (int)
+| | | | BODY
+| | | | | N_STMT_COMPOUND (0,0)
+| | | | | | (ID="i") TYPE:56c02300 KIND:VAR SPEC=AUTO LEV=1 VAL=0 ADDR=0 
+| | | | | | | TYPE
+| | | | | | | | (int)
+| | | | | | | INIT
+| | | | | | | | N_INIT_LIST_ONE (0,0)
+| | | | | | | | | N_EXP_INT_CONST (0,0)
+| | | | | | | | | | 0
+| | | | | | N_STMT_LIST (0,0)
+| | | | | | | N_STMT_FOR (0,0)
+| | | | | | | | N_FOR_EXP (0,0)
+| | | | | | | | | N_EXP_ASSIGN (0,0)
+| | | | | | | | | | N_EXP_IDENT (0,0)
+| | | | | | | | | | | (ID="i") TYPE:56c02300 KIND:VAR SPEC=AUTO LEV=1 VAL=0 ADDR=0 
+| | | | | | | | | | N_EXP_INT_CONST (0,0)
+| | | | | | | | | | | 0
+| | | | | | | | | N_EXP_LSS (0,0)
+| | | | | | | | | | N_EXP_IDENT (0,0)
+| | | | | | | | | | | (ID="i") TYPE:56c02300 KIND:VAR SPEC=AUTO LEV=1 VAL=0 ADDR=0 
+| | | | | | | | | | N_EXP_INT_CONST (0,0)
+| | | | | | | | | | | 10
+| | | | | | | | | N_EXP_POST_INC (0,0)
+| | | | | | | | | | N_EXP_IDENT (0,0)
+| | | | | | | | | | | (ID="i") TYPE:56c02300 KIND:VAR SPEC=AUTO LEV=1 VAL=0 ADDR=0 
+| | | | | | | | N_STMT_COMPOUND (0,0)
+| | | | | | | | | N_STMT_LIST (0,0)
+| | | | | | | | | | N_STMT_IF (0,0)
+| | | | | | | | | | | N_EXP_EQL (0,0)
+| | | | | | | | | | | | N_EXP_IDENT (0,0)
+| | | | | | | | | | | | | (ID="i") TYPE:56c02300 KIND:VAR SPEC=AUTO LEV=1 VAL=0 ADDR=0 
+| | | | | | | | | | | | N_EXP_INT_CONST (0,0)
+| | | | | | | | | | | | | 1
+| | | | | | | | | | | N_STMT_BREAK (0,0)
+| | | | | | | | | | N_STMT_LIST_NIL (0,0)
+| | | | | | | N_STMT_LIST_NIL (0,0)
+
+start semantic analysis
+======= semantic tree ==========
+N_PROGRAM (0,12)
+| (ID="main") TYPE:56c07750 KIND:FUNC SPEC=NULL LEV=0 VAL=0 ADDR=0 
+| | TYPE
+| | | FUNCTION
+| | | | PARAMETER
+| | | | TYPE
+| | | | | (int)
+| | | | BODY
+| | | | | N_STMT_COMPOUND (0,4)
+| | | | | | (ID="i") TYPE:56c02300 KIND:VAR SPEC=AUTO LEV=1 VAL=0 ADDR=12 
+| | | | | | | TYPE
+| | | | | | | | (int)
+| | | | | | | INIT
+| | | | | | | | N_INIT_LIST_ONE (0,0)
+| | | | | | | | | N_EXP_INT_CONST (56c02300,0)
+| | | | | | | | | | INT=0
+| | | | | | N_STMT_LIST (0,0)
+| | | | | | | N_STMT_FOR (0,0)
+| | | | | | | | N_FOR_EXP (0,0)
+| | | | | | | | | N_EXP_ASSIGN (56c02300,0)
+| | | | | | | | | | N_EXP_IDENT (56c02300,1)
+| | | | | | | | | | | (ID="i") TYPE:56c02300 KIND:VAR SPEC=AUTO LEV=1 VAL=0 ADDR=12 
+ | | | | | | | | | | N_EXP_INT_CONST (56c02300,0)
+| | | | | | | | | | | INT=0
+| | | | | | | | | N_EXP_LSS (56c02300,0)
+| | | | | | | | | | N_EXP_IDENT (56c02300,1)
+| | | | | | | | | | | (ID="i") TYPE:56c02300 KIND:VAR SPEC=AUTO LEV=1 VAL=0 ADDR=12 
+ | | | | | | | | | | N_EXP_INT_CONST (56c02300,0)
+| | | | | | | | | | | INT=10
+| | | | | | | | | N_EXP_POST_INC (56c02300,0)
+| | | | | | | | | | N_EXP_IDENT (56c02300,1)
+| | | | | | | | | | | (ID="i") TYPE:56c02300 KIND:VAR SPEC=AUTO LEV=1 VAL=0 ADDR=12 
+ | | | | | | | | N_STMT_COMPOUND (0,0)
+| | | | | | | | | N_STMT_LIST (0,0)
+| | | | | | | | | | N_STMT_IF (0,0)
+| | | | | | | | | | | N_EXP_EQL (56c02300,0)
+| | | | | | | | | | | | N_EXP_IDENT (56c02300,1)
+| | | | | | | | | | | | | (ID="i") TYPE:56c02300 KIND:VAR SPEC=AUTO LEV=1 VAL=0 ADDR=12 
+ | | | | | | | | | | | | N_EXP_INT_CONST (56c02300,0)
+| | | | | | | | | | | | | INT=1
+| | | | | | | | | | | N_STMT_BREAK (0,0)
+| | | | | | | | | | N_STMT_LIST_NIL (0,0)
+| | | | | | | N_STMT_LIST_NIL (0,0)
+[syntax tree end]
+[break.c test end]
+[const_char.c test start]
+[original source code]
+
+char c = 'c';
+[original source code end]
+[syntax tree]
+
+start syntax analysis
+======= syntax tree ==========
+N_PROGRAM (0,0)
+| (ID="c") TYPE:579fe3c0 KIND:VAR SPEC=AUTO LEV=0 VAL=0 ADDR=0 
+| | TYPE
+| | | (char 1)
+| | INIT
+| | | N_INIT_LIST_ONE (0,0)
+| | | | N_EXP_CHAR_CONST (0,0)
+| | | | | 99
+
+start semantic analysis
+======= semantic tree ==========
+N_PROGRAM (0,16)
+| (ID="c") TYPE:579fe3c0 KIND:VAR SPEC=AUTO LEV=0 VAL=0 ADDR=12 
+| | TYPE
+| | | (char 1)
+| | INIT
+| | | N_INIT_LIST_ONE (0,0)
+| | | | N_EXP_CHAR_CONST (579fe3c0,0)
+| | | | | INT=99
+[syntax tree end]
+[const_char.c test end]
+[continue.c test start]
+[original source code]
+
+int main() {
+    int i = 0;
+    for (i = 0; i < 10; i++) {
+        if (i == 1)
+            continue;
+    }
+}
+[original source code end]
+[syntax tree]
+
+start syntax analysis
+======= syntax tree ==========
+N_PROGRAM (0,0)
+| (ID="main") TYPE:57e13750 KIND:FUNC SPEC=NULL LEV=0 VAL=0 ADDR=0 
+| | TYPE
+| | | FUNCTION
+| | | | PARAMETER
+| | | | TYPE
+| | | | | (int)
+| | | | BODY
+| | | | | N_STMT_COMPOUND (0,0)
+| | | | | | (ID="i") TYPE:57e0e300 KIND:VAR SPEC=AUTO LEV=1 VAL=0 ADDR=0 
+| | | | | | | TYPE
+| | | | | | | | (int)
+| | | | | | | INIT
+| | | | | | | | N_INIT_LIST_ONE (0,0)
+| | | | | | | | | N_EXP_INT_CONST (0,0)
+| | | | | | | | | | 0
+| | | | | | N_STMT_LIST (0,0)
+| | | | | | | N_STMT_FOR (0,0)
+| | | | | | | | N_FOR_EXP (0,0)
+| | | | | | | | | N_EXP_ASSIGN (0,0)
+| | | | | | | | | | N_EXP_IDENT (0,0)
+| | | | | | | | | | | (ID="i") TYPE:57e0e300 KIND:VAR SPEC=AUTO LEV=1 VAL=0 ADDR=0 
+| | | | | | | | | | N_EXP_INT_CONST (0,0)
+| | | | | | | | | | | 0
+| | | | | | | | | N_EXP_LSS (0,0)
+| | | | | | | | | | N_EXP_IDENT (0,0)
+| | | | | | | | | | | (ID="i") TYPE:57e0e300 KIND:VAR SPEC=AUTO LEV=1 VAL=0 ADDR=0 
+| | | | | | | | | | N_EXP_INT_CONST (0,0)
+| | | | | | | | | | | 10
+| | | | | | | | | N_EXP_POST_INC (0,0)
+| | | | | | | | | | N_EXP_IDENT (0,0)
+| | | | | | | | | | | (ID="i") TYPE:57e0e300 KIND:VAR SPEC=AUTO LEV=1 VAL=0 ADDR=0 
+| | | | | | | | N_STMT_COMPOUND (0,0)
+| | | | | | | | | N_STMT_LIST (0,0)
+| | | | | | | | | | N_STMT_IF (0,0)
+| | | | | | | | | | | N_EXP_EQL (0,0)
+| | | | | | | | | | | | N_EXP_IDENT (0,0)
+| | | | | | | | | | | | | (ID="i") TYPE:57e0e300 KIND:VAR SPEC=AUTO LEV=1 VAL=0 ADDR=0 
+| | | | | | | | | | | | N_EXP_INT_CONST (0,0)
+| | | | | | | | | | | | | 1
+| | | | | | | | | | | N_STMT_CONTINUE (0,0)
+| | | | | | | | | | N_STMT_LIST_NIL (0,0)
+| | | | | | | N_STMT_LIST_NIL (0,0)
+
+start semantic analysis
+======= semantic tree ==========
+N_PROGRAM (0,12)
+| (ID="main") TYPE:57e13750 KIND:FUNC SPEC=NULL LEV=0 VAL=0 ADDR=0 
+| | TYPE
+| | | FUNCTION
+| | | | PARAMETER
+| | | | TYPE
+| | | | | (int)
+| | | | BODY
+| | | | | N_STMT_COMPOUND (0,4)
+| | | | | | (ID="i") TYPE:57e0e300 KIND:VAR SPEC=AUTO LEV=1 VAL=0 ADDR=12 
+| | | | | | | TYPE
+| | | | | | | | (int)
+| | | | | | | INIT
+| | | | | | | | N_INIT_LIST_ONE (0,0)
+| | | | | | | | | N_EXP_INT_CONST (57e0e300,0)
+| | | | | | | | | | INT=0
+| | | | | | N_STMT_LIST (0,0)
+| | | | | | | N_STMT_FOR (0,0)
+| | | | | | | | N_FOR_EXP (0,0)
+| | | | | | | | | N_EXP_ASSIGN (57e0e300,0)
+| | | | | | | | | | N_EXP_IDENT (57e0e300,1)
+| | | | | | | | | | | (ID="i") TYPE:57e0e300 KIND:VAR SPEC=AUTO LEV=1 VAL=0 ADDR=12 
+ | | | | | | | | | | N_EXP_INT_CONST (57e0e300,0)
+| | | | | | | | | | | INT=0
+| | | | | | | | | N_EXP_LSS (57e0e300,0)
+| | | | | | | | | | N_EXP_IDENT (57e0e300,1)
+| | | | | | | | | | | (ID="i") TYPE:57e0e300 KIND:VAR SPEC=AUTO LEV=1 VAL=0 ADDR=12 
+ | | | | | | | | | | N_EXP_INT_CONST (57e0e300,0)
+| | | | | | | | | | | INT=10
+| | | | | | | | | N_EXP_POST_INC (57e0e300,0)
+| | | | | | | | | | N_EXP_IDENT (57e0e300,1)
+| | | | | | | | | | | (ID="i") TYPE:57e0e300 KIND:VAR SPEC=AUTO LEV=1 VAL=0 ADDR=12 
+ | | | | | | | | N_STMT_COMPOUND (0,0)
+| | | | | | | | | N_STMT_LIST (0,0)
+| | | | | | | | | | N_STMT_IF (0,0)
+| | | | | | | | | | | N_EXP_EQL (57e0e300,0)
+| | | | | | | | | | | | N_EXP_IDENT (57e0e300,1)
+| | | | | | | | | | | | | (ID="i") TYPE:57e0e300 KIND:VAR SPEC=AUTO LEV=1 VAL=0 ADDR=12 
+ | | | | | | | | | | | | N_EXP_INT_CONST (57e0e300,0)
+| | | | | | | | | | | | | INT=1
+| | | | | | | | | | | N_STMT_CONTINUE (0,0)
+| | | | | | | | | | N_STMT_LIST_NIL (0,0)
+| | | | | | | N_STMT_LIST_NIL (0,0)
+[syntax tree end]
+[continue.c test end]
+[double_pointer.c test start]
+[original source code]
+
+int main(int argc, char *argv[]) { 
+	int integer = 10;
+	int *int_ptr =&integer; 
+	int **int_double_ptr = &int_ptr; 
+	*int_ptr;
+	**int_double_ptr;
+}
+[original source code end]
+[syntax tree]
+
+start syntax analysis
+======= syntax tree ==========
+N_PROGRAM (0,0)
+| (ID="main") TYPE:56fcf850 KIND:FUNC SPEC=NULL LEV=0 VAL=0 ADDR=0 
+| | TYPE
+| | | FUNCTION
+| | | | PARAMETER
+| | | | | (ID="argc") TYPE:56fca300 KIND:PARM SPEC=NULL LEV=1 VAL=0 ADDR=0 
+| | | | | | TYPE
+| | | | | | | (int)
+| | | | | (ID="argv") TYPE:56fcf820 KIND:PARM SPEC=NULL LEV=1 VAL=0 ADDR=0 
+| | | | | | TYPE
+| | | | | | | ARRAY
+| | | | | | | | INDEX
+| | | | | | | | | (none)
+| | | | | | | | ELEMENT_TYPE
+| | | | | | | | | POINTER
+| | | | | | | | | | ELEMENT_TYPE
+| | | | | | | | | | | (char 1)
+| | | | TYPE
+| | | | | (int)
+| | | | BODY
+| | | | | N_STMT_COMPOUND (0,0)
+| | | | | | (ID="integer") TYPE:56fca300 KIND:VAR SPEC=AUTO LEV=1 VAL=0 ADDR=0 
+| | | | | | | TYPE
+| | | | | | | | (int)
+| | | | | | | INIT
+| | | | | | | | N_INIT_LIST_ONE (0,0)
+| | | | | | | | | N_EXP_INT_CONST (0,0)
+| | | | | | | | | | 10
+| | | | | | (ID="int_ptr") TYPE:56fcf930 KIND:VAR SPEC=AUTO LEV=1 VAL=0 ADDR=0 
+| | | | | | | TYPE
+| | | | | | | | POINTER
+| | | | | | | | | ELEMENT_TYPE
+| | | | | | | | | | (int)
+| | | | | | | INIT
+| | | | | | | | N_INIT_LIST_ONE (0,0)
+| | | | | | | | | N_EXP_AMP (0,0)
+| | | | | | | | | | N_EXP_IDENT (0,0)
+| | | | | | | | | | | (ID="integer") TYPE:56fca300 KIND:VAR SPEC=AUTO LEV=1 VAL=0 ADDR=0 
+| | | | | | (ID="int_double_ptr") TYPE:56fcfa20 KIND:VAR SPEC=AUTO LEV=1 VAL=0 ADDR=0 
+| | | | | | | TYPE
+| | | | | | | | POINTER
+| | | | | | | | | ELEMENT_TYPE
+| | | | | | | | | | POINTER
+| | | | | | | | | | | ELEMENT_TYPE
+| | | | | | | | | | | | (int)
+| | | | | | | INIT
+| | | | | | | | N_INIT_LIST_ONE (0,0)
+| | | | | | | | | N_EXP_AMP (0,0)
+| | | | | | | | | | N_EXP_IDENT (0,0)
+| | | | | | | | | | | (ID="int_ptr") TYPE:56fcf930 KIND:VAR SPEC=AUTO LEV=1 VAL=0 ADDR=0 
+| | | | | | N_STMT_LIST (0,0)
+| | | | | | | N_STMT_EXPRESSION (0,0)
+| | | | | | | | N_EXP_STAR (0,0)
+| | | | | | | | | N_EXP_IDENT (0,0)
+| | | | | | | | | | (ID="int_ptr") TYPE:56fcf930 KIND:VAR SPEC=AUTO LEV=1 VAL=0 ADDR=0 
+| | | | | | | N_STMT_LIST (0,0)
+| | | | | | | | N_STMT_EXPRESSION (0,0)
+| | | | | | | | | N_EXP_STAR (0,0)
+| | | | | | | | | | N_EXP_STAR (0,0)
+| | | | | | | | | | | N_EXP_IDENT (0,0)
+| | | | | | | | | | | | (ID="int_double_ptr") TYPE:56fcfa20 KIND:VAR SPEC=AUTO LEV=1 VAL=0 ADDR=0 
+| | | | | | | | N_STMT_LIST_NIL (0,0)
+
+start semantic analysis
+======= semantic tree ==========
+N_PROGRAM (0,12)
+| (ID="main") TYPE:56fcf850 KIND:FUNC SPEC=NULL LEV=0 VAL=0 ADDR=0 
+| | TYPE
+| | | FUNCTION
+| | | | PARAMETER
+| | | | | (ID="argc") TYPE:56fca300 KIND:PARM SPEC=NULL LEV=1 VAL=0 ADDR=12 
+| | | | | | TYPE
+| | | | | | | (int)
+| | | | | (ID="argv") TYPE:56fcf820 KIND:PARM SPEC=NULL LEV=1 VAL=0 ADDR=16 
+| | | | | | TYPE
+| | | | | | | POINTER
+| | | | | | | | ELEMENT_TYPE
+| | | | | | | | | POINTER
+| | | | | | | | | | ELEMENT_TYPE
+| | | | | | | | | | | (char 1)
+| | | | TYPE
+| | | | | (int)
+| | | | BODY
+| | | | | N_STMT_COMPOUND (0,12)
+| | | | | | (ID="integer") TYPE:56fca300 KIND:VAR SPEC=AUTO LEV=1 VAL=0 ADDR=20 
+| | | | | | | TYPE
+| | | | | | | | (int)
+| | | | | | | INIT
+| | | | | | | | N_INIT_LIST_ONE (0,0)
+| | | | | | | | | N_EXP_INT_CONST (56fca300,0)
+| | | | | | | | | | INT=10
+| | | | | | (ID="int_ptr") TYPE:56fcf930 KIND:VAR SPEC=AUTO LEV=1 VAL=0 ADDR=24 
+| | | | | | | TYPE
+| | | | | | | | POINTER
+| | | | | | | | | ELEMENT_TYPE
+| | | | | | | | | | (int)
+| | | | | | | INIT
+| | | | | | | | N_INIT_LIST_ONE (0,0)
+| | | | | | | | | N_EXP_AMP (56fcfc90,0)
+| | | | | | | | | | N_EXP_IDENT (56fca300,1)
+| | | | | | | | | | | (ID="integer") TYPE:56fca300 KIND:VAR SPEC=AUTO LEV=1 VAL=0 ADDR=20 
+ | | | | | | (ID="int_double_ptr") TYPE:56fcfa20 KIND:VAR SPEC=AUTO LEV=1 VAL=0 ADDR=28 
+| | | | | | | TYPE
+| | | | | | | | POINTER
+| | | | | | | | | ELEMENT_TYPE
+| | | | | | | | | | POINTER
+| | | | | | | | | | | ELEMENT_TYPE
+| | | | | | | | | | | | (int)
+| | | | | | | INIT
+| | | | | | | | N_INIT_LIST_ONE (0,0)
+| | | | | | | | | N_EXP_AMP (56fcfcc0,0)
+| | | | | | | | | | N_EXP_IDENT (56fcf930,1)
+| | | | | | | | | | | (ID="int_ptr") TYPE:56fcf930 KIND:VAR SPEC=AUTO LEV=1 VAL=0 ADDR=24 
+ | | | | | | N_STMT_LIST (0,0)
+| | | | | | | N_STMT_EXPRESSION (0,0)
+| | | | | | | | N_EXP_STAR (56fca300,1)
+| | | | | | | | | N_EXP_IDENT (56fcf930,1)
+| | | | | | | | | | (ID="int_ptr") TYPE:56fcf930 KIND:VAR SPEC=AUTO LEV=1 VAL=0 ADDR=24 
+ | | | | | | | N_STMT_LIST (0,0)
+| | | | | | | | N_STMT_EXPRESSION (0,0)
+| | | | | | | | | N_EXP_STAR (56fca300,1)
+| | | | | | | | | | N_EXP_STAR (56fcfa50,1)
+| | | | | | | | | | | N_EXP_IDENT (56fcfa20,1)
+| | | | | | | | | | | | (ID="int_double_ptr") TYPE:56fcfa20 KIND:VAR SPEC=AUTO LEV=1 VAL=0 ADDR=28 
+ | | | | | | | | N_STMT_LIST_NIL (0,0)
+[syntax tree end]
+[double_pointer.c test end]
+[do_while.c test start]
+[original source code]
+
+int main() {
+    do {
+        printf("do while parsing test");
+    } while (1);
+}[original source code end]
+[syntax tree]
+
+start syntax analysis
+======= syntax tree ==========
+N_PROGRAM (0,0)
+| (ID="main") TYPE:57629750 KIND:FUNC SPEC=NULL LEV=0 VAL=0 ADDR=0 
+| | TYPE
+| | | FUNCTION
+| | | | PARAMETER
+| | | | TYPE
+| | | | | (int)
+| | | | BODY
+| | | | | N_STMT_COMPOUND (0,0)
+| | | | | | N_STMT_LIST (0,0)
+| | | | | | | N_STMT_DO (0,0)
+| | | | | | | | N_STMT_COMPOUND (0,0)
+| | | | | | | | | N_STMT_LIST (0,0)
+| | | | | | | | | | N_STMT_EXPRESSION (0,0)
+| | | | | | | | | | | N_EXP_FUNCTION_CALL (0,0)
+| | | | | | | | | | | | N_EXP_IDENT (0,0)
+| | | | | | | | | | | | | (ID="printf") TYPE:576244e0 KIND:FUNC SPEC=NULL LEV=0 VAL=0 ADDR=0 
+| | | | | | | | | | | | N_ARG_LIST (0,0)
+| | | | | | | | | | | | | N_EXP_STRING_LITERAL (0,0)
+| | | | | | | | | | | | | | "do while parsing test"
+| | | | | | | | | | | | | N_ARG_LIST_NIL (0,0)
+| | | | | | | | | | N_STMT_LIST_NIL (0,0)
+| | | | | | | | N_EXP_INT_CONST (0,0)
+| | | | | | | | | 1
+| | | | | | | N_STMT_LIST_NIL (0,0)
+
+start semantic analysis
+======= semantic tree ==========
+N_PROGRAM (0,36)
+| (ID="main") TYPE:57629750 KIND:FUNC SPEC=NULL LEV=0 VAL=0 ADDR=0 
+| | TYPE
+| | | FUNCTION
+| | | | PARAMETER
+| | | | TYPE
+| | | | | (int)
+| | | | BODY
+| | | | | N_STMT_COMPOUND (0,0)
+| | | | | | N_STMT_LIST (0,0)
+| | | | | | | N_STMT_DO (0,0)
+| | | | | | | | N_STMT_COMPOUND (0,0)
+| | | | | | | | | N_STMT_LIST (0,0)
+| | | | | | | | | | N_STMT_EXPRESSION (0,0)
+| | | | | | | | | | | N_EXP_FUNCTION_CALL (57624420,0)
+| | | | | | | | | | | | N_EXP_AMP (57629980,0)
+| | | | | | | | | | | | | N_EXP_IDENT (576244e0,0)
+| | | | | | | | | | | | | | (ID="printf") TYPE:576244e0 KIND:FUNC SPEC=NULL LEV=0 VAL=0 ADDR=0 
+ | | | | | | | | | | | | N_ARG_LIST (0,4)
+| | | | | | | | | | | | | N_EXP_STRING_LITERAL (57624450,0)
+| | | | | | | | | | | | | | LITERAL: "do while parsing test"
+| | | | | | | | | | | | | N_ARG_LIST_NIL (0,0)
+| | | | | | | | | | N_STMT_LIST_NIL (0,0)
+| | | | | | | | N_EXP_INT_CONST (57624300,0)
+| | | | | | | | | INT=1
+| | | | | | | N_STMT_LIST_NIL (0,0)
+[syntax tree end]
+[do_while.c test end]
+[enum.c test start]
+[original source code]
+typedef enum _number {
+	zero,
+	one,
+	seven = 2+5
+} NUMBER;
+
+void func(NUMBER n) {
+	return;
+}
+[original source code end]
+[syntax tree]
+
+start syntax analysis
+======= syntax tree ==========
+N_PROGRAM (0,0)
+| (ID="NUMBER") TYPE:57ff4740 KIND:TYPE SPEC=TYPEDEF LEV=0 VAL=0 ADDR=0 
+| | TYPE
+| | | ENUM
+| | | | ENUMERATORS
+| | | | | (ID="zero") TYPE:0 KIND:ENUM_LITERAL SPEC=NULL LEV=0 VAL=0 ADDR=0 
+| | | | | (ID="one") TYPE:0 KIND:ENUM_LITERAL SPEC=NULL LEV=0 VAL=0 ADDR=0 
+| | | | | (ID="seven") TYPE:0 KIND:ENUM_LITERAL SPEC=NULL LEV=0 VAL=0 ADDR=0 
+| | | | | | INIT
+| | | | | | | N_EXP_ADD (0,0)
+| | | | | | | | N_EXP_INT_CONST (0,0)
+| | | | | | | | | 2
+| | | | | | | | N_EXP_INT_CONST (0,0)
+| | | | | | | | | 5
+| (ID="func") TYPE:57ff4980 KIND:FUNC SPEC=NULL LEV=0 VAL=0 ADDR=0 
+| | TYPE
+| | | FUNCTION
+| | | | PARAMETER
+| | | | | (ID="n") TYPE:57ff4740 KIND:PARM SPEC=NULL LEV=1 VAL=0 ADDR=0 
+| | | | | | TYPE
+| | | | | | | (DONE:57ff4740)
+| | | | TYPE
+| | | | | (void)
+| | | | BODY
+| | | | | N_STMT_COMPOUND (0,0)
+| | | | | | N_STMT_LIST (0,0)
+| | | | | | | N_STMT_RETURN (0,0)
+| | | | | | | N_STMT_LIST_NIL (0,0)
+
+start semantic analysis
+======= semantic tree ==========
+N_PROGRAM (0,12)
+| (ID="NUMBER") TYPE:57ff4740 KIND:TYPE SPEC=TYPEDEF LEV=0 VAL=0 ADDR=0 
+| | TYPE
+| | | ENUM
+| | | | ENUMERATORS
+| | | | | (ID="zero") TYPE:0 KIND:ENUM_LITERAL SPEC=NULL LEV=0 VAL=0 ADDR=0 
+| | | | | (ID="one") TYPE:0 KIND:ENUM_LITERAL SPEC=NULL LEV=0 VAL=0 ADDR=0 
+| | | | | | INIT
+| | | | | | | INT=1
+| | | | | (ID="seven") TYPE:0 KIND:ENUM_LITERAL SPEC=NULL LEV=0 VAL=0 ADDR=0 
+| | | | | | INIT
+| | | | | | | INT=7
+| (ID="func") TYPE:57ff4980 KIND:FUNC SPEC=NULL LEV=0 VAL=0 ADDR=0 
+| | TYPE
+| | | FUNCTION
+| | | | PARAMETER
+| | | | | (ID="n") TYPE:57ff4740 KIND:PARM SPEC=NULL LEV=1 VAL=0 ADDR=12 
+| | | | | | TYPE
+| | | | | | | (DONE:57ff4740)
+| | | | TYPE
+| | | | | (void)
+| | | | BODY
+| | | | | N_STMT_COMPOUND (0,0)
+| | | | | | N_STMT_LIST (0,0)
+| | | | | | | N_STMT_RETURN (0,0)
+| | | | | | | N_STMT_LIST_NIL (0,0)
+[syntax tree end]
+[enum.c test end]
+[equality_exp.c test start]
+[original source code]
+
+int a = 10 == 10;
+int b = 10 != 10;
+[original source code end]
+[syntax tree]
+
+start syntax analysis
+======= syntax tree ==========
+N_PROGRAM (0,0)
+| (ID="a") TYPE:57046300 KIND:VAR SPEC=AUTO LEV=0 VAL=0 ADDR=0 
+| | TYPE
+| | | (int)
+| | INIT
+| | | N_INIT_LIST_ONE (0,0)
+| | | | N_EXP_EQL (0,0)
+| | | | | N_EXP_INT_CONST (0,0)
+| | | | | | 10
+| | | | | N_EXP_INT_CONST (0,0)
+| | | | | | 10
+| (ID="b") TYPE:57046300 KIND:VAR SPEC=AUTO LEV=0 VAL=0 ADDR=0 
+| | TYPE
+| | | (int)
+| | INIT
+| | | N_INIT_LIST_ONE (0,0)
+| | | | N_EXP_NEQ (0,0)
+| | | | | N_EXP_INT_CONST (0,0)
+| | | | | | 10
+| | | | | N_EXP_INT_CONST (0,0)
+| | | | | | 10
+
+start semantic analysis
+======= semantic tree ==========
+N_PROGRAM (0,20)
+| (ID="a") TYPE:57046300 KIND:VAR SPEC=AUTO LEV=0 VAL=0 ADDR=12 
+| | TYPE
+| | | (int)
+| | INIT
+| | | N_INIT_LIST_ONE (0,0)
+| | | | N_EXP_EQL (57046300,0)
+| | | | | N_EXP_INT_CONST (57046300,0)
+| | | | | | INT=10
+| | | | | N_EXP_INT_CONST (57046300,0)
+| | | | | | INT=10
+| (ID="b") TYPE:57046300 KIND:VAR SPEC=AUTO LEV=0 VAL=0 ADDR=16 
+| | TYPE
+| | | (int)
+| | INIT
+| | | N_INIT_LIST_ONE (0,0)
+| | | | N_EXP_NEQ (57046300,0)
+| | | | | N_EXP_INT_CONST (57046300,0)
+| | | | | | INT=10
+| | | | | N_EXP_INT_CONST (57046300,0)
+| | | | | | INT=10
+[syntax tree end]
+[equality_exp.c test end]
+[excl.c test start]
+[original source code]
+
+int a = !1;
+[original source code end]
+[syntax tree]
+
+start syntax analysis
+======= syntax tree ==========
+N_PROGRAM (0,0)
+| (ID="a") TYPE:57b38300 KIND:VAR SPEC=AUTO LEV=0 VAL=0 ADDR=0 
+| | TYPE
+| | | (int)
+| | INIT
+| | | N_INIT_LIST_ONE (0,0)
+| | | | N_EXP_NOT (0,0)
+| | | | | N_EXP_INT_CONST (0,0)
+| | | | | | 1
+
+start semantic analysis
+======= semantic tree ==========
+N_PROGRAM (0,16)
+| (ID="a") TYPE:57b38300 KIND:VAR SPEC=AUTO LEV=0 VAL=0 ADDR=12 
+| | TYPE
+| | | (int)
+| | INIT
+| | | N_INIT_LIST_ONE (0,0)
+| | | | N_EXP_NOT (57b38300,0)
+| | | | | N_EXP_INT_CONST (57b38300,0)
+| | | | | | INT=1
+[syntax tree end]
+[excl.c test end]
+[for_loop_gugu_dan.c test start]
+[original source code]
+
+int main() {
+    int i;
+    int j;
+    for (i = 0; i < 10; i++) {
+        for (j = 0; j < 10; j++) {
+            // printf("%d x %d = %d", i, j, i * j);
+        }
+    }
+
+    return 0;
+}
+[original source code end]
+[syntax tree]
+
+start syntax analysis
+======= syntax tree ==========
+N_PROGRAM (0,0)
+| (ID="main") TYPE:56fe2750 KIND:FUNC SPEC=NULL LEV=0 VAL=0 ADDR=0 
+| | TYPE
+| | | FUNCTION
+| | | | PARAMETER
+| | | | TYPE
+| | | | | (int)
+| | | | BODY
+| | | | | N_STMT_COMPOUND (0,0)
+| | | | | | (ID="i") TYPE:56fdd300 KIND:VAR SPEC=AUTO LEV=1 VAL=0 ADDR=0 
+| | | | | | | TYPE
+| | | | | | | | (int)
+| | | | | | (ID="j") TYPE:56fdd300 KIND:VAR SPEC=AUTO LEV=1 VAL=0 ADDR=0 
+| | | | | | | TYPE
+| | | | | | | | (int)
+| | | | | | N_STMT_LIST (0,0)
+| | | | | | | N_STMT_FOR (0,0)
+| | | | | | | | N_FOR_EXP (0,0)
+| | | | | | | | | N_EXP_ASSIGN (0,0)
+| | | | | | | | | | N_EXP_IDENT (0,0)
+| | | | | | | | | | | (ID="i") TYPE:56fdd300 KIND:VAR SPEC=AUTO LEV=1 VAL=0 ADDR=0 
+| | | | | | | | | | N_EXP_INT_CONST (0,0)
+| | | | | | | | | | | 0
+| | | | | | | | | N_EXP_LSS (0,0)
+| | | | | | | | | | N_EXP_IDENT (0,0)
+| | | | | | | | | | | (ID="i") TYPE:56fdd300 KIND:VAR SPEC=AUTO LEV=1 VAL=0 ADDR=0 
+| | | | | | | | | | N_EXP_INT_CONST (0,0)
+| | | | | | | | | | | 10
+| | | | | | | | | N_EXP_POST_INC (0,0)
+| | | | | | | | | | N_EXP_IDENT (0,0)
+| | | | | | | | | | | (ID="i") TYPE:56fdd300 KIND:VAR SPEC=AUTO LEV=1 VAL=0 ADDR=0 
+| | | | | | | | N_STMT_COMPOUND (0,0)
+| | | | | | | | | N_STMT_LIST (0,0)
+| | | | | | | | | | N_STMT_FOR (0,0)
+| | | | | | | | | | | N_FOR_EXP (0,0)
+| | | | | | | | | | | | N_EXP_ASSIGN (0,0)
+| | | | | | | | | | | | | N_EXP_IDENT (0,0)
+| | | | | | | | | | | | | | (ID="j") TYPE:56fdd300 KIND:VAR SPEC=AUTO LEV=1 VAL=0 ADDR=0 
+| | | | | | | | | | | | | N_EXP_INT_CONST (0,0)
+| | | | | | | | | | | | | | 0
+| | | | | | | | | | | | N_EXP_LSS (0,0)
+| | | | | | | | | | | | | N_EXP_IDENT (0,0)
+| | | | | | | | | | | | | | (ID="j") TYPE:56fdd300 KIND:VAR SPEC=AUTO LEV=1 VAL=0 ADDR=0 
+| | | | | | | | | | | | | N_EXP_INT_CONST (0,0)
+| | | | | | | | | | | | | | 10
+| | | | | | | | | | | | N_EXP_POST_INC (0,0)
+| | | | | | | | | | | | | N_EXP_IDENT (0,0)
+| | | | | | | | | | | | | | (ID="j") TYPE:56fdd300 KIND:VAR SPEC=AUTO LEV=1 VAL=0 ADDR=0 
+| | | | | | | | | | | N_STMT_COMPOUND (0,0)
+| | | | | | | | | | | | N_STMT_LIST_NIL (0,0)
+| | | | | | | | | | N_STMT_LIST_NIL (0,0)
+| | | | | | | N_STMT_LIST (0,0)
+| | | | | | | | N_STMT_RETURN (0,0)
+| | | | | | | | | N_EXP_INT_CONST (0,0)
+| | | | | | | | | | 0
+| | | | | | | | N_STMT_LIST_NIL (0,0)
+
+start semantic analysis
+======= semantic tree ==========
+N_PROGRAM (0,12)
+| (ID="main") TYPE:56fe2750 KIND:FUNC SPEC=NULL LEV=0 VAL=0 ADDR=0 
+| | TYPE
+| | | FUNCTION
+| | | | PARAMETER
+| | | | TYPE
+| | | | | (int)
+| | | | BODY
+| | | | | N_STMT_COMPOUND (0,8)
+| | | | | | (ID="i") TYPE:56fdd300 KIND:VAR SPEC=AUTO LEV=1 VAL=0 ADDR=12 
+| | | | | | | TYPE
+| | | | | | | | (int)
+| | | | | | (ID="j") TYPE:56fdd300 KIND:VAR SPEC=AUTO LEV=1 VAL=0 ADDR=16 
+| | | | | | | TYPE
+| | | | | | | | (int)
+| | | | | | N_STMT_LIST (0,0)
+| | | | | | | N_STMT_FOR (0,0)
+| | | | | | | | N_FOR_EXP (0,0)
+| | | | | | | | | N_EXP_ASSIGN (56fdd300,0)
+| | | | | | | | | | N_EXP_IDENT (56fdd300,1)
+| | | | | | | | | | | (ID="i") TYPE:56fdd300 KIND:VAR SPEC=AUTO LEV=1 VAL=0 ADDR=12 
+ | | | | | | | | | | N_EXP_INT_CONST (56fdd300,0)
+| | | | | | | | | | | INT=0
+| | | | | | | | | N_EXP_LSS (56fdd300,0)
+| | | | | | | | | | N_EXP_IDENT (56fdd300,1)
+| | | | | | | | | | | (ID="i") TYPE:56fdd300 KIND:VAR SPEC=AUTO LEV=1 VAL=0 ADDR=12 
+ | | | | | | | | | | N_EXP_INT_CONST (56fdd300,0)
+| | | | | | | | | | | INT=10
+| | | | | | | | | N_EXP_POST_INC (56fdd300,0)
+| | | | | | | | | | N_EXP_IDENT (56fdd300,1)
+| | | | | | | | | | | (ID="i") TYPE:56fdd300 KIND:VAR SPEC=AUTO LEV=1 VAL=0 ADDR=12 
+ | | | | | | | | N_STMT_COMPOUND (0,0)
+| | | | | | | | | N_STMT_LIST (0,0)
+| | | | | | | | | | N_STMT_FOR (0,0)
+| | | | | | | | | | | N_FOR_EXP (0,0)
+| | | | | | | | | | | | N_EXP_ASSIGN (56fdd300,0)
+| | | | | | | | | | | | | N_EXP_IDENT (56fdd300,1)
+| | | | | | | | | | | | | | (ID="j") TYPE:56fdd300 KIND:VAR SPEC=AUTO LEV=1 VAL=0 ADDR=16 
+ | | | | | | | | | | | | | N_EXP_INT_CONST (56fdd300,0)
+| | | | | | | | | | | | | | INT=0
+| | | | | | | | | | | | N_EXP_LSS (56fdd300,0)
+| | | | | | | | | | | | | N_EXP_IDENT (56fdd300,1)
+| | | | | | | | | | | | | | (ID="j") TYPE:56fdd300 KIND:VAR SPEC=AUTO LEV=1 VAL=0 ADDR=16 
+ | | | | | | | | | | | | | N_EXP_INT_CONST (56fdd300,0)
+| | | | | | | | | | | | | | INT=10
+| | | | | | | | | | | | N_EXP_POST_INC (56fdd300,0)
+| | | | | | | | | | | | | N_EXP_IDENT (56fdd300,1)
+| | | | | | | | | | | | | | (ID="j") TYPE:56fdd300 KIND:VAR SPEC=AUTO LEV=1 VAL=0 ADDR=16 
+ | | | | | | | | | | | N_STMT_COMPOUND (0,0)
+| | | | | | | | | | | | N_STMT_LIST_NIL (0,0)
+| | | | | | | | | | N_STMT_LIST_NIL (0,0)
+| | | | | | | N_STMT_LIST (0,0)
+| | | | | | | | N_STMT_RETURN (0,0)
+| | | | | | | | | N_EXP_INT_CONST (56fdd300,0)
+| | | | | | | | | | INT=0
+| | | | | | | | N_STMT_LIST_NIL (0,0)
+[syntax tree end]
+[for_loop_gugu_dan.c test end]
+[function_pointer.c test start]
+[original source code]
+
+void *function(int *a) {
+    return a;
+}
+
+int main(int argc, char *argv[]) {
+    int a;
+    void *(*fptr[10 + 5]) (int *);
+    fptr[0] = function;
+
+    fptr[0](&a);
+}
+[original source code end]
+[syntax tree]
+
+start syntax analysis
+======= syntax tree ==========
+N_PROGRAM (0,0)
+| (ID="function") TYPE:57b7a800 KIND:FUNC SPEC=NULL LEV=0 VAL=0 ADDR=0 
+| | TYPE
+| | | FUNCTION
+| | | | PARAMETER
+| | | | | (ID="a") TYPE:57b7a7a0 KIND:PARM SPEC=NULL LEV=1 VAL=0 ADDR=0 
+| | | | | | TYPE
+| | | | | | | POINTER
+| | | | | | | | ELEMENT_TYPE
+| | | | | | | | | (int)
+| | | | TYPE
+| | | | | POINTER
+| | | | | | ELEMENT_TYPE
+| | | | | | | (void)
+| | | | BODY
+| | | | | N_STMT_COMPOUND (0,0)
+| | | | | | N_STMT_LIST (0,0)
+| | | | | | | N_STMT_RETURN (0,0)
+| | | | | | | | N_EXP_IDENT (0,0)
+| | | | | | | | | (ID="a") TYPE:57b7a7a0 KIND:PARM SPEC=NULL LEV=1 VAL=0 ADDR=0 
+| | | | | | | N_STMT_LIST_NIL (0,0)
+| (ID="main") TYPE:57b7aa20 KIND:FUNC SPEC=NULL LEV=0 VAL=0 ADDR=0 
+| | TYPE
+| | | FUNCTION
+| | | | PARAMETER
+| | | | | (ID="argc") TYPE:57b75300 KIND:PARM SPEC=NULL LEV=1 VAL=0 ADDR=0 
+| | | | | | TYPE
+| | | | | | | (int)
+| | | | | (ID="argv") TYPE:57b7a9f0 KIND:PARM SPEC=NULL LEV=1 VAL=0 ADDR=0 
+| | | | | | TYPE
+| | | | | | | ARRAY
+| | | | | | | | INDEX
+| | | | | | | | | (none)
+| | | | | | | | ELEMENT_TYPE
+| | | | | | | | | POINTER
+| | | | | | | | | | ELEMENT_TYPE
+| | | | | | | | | | | (char 1)
+| | | | TYPE
+| | | | | (int)
+| | | | BODY
+| | | | | N_STMT_COMPOUND (0,0)
+| | | | | | (ID="a") TYPE:57b75300 KIND:VAR SPEC=AUTO LEV=1 VAL=0 ADDR=0 
+| | | | | | | TYPE
+| | | | | | | | (int)
+| | | | | | (ID="fptr") TYPE:57b7aba0 KIND:VAR SPEC=AUTO LEV=1 VAL=0 ADDR=0 
+| | | | | | | TYPE
+| | | | | | | | ARRAY
+| | | | | | | | | INDEX
+| | | | | | | | | | N_EXP_ADD (0,0)
+| | | | | | | | | | | N_EXP_INT_CONST (0,0)
+| | | | | | | | | | | | 10
+| | | | | | | | | | | N_EXP_INT_CONST (0,0)
+| | | | | | | | | | | | 5
+| | | | | | | | | ELEMENT_TYPE
+| | | | | | | | | | POINTER
+| | | | | | | | | | | ELEMENT_TYPE
+| | | | | | | | | | | | FUNCTION
+| | | | | | | | | | | | | PARAMETER
+| | | | | | | | | | | | | | (ID="") TYPE:57b7ac10 KIND:PARM SPEC=NULL LEV=2 VAL=0 ADDR=0 
+| | | | | | | | | | | | | | | TYPE
+| | | | | | | | | | | | | | | | POINTER
+| | | | | | | | | | | | | | | | | ELEMENT_TYPE
+| | | | | | | | | | | | | | | | | | (int)
+| | | | | | | | | | | | | TYPE
+| | | | | | | | | | | | | | POINTER
+| | | | | | | | | | | | | | | ELEMENT_TYPE
+| | | | | | | | | | | | | | | | (void)
+| | | | | | N_STMT_LIST (0,0)
+| | | | | | | N_STMT_EXPRESSION (0,0)
+| | | | | | | | N_EXP_ASSIGN (0,0)
+| | | | | | | | | N_EXP_ARRAY (0,0)
+| | | | | | | | | | N_EXP_IDENT (0,0)
+| | | | | | | | | | | (ID="fptr") TYPE:57b7aba0 KIND:VAR SPEC=AUTO LEV=1 VAL=0 ADDR=0 
+| | | | | | | | | | N_EXP_INT_CONST (0,0)
+| | | | | | | | | | | 0
+| | | | | | | | | N_EXP_IDENT (0,0)
+| | | | | | | | | | (ID="function") TYPE:57b7a800 KIND:FUNC SPEC=NULL LEV=0 VAL=0 ADDR=0 
+| | | | | | | N_STMT_LIST (0,0)
+| | | | | | | | N_STMT_EXPRESSION (0,0)
+| | | | | | | | | N_EXP_FUNCTION_CALL (0,0)
+| | | | | | | | | | N_EXP_ARRAY (0,0)
+| | | | | | | | | | | N_EXP_IDENT (0,0)
+| | | | | | | | | | | | (ID="fptr") TYPE:57b7aba0 KIND:VAR SPEC=AUTO LEV=1 VAL=0 ADDR=0 
+| | | | | | | | | | | N_EXP_INT_CONST (0,0)
+| | | | | | | | | | | | 0
+| | | | | | | | | | N_ARG_LIST (0,0)
+| | | | | | | | | | | N_EXP_AMP (0,0)
+| | | | | | | | | | | | N_EXP_IDENT (0,0)
+| | | | | | | | | | | | | (ID="a") TYPE:57b75300 KIND:VAR SPEC=AUTO LEV=1 VAL=0 ADDR=0 
+| | | | | | | | | | | N_ARG_LIST_NIL (0,0)
+| | | | | | | | N_STMT_LIST_NIL (0,0)
+
+start semantic analysis
+--- warning at line 3:incompatible types in argument or return expr
+*** semantic error at line 9: not permitted type casting in expression
+semantic_err
+[syntax tree end]
+[function_pointer.c test end]
+[function_static_var.c test start]
+[original source code]
+
+void func() {
+    static int a;
+}
+[original source code end]
+[syntax tree]
+
+start syntax analysis
+======= syntax tree ==========
+N_PROGRAM (0,0)
+| (ID="func") TYPE:576d5750 KIND:FUNC SPEC=NULL LEV=0 VAL=0 ADDR=0 
+| | TYPE
+| | | FUNCTION
+| | | | PARAMETER
+| | | | TYPE
+| | | | | (void)
+| | | | BODY
+| | | | | N_STMT_COMPOUND (0,0)
+| | | | | | (ID="a") TYPE:576d0300 KIND:VAR SPEC=STATIC LEV=1 VAL=0 ADDR=0 
+| | | | | | | TYPE
+| | | | | | | | (int)
+| | | | | | N_STMT_LIST_NIL (0,0)
+
+start semantic analysis
+======= semantic tree ==========
+N_PROGRAM (0,16)
+| (ID="func") TYPE:576d5750 KIND:FUNC SPEC=NULL LEV=0 VAL=0 ADDR=0 
+| | TYPE
+| | | FUNCTION
+| | | | PARAMETER
+| | | | TYPE
+| | | | | (void)
+| | | | BODY
+| | | | | N_STMT_COMPOUND (0,0)
+| | | | | | (ID="a") TYPE:576d0300 KIND:VAR SPEC=STATIC LEV=0 VAL=0 ADDR=12 
+| | | | | | | TYPE
+| | | | | | | | (int)
+| | | | | | N_STMT_LIST_NIL (0,0)
+[syntax tree end]
+[function_static_var.c test end]
+[global_static_var.c test start]
+[original source code]
+
+static int sint;
+static char *scptr;
+[original source code end]
+[syntax tree]
+
+start syntax analysis
+======= syntax tree ==========
+N_PROGRAM (0,0)
+| (ID="sint") TYPE:5828a300 KIND:VAR SPEC=STATIC LEV=0 VAL=0 ADDR=0 
+| | TYPE
+| | | (int)
+| (ID="scptr") TYPE:5828f770 KIND:VAR SPEC=STATIC LEV=0 VAL=0 ADDR=0 
+| | TYPE
+| | | POINTER
+| | | | ELEMENT_TYPE
+| | | | | (char 1)
+
+start semantic analysis
+======= semantic tree ==========
+N_PROGRAM (0,20)
+| (ID="sint") TYPE:5828a300 KIND:VAR SPEC=STATIC LEV=0 VAL=0 ADDR=12 
+| | TYPE
+| | | (int)
+| (ID="scptr") TYPE:5828f770 KIND:VAR SPEC=STATIC LEV=0 VAL=0 ADDR=16 
+| | TYPE
+| | | POINTER
+| | | | ELEMENT_TYPE
+| | | | | (char 1)
+[syntax tree end]
+[global_static_var.c test end]
+[jump_statement.c test start]
+[original source code]
+
+int main() {
+    for (;;) {
+        break;
+        continue;
+    }
+    return 0;
+}
+[original source code end]
+[syntax tree]
+
+start syntax analysis
+======= syntax tree ==========
+N_PROGRAM (0,0)
+| (ID="main") TYPE:56862750 KIND:FUNC SPEC=NULL LEV=0 VAL=0 ADDR=0 
+| | TYPE
+| | | FUNCTION
+| | | | PARAMETER
+| | | | TYPE
+| | | | | (int)
+| | | | BODY
+| | | | | N_STMT_COMPOUND (0,0)
+| | | | | | N_STMT_LIST (0,0)
+| | | | | | | N_STMT_FOR (0,0)
+| | | | | | | | N_FOR_EXP (0,0)
+| | | | | | | | N_STMT_COMPOUND (0,0)
+| | | | | | | | | N_STMT_LIST (0,0)
+| | | | | | | | | | N_STMT_BREAK (0,0)
+| | | | | | | | | | N_STMT_LIST (0,0)
+| | | | | | | | | | | N_STMT_CONTINUE (0,0)
+| | | | | | | | | | | N_STMT_LIST_NIL (0,0)
+| | | | | | | N_STMT_LIST (0,0)
+| | | | | | | | N_STMT_RETURN (0,0)
+| | | | | | | | | N_EXP_INT_CONST (0,0)
+| | | | | | | | | | 0
+| | | | | | | | N_STMT_LIST_NIL (0,0)
+
+start semantic analysis
+======= semantic tree ==========
+N_PROGRAM (0,12)
+| (ID="main") TYPE:56862750 KIND:FUNC SPEC=NULL LEV=0 VAL=0 ADDR=0 
+| | TYPE
+| | | FUNCTION
+| | | | PARAMETER
+| | | | TYPE
+| | | | | (int)
+| | | | BODY
+| | | | | N_STMT_COMPOUND (0,0)
+| | | | | | N_STMT_LIST (0,0)
+| | | | | | | N_STMT_FOR (0,0)
+| | | | | | | | N_FOR_EXP (0,0)
+| | | | | | | | N_STMT_COMPOUND (0,0)
+| | | | | | | | | N_STMT_LIST (0,0)
+| | | | | | | | | | N_STMT_BREAK (0,0)
+| | | | | | | | | | N_STMT_LIST (0,0)
+| | | | | | | | | | | N_STMT_CONTINUE (0,0)
+| | | | | | | | | | | N_STMT_LIST_NIL (0,0)
+| | | | | | | N_STMT_LIST (0,0)
+| | | | | | | | N_STMT_RETURN (0,0)
+| | | | | | | | | N_EXP_INT_CONST (5685d300,0)
+| | | | | | | | | | INT=0
+| | | | | | | | N_STMT_LIST_NIL (0,0)
+[syntax tree end]
+[jump_statement.c test end]
+[logical_expression.c test start]
+[original source code]
+
+int a = 1 && 0;
+int b = 1 || 0;
+[original source code end]
+[syntax tree]
+
+start syntax analysis
+======= syntax tree ==========
+N_PROGRAM (0,0)
+| (ID="a") TYPE:56c12300 KIND:VAR SPEC=AUTO LEV=0 VAL=0 ADDR=0 
+| | TYPE
+| | | (int)
+| | INIT
+| | | N_INIT_LIST_ONE (0,0)
+| | | | N_EXP_AND (0,0)
+| | | | | N_EXP_INT_CONST (0,0)
+| | | | | | 1
+| | | | | N_EXP_INT_CONST (0,0)
+| | | | | | 0
+| (ID="b") TYPE:56c12300 KIND:VAR SPEC=AUTO LEV=0 VAL=0 ADDR=0 
+| | TYPE
+| | | (int)
+| | INIT
+| | | N_INIT_LIST_ONE (0,0)
+| | | | N_EXP_OR (0,0)
+| | | | | N_EXP_INT_CONST (0,0)
+| | | | | | 1
+| | | | | N_EXP_INT_CONST (0,0)
+| | | | | | 0
+
+start semantic analysis
+======= semantic tree ==========
+N_PROGRAM (0,20)
+| (ID="a") TYPE:56c12300 KIND:VAR SPEC=AUTO LEV=0 VAL=0 ADDR=12 
+| | TYPE
+| | | (int)
+| | INIT
+| | | N_INIT_LIST_ONE (0,0)
+| | | | N_EXP_AND (56c12300,0)
+| | | | | N_EXP_INT_CONST (56c12300,0)
+| | | | | | INT=1
+| | | | | N_EXP_INT_CONST (56c12300,0)
+| | | | | | INT=0
+| (ID="b") TYPE:56c12300 KIND:VAR SPEC=AUTO LEV=0 VAL=0 ADDR=16 
+| | TYPE
+| | | (int)
+| | INIT
+| | | N_INIT_LIST_ONE (0,0)
+| | | | N_EXP_OR (56c12300,0)
+| | | | | N_EXP_INT_CONST (56c12300,0)
+| | | | | | INT=1
+| | | | | N_EXP_INT_CONST (56c12300,0)
+| | | | | | INT=0
+[syntax tree end]
+[logical_expression.c test end]
+[minus_minus.c test start]
+[original source code]
+
+int a = 0;
+
+int main() {
+    a--;
+    --a;
+}
+[original source code end]
+[syntax tree]
+
+start syntax analysis
+======= syntax tree ==========
+N_PROGRAM (0,0)
+| (ID="a") TYPE:57e14300 KIND:VAR SPEC=AUTO LEV=0 VAL=0 ADDR=0 
+| | TYPE
+| | | (int)
+| | INIT
+| | | N_INIT_LIST_ONE (0,0)
+| | | | N_EXP_INT_CONST (0,0)
+| | | | | 0
+| (ID="main") TYPE:57e197e0 KIND:FUNC SPEC=NULL LEV=0 VAL=0 ADDR=0 
+| | TYPE
+| | | FUNCTION
+| | | | PARAMETER
+| | | | TYPE
+| | | | | (int)
+| | | | BODY
+| | | | | N_STMT_COMPOUND (0,0)
+| | | | | | N_STMT_LIST (0,0)
+| | | | | | | N_STMT_EXPRESSION (0,0)
+| | | | | | | | N_EXP_POST_DEC (0,0)
+| | | | | | | | | N_EXP_IDENT (0,0)
+| | | | | | | | | | (ID="a") TYPE:57e14300 KIND:VAR SPEC=AUTO LEV=0 VAL=0 ADDR=0 
+| | | | | | | N_STMT_LIST (0,0)
+| | | | | | | | N_STMT_EXPRESSION (0,0)
+| | | | | | | | | N_EXP_PRE_DEC (0,0)
+| | | | | | | | | | N_EXP_IDENT (0,0)
+| | | | | | | | | | | (ID="a") TYPE:57e14300 KIND:VAR SPEC=AUTO LEV=0 VAL=0 ADDR=0 
+| | | | | | | | N_STMT_LIST_NIL (0,0)
+
+start semantic analysis
+======= semantic tree ==========
+N_PROGRAM (0,16)
+| (ID="a") TYPE:57e14300 KIND:VAR SPEC=AUTO LEV=0 VAL=0 ADDR=12 
+| | TYPE
+| | | (int)
+| | INIT
+| | | N_INIT_LIST_ONE (0,0)
+| | | | N_EXP_INT_CONST (57e14300,0)
+| | | | | INT=0
+| (ID="main") TYPE:57e197e0 KIND:FUNC SPEC=NULL LEV=0 VAL=0 ADDR=0 
+| | TYPE
+| | | FUNCTION
+| | | | PARAMETER
+| | | | TYPE
+| | | | | (int)
+| | | | BODY
+| | | | | N_STMT_COMPOUND (0,0)
+| | | | | | N_STMT_LIST (0,0)
+| | | | | | | N_STMT_EXPRESSION (0,0)
+| | | | | | | | N_EXP_POST_DEC (57e14300,0)
+| | | | | | | | | N_EXP_IDENT (57e14300,1)
+| | | | | | | | | | (ID="a") TYPE:57e14300 KIND:VAR SPEC=AUTO LEV=0 VAL=0 ADDR=12 
+ | | | | | | | N_STMT_LIST (0,0)
+| | | | | | | | N_STMT_EXPRESSION (0,0)
+| | | | | | | | | N_EXP_PRE_DEC (57e14300,0)
+| | | | | | | | | | N_EXP_IDENT (57e14300,1)
+| | | | | | | | | | | (ID="a") TYPE:57e14300 KIND:VAR SPEC=AUTO LEV=0 VAL=0 ADDR=12 
+ | | | | | | | | N_STMT_LIST_NIL (0,0)
+[syntax tree end]
+[minus_minus.c test end]
+[period.c test start]
+[original source code]
+
+struct pp {
+    int a;
+};
+
+struct pp a = {0};
+
+int main() {
+    int k = a.a;
+}
+[original source code end]
+[syntax tree]
+[syntax tree end]
+[period.c test end]
+[plus_plus.c test start]
+[original source code]
+
+int a = 0;
+
+int main() {
+    a++;
+    ++a;
+}
+[original source code end]
+[syntax tree]
+
+start syntax analysis
+======= syntax tree ==========
+N_PROGRAM (0,0)
+| (ID="a") TYPE:56f3e300 KIND:VAR SPEC=AUTO LEV=0 VAL=0 ADDR=0 
+| | TYPE
+| | | (int)
+| | INIT
+| | | N_INIT_LIST_ONE (0,0)
+| | | | N_EXP_INT_CONST (0,0)
+| | | | | 0
+| (ID="main") TYPE:56f437e0 KIND:FUNC SPEC=NULL LEV=0 VAL=0 ADDR=0 
+| | TYPE
+| | | FUNCTION
+| | | | PARAMETER
+| | | | TYPE
+| | | | | (int)
+| | | | BODY
+| | | | | N_STMT_COMPOUND (0,0)
+| | | | | | N_STMT_LIST (0,0)
+| | | | | | | N_STMT_EXPRESSION (0,0)
+| | | | | | | | N_EXP_POST_INC (0,0)
+| | | | | | | | | N_EXP_IDENT (0,0)
+| | | | | | | | | | (ID="a") TYPE:56f3e300 KIND:VAR SPEC=AUTO LEV=0 VAL=0 ADDR=0 
+| | | | | | | N_STMT_LIST (0,0)
+| | | | | | | | N_STMT_EXPRESSION (0,0)
+| | | | | | | | | N_EXP_PRE_INC (0,0)
+| | | | | | | | | | N_EXP_IDENT (0,0)
+| | | | | | | | | | | (ID="a") TYPE:56f3e300 KIND:VAR SPEC=AUTO LEV=0 VAL=0 ADDR=0 
+| | | | | | | | N_STMT_LIST_NIL (0,0)
+
+start semantic analysis
+======= semantic tree ==========
+N_PROGRAM (0,16)
+| (ID="a") TYPE:56f3e300 KIND:VAR SPEC=AUTO LEV=0 VAL=0 ADDR=12 
+| | TYPE
+| | | (int)
+| | INIT
+| | | N_INIT_LIST_ONE (0,0)
+| | | | N_EXP_INT_CONST (56f3e300,0)
+| | | | | INT=0
+| (ID="main") TYPE:56f437e0 KIND:FUNC SPEC=NULL LEV=0 VAL=0 ADDR=0 
+| | TYPE
+| | | FUNCTION
+| | | | PARAMETER
+| | | | TYPE
+| | | | | (int)
+| | | | BODY
+| | | | | N_STMT_COMPOUND (0,0)
+| | | | | | N_STMT_LIST (0,0)
+| | | | | | | N_STMT_EXPRESSION (0,0)
+| | | | | | | | N_EXP_POST_INC (56f3e300,0)
+| | | | | | | | | N_EXP_IDENT (56f3e300,1)
+| | | | | | | | | | (ID="a") TYPE:56f3e300 KIND:VAR SPEC=AUTO LEV=0 VAL=0 ADDR=12 
+ | | | | | | | N_STMT_LIST (0,0)
+| | | | | | | | N_STMT_EXPRESSION (0,0)
+| | | | | | | | | N_EXP_PRE_INC (56f3e300,0)
+| | | | | | | | | | N_EXP_IDENT (56f3e300,1)
+| | | | | | | | | | | (ID="a") TYPE:56f3e300 KIND:VAR SPEC=AUTO LEV=0 VAL=0 ADDR=12 
+ | | | | | | | | N_STMT_LIST_NIL (0,0)
+[syntax tree end]
+[plus_plus.c test end]
+[recursive_call.c test start]
+[original source code]
+
+int recursive(int a) {
+    if (a == 0) return 0;
+
+    return recursive(a - 1);
+}
+[original source code end]
+[syntax tree]
+
+start syntax analysis
+======= syntax tree ==========
+N_PROGRAM (0,0)
+| (ID="recursive") TYPE:5825c7a0 KIND:FUNC SPEC=NULL LEV=0 VAL=0 ADDR=0 
+| | TYPE
+| | | FUNCTION
+| | | | PARAMETER
+| | | | | (ID="a") TYPE:58257300 KIND:PARM SPEC=NULL LEV=1 VAL=0 ADDR=0 
+| | | | | | TYPE
+| | | | | | | (int)
+| | | | TYPE
+| | | | | (int)
+| | | | BODY
+| | | | | N_STMT_COMPOUND (0,0)
+| | | | | | N_STMT_LIST (0,0)
+| | | | | | | N_STMT_IF (0,0)
+| | | | | | | | N_EXP_EQL (0,0)
+| | | | | | | | | N_EXP_IDENT (0,0)
+| | | | | | | | | | (ID="a") TYPE:58257300 KIND:PARM SPEC=NULL LEV=1 VAL=0 ADDR=0 
+| | | | | | | | | N_EXP_INT_CONST (0,0)
+| | | | | | | | | | 0
+| | | | | | | | N_STMT_RETURN (0,0)
+| | | | | | | | | N_EXP_INT_CONST (0,0)
+| | | | | | | | | | 0
+| | | | | | | N_STMT_LIST (0,0)
+| | | | | | | | N_STMT_RETURN (0,0)
+| | | | | | | | | N_EXP_FUNCTION_CALL (0,0)
+| | | | | | | | | | N_EXP_IDENT (0,0)
+| | | | | | | | | | | (ID="recursive") TYPE:5825c7a0 KIND:FUNC SPEC=NULL LEV=0 VAL=0 ADDR=0 
+| | | | | | | | | | N_ARG_LIST (0,0)
+| | | | | | | | | | | N_EXP_SUB (0,0)
+| | | | | | | | | | | | N_EXP_IDENT (0,0)
+| | | | | | | | | | | | | (ID="a") TYPE:58257300 KIND:PARM SPEC=NULL LEV=1 VAL=0 ADDR=0 
+| | | | | | | | | | | | N_EXP_INT_CONST (0,0)
+| | | | | | | | | | | | | 1
+| | | | | | | | | | | N_ARG_LIST_NIL (0,0)
+| | | | | | | | N_STMT_LIST_NIL (0,0)
+
+start semantic analysis
+======= semantic tree ==========
+N_PROGRAM (0,12)
+| (ID="recursive") TYPE:5825c7a0 KIND:FUNC SPEC=NULL LEV=0 VAL=0 ADDR=0 
+| | TYPE
+| | | FUNCTION
+| | | | PARAMETER
+| | | | | (ID="a") TYPE:58257300 KIND:PARM SPEC=NULL LEV=1 VAL=0 ADDR=12 
+| | | | | | TYPE
+| | | | | | | (int)
+| | | | TYPE
+| | | | | (int)
+| | | | BODY
+| | | | | N_STMT_COMPOUND (0,0)
+| | | | | | N_STMT_LIST (0,0)
+| | | | | | | N_STMT_IF (0,0)
+| | | | | | | | N_EXP_EQL (58257300,0)
+| | | | | | | | | N_EXP_IDENT (58257300,1)
+| | | | | | | | | | (ID="a") TYPE:58257300 KIND:PARM SPEC=NULL LEV=1 VAL=0 ADDR=12 
+ | | | | | | | | | N_EXP_INT_CONST (58257300,0)
+| | | | | | | | | | INT=0
+| | | | | | | | N_STMT_RETURN (0,0)
+| | | | | | | | | N_EXP_INT_CONST (58257300,0)
+| | | | | | | | | | INT=0
+| | | | | | | N_STMT_LIST (0,0)
+| | | | | | | | N_STMT_RETURN (0,0)
+| | | | | | | | | N_EXP_FUNCTION_CALL (58257300,0)
+| | | | | | | | | | N_EXP_AMP (5825ca30,0)
+| | | | | | | | | | | N_EXP_IDENT (5825c7a0,0)
+| | | | | | | | | | | | (ID="recursive") TYPE:5825c7a0 KIND:FUNC SPEC=NULL LEV=0 VAL=0 ADDR=0 
+ | | | | | | | | | | N_ARG_LIST (0,4)
+| | | | | | | | | | | N_EXP_SUB (58257300,0)
+| | | | | | | | | | | | N_EXP_IDENT (58257300,1)
+| | | | | | | | | | | | | (ID="a") TYPE:58257300 KIND:PARM SPEC=NULL LEV=1 VAL=0 ADDR=12 
+ | | | | | | | | | | | | N_EXP_INT_CONST (58257300,0)
+| | | | | | | | | | | | | INT=1
+| | | | | | | | | | | N_ARG_LIST_NIL (0,0)
+| | | | | | | | N_STMT_LIST_NIL (0,0)
+[syntax tree end]
+[recursive_call.c test end]
+[relational_expression.c test start]
+[original source code]
+
+int a = 10 < 20;
+int b = 10 > 20;
+int c = 10 <= 10;
+int d = 10 > 20;
+[original source code end]
+[syntax tree]
+
+start syntax analysis
+======= syntax tree ==========
+N_PROGRAM (0,0)
+| (ID="a") TYPE:57b6b300 KIND:VAR SPEC=AUTO LEV=0 VAL=0 ADDR=0 
+| | TYPE
+| | | (int)
+| | INIT
+| | | N_INIT_LIST_ONE (0,0)
+| | | | N_EXP_LSS (0,0)
+| | | | | N_EXP_INT_CONST (0,0)
+| | | | | | 10
+| | | | | N_EXP_INT_CONST (0,0)
+| | | | | | 20
+| (ID="b") TYPE:57b6b300 KIND:VAR SPEC=AUTO LEV=0 VAL=0 ADDR=0 
+| | TYPE
+| | | (int)
+| | INIT
+| | | N_INIT_LIST_ONE (0,0)
+| | | | N_EXP_GTR (0,0)
+| | | | | N_EXP_INT_CONST (0,0)
+| | | | | | 10
+| | | | | N_EXP_INT_CONST (0,0)
+| | | | | | 20
+| (ID="c") TYPE:57b6b300 KIND:VAR SPEC=AUTO LEV=0 VAL=0 ADDR=0 
+| | TYPE
+| | | (int)
+| | INIT
+| | | N_INIT_LIST_ONE (0,0)
+| | | | N_EXP_LEQ (0,0)
+| | | | | N_EXP_INT_CONST (0,0)
+| | | | | | 10
+| | | | | N_EXP_INT_CONST (0,0)
+| | | | | | 10
+| (ID="d") TYPE:57b6b300 KIND:VAR SPEC=AUTO LEV=0 VAL=0 ADDR=0 
+| | TYPE
+| | | (int)
+| | INIT
+| | | N_INIT_LIST_ONE (0,0)
+| | | | N_EXP_GTR (0,0)
+| | | | | N_EXP_INT_CONST (0,0)
+| | | | | | 10
+| | | | | N_EXP_INT_CONST (0,0)
+| | | | | | 20
+
+start semantic analysis
+======= semantic tree ==========
+N_PROGRAM (0,28)
+| (ID="a") TYPE:57b6b300 KIND:VAR SPEC=AUTO LEV=0 VAL=0 ADDR=12 
+| | TYPE
+| | | (int)
+| | INIT
+| | | N_INIT_LIST_ONE (0,0)
+| | | | N_EXP_LSS (57b6b300,0)
+| | | | | N_EXP_INT_CONST (57b6b300,0)
+| | | | | | INT=10
+| | | | | N_EXP_INT_CONST (57b6b300,0)
+| | | | | | INT=20
+| (ID="b") TYPE:57b6b300 KIND:VAR SPEC=AUTO LEV=0 VAL=0 ADDR=16 
+| | TYPE
+| | | (int)
+| | INIT
+| | | N_INIT_LIST_ONE (0,0)
+| | | | N_EXP_GTR (57b6b300,0)
+| | | | | N_EXP_INT_CONST (57b6b300,0)
+| | | | | | INT=10
+| | | | | N_EXP_INT_CONST (57b6b300,0)
+| | | | | | INT=20
+| (ID="c") TYPE:57b6b300 KIND:VAR SPEC=AUTO LEV=0 VAL=0 ADDR=20 
+| | TYPE
+| | | (int)
+| | INIT
+| | | N_INIT_LIST_ONE (0,0)
+| | | | N_EXP_LEQ (57b6b300,0)
+| | | | | N_EXP_INT_CONST (57b6b300,0)
+| | | | | | INT=10
+| | | | | N_EXP_INT_CONST (57b6b300,0)
+| | | | | | INT=10
+| (ID="d") TYPE:57b6b300 KIND:VAR SPEC=AUTO LEV=0 VAL=0 ADDR=24 
+| | TYPE
+| | | (int)
+| | INIT
+| | | N_INIT_LIST_ONE (0,0)
+| | | | N_EXP_GTR (57b6b300,0)
+| | | | | N_EXP_INT_CONST (57b6b300,0)
+| | | | | | INT=10
+| | | | | N_EXP_INT_CONST (57b6b300,0)
+| | | | | | INT=20
+[syntax tree end]
+[relational_expression.c test end]
+[sizeof_sym.c test start]
+[original source code]
+
+int a = sizeof(int);
+int b = sizeof a;
+[original source code end]
+[syntax tree]
+
+start syntax analysis
+======= syntax tree ==========
+N_PROGRAM (0,0)
+| (ID="a") TYPE:57720300 KIND:VAR SPEC=AUTO LEV=0 VAL=0 ADDR=0 
+| | TYPE
+| | | (int)
+| | INIT
+| | | N_INIT_LIST_ONE (0,0)
+| | | | N_EXP_SIZE_TYPE (0,0)
+| | | | | (int)
+| (ID="b") TYPE:57720300 KIND:VAR SPEC=AUTO LEV=0 VAL=0 ADDR=0 
+| | TYPE
+| | | (int)
+| | INIT
+| | | N_INIT_LIST_ONE (0,0)
+| | | | N_EXP_SIZE_EXP (0,0)
+| | | | | N_EXP_IDENT (0,0)
+| | | | | | (ID="a") TYPE:57720300 KIND:VAR SPEC=AUTO LEV=0 VAL=0 ADDR=0 
+
+start semantic analysis
+======= semantic tree ==========
+N_PROGRAM (0,20)
+| (ID="a") TYPE:57720300 KIND:VAR SPEC=AUTO LEV=0 VAL=0 ADDR=12 
+| | TYPE
+| | | (int)
+| | INIT
+| | | N_INIT_LIST_ONE (0,0)
+| | | | N_EXP_SIZE_TYPE (57720300,0)
+| | | | | INT=4
+| (ID="b") TYPE:57720300 KIND:VAR SPEC=AUTO LEV=0 VAL=0 ADDR=16 
+| | TYPE
+| | | (int)
+| | INIT
+| | | N_INIT_LIST_ONE (0,0)
+| | | | N_EXP_SIZE_EXP (57720300,0)
+| | | | | INT=4
+[syntax tree end]
+[sizeof_sym.c test end]
+[string_literal.c test start]
+[original source code]
+
+char *s = "asdf";
+[original source code end]
+[syntax tree]
+
+start syntax analysis
+======= syntax tree ==========
+N_PROGRAM (0,0)
+| (ID="s") TYPE:56ea3720 KIND:VAR SPEC=AUTO LEV=0 VAL=0 ADDR=0 
+| | TYPE
+| | | POINTER
+| | | | ELEMENT_TYPE
+| | | | | (char 1)
+| | INIT
+| | | N_INIT_LIST_ONE (0,0)
+| | | | N_EXP_STRING_LITERAL (0,0)
+| | | | | "asdf"
+
+start semantic analysis
+======= semantic tree ==========
+N_PROGRAM (0,24)
+| (ID="s") TYPE:56ea3720 KIND:VAR SPEC=AUTO LEV=0 VAL=0 ADDR=12 
+| | TYPE
+| | | POINTER
+| | | | ELEMENT_TYPE
+| | | | | (char 1)
+| | INIT
+| | | N_INIT_LIST_ONE (0,0)
+| | | | N_EXP_STRING_LITERAL (56e9e450,0)
+| | | | | LITERAL: "asdf"
+[syntax tree end]
+[string_literal.c test end]
+[struct.c test start]
+[original source code]
+
+struct view {
+    int element;
+};
+
+typedef struct control {
+    int elem;
+} control_t;
+
+typedef struct view view_t;
+[original source code end]
+[syntax tree]
+
+start syntax analysis
+======= syntax tree ==========
+N_PROGRAM (0,0)
+| (ID="") TYPE:57423740 KIND:VAR SPEC=AUTO LEV=0 VAL=0 ADDR=0 
+| | TYPE
+| | | STRUCT
+| | | | FIELD
+| | | | | (ID="element") TYPE:5741e300 KIND:FIELD SPEC=NULL LEV=1 VAL=0 ADDR=0 
+| | | | | | TYPE
+| | | | | | | (int)
+| (ID="control_t") TYPE:57423830 KIND:TYPE SPEC=TYPEDEF LEV=0 VAL=0 ADDR=0 
+| | TYPE
+| | | STRUCT
+| | | | FIELD
+| | | | | (ID="elem") TYPE:5741e300 KIND:FIELD SPEC=NULL LEV=1 VAL=0 ADDR=0 
+| | | | | | TYPE
+| | | | | | | (int)
+| (ID="view_t") TYPE:57423740 KIND:TYPE SPEC=TYPEDEF LEV=0 VAL=0 ADDR=0 
+| | TYPE
+| | | (DONE:57423740)
+
+start semantic analysis
+======= semantic tree ==========
+N_PROGRAM (0,16)
+| (ID="") TYPE:57423740 KIND:VAR SPEC=AUTO LEV=0 VAL=0 ADDR=12 
+| | TYPE
+| | | STRUCT
+| | | | FIELD
+| | | | | (ID="element") TYPE:5741e300 KIND:FIELD SPEC=NULL LEV=1 VAL=0 ADDR=0 
+| | | | | | TYPE
+| | | | | | | (int)
+| (ID="control_t") TYPE:57423830 KIND:TYPE SPEC=TYPEDEF LEV=0 VAL=0 ADDR=0 
+| | TYPE
+| | | STRUCT
+| | | | FIELD
+| | | | | (ID="elem") TYPE:5741e300 KIND:FIELD SPEC=NULL LEV=1 VAL=0 ADDR=0 
+| | | | | | TYPE
+| | | | | | | (int)
+| (ID="view_t") TYPE:57423740 KIND:TYPE SPEC=TYPEDEF LEV=0 VAL=0 ADDR=0 
+| | TYPE
+| | | (DONE:57423740)
+[syntax tree end]
+[struct.c test end]
+[struct_variable.c test start]
+[original source code]
+typedef struct nope {
+    char *name;
+} nope_t;
+
+void func1() {
+    nope_t k;
+    k.name = "asdf";
+    printf(k.name);
+}
+[original source code end]
+[syntax tree]
+
+start syntax analysis
+======= syntax tree ==========
+N_PROGRAM (0,0)
+| (ID="nope_t") TYPE:57506740 KIND:TYPE SPEC=TYPEDEF LEV=0 VAL=0 ADDR=0 
+| | TYPE
+| | | STRUCT
+| | | | FIELD
+| | | | | (ID="name") TYPE:57506780 KIND:FIELD SPEC=NULL LEV=1 VAL=0 ADDR=0 
+| | | | | | TYPE
+| | | | | | | POINTER
+| | | | | | | | ELEMENT_TYPE
+| | | | | | | | | (char 1)
+| (ID="func1") TYPE:57506880 KIND:FUNC SPEC=NULL LEV=0 VAL=0 ADDR=0 
+| | TYPE
+| | | FUNCTION
+| | | | PARAMETER
+| | | | TYPE
+| | | | | (void)
+| | | | BODY
+| | | | | N_STMT_COMPOUND (0,0)
+| | | | | | (ID="k") TYPE:57506740 KIND:VAR SPEC=AUTO LEV=1 VAL=0 ADDR=0 
+| | | | | | | TYPE
+| | | | | | | | (DONE:57506740)
+| | | | | | N_STMT_LIST (0,0)
+| | | | | | | N_STMT_EXPRESSION (0,0)
+| | | | | | | | N_EXP_ASSIGN (0,0)
+| | | | | | | | | N_EXP_STRUCT (0,0)
+| | | | | | | | | | N_EXP_IDENT (0,0)
+| | | | | | | | | | | (ID="k") TYPE:57506740 KIND:VAR SPEC=AUTO LEV=1 VAL=0 ADDR=0 
+| | | | | | | | | | name
+| | | | | | | | | N_EXP_STRING_LITERAL (0,0)
+| | | | | | | | | | "asdf"
+| | | | | | | N_STMT_LIST (0,0)
+| | | | | | | | N_STMT_EXPRESSION (0,0)
+| | | | | | | | | N_EXP_FUNCTION_CALL (0,0)
+| | | | | | | | | | N_EXP_IDENT (0,0)
+| | | | | | | | | | | (ID="printf") TYPE:575014e0 KIND:FUNC SPEC=NULL LEV=0 VAL=0 ADDR=0 
+| | | | | | | | | | N_ARG_LIST (0,0)
+| | | | | | | | | | | N_EXP_STRUCT (0,0)
+| | | | | | | | | | | | N_EXP_IDENT (0,0)
+| | | | | | | | | | | | | (ID="k") TYPE:57506740 KIND:VAR SPEC=AUTO LEV=1 VAL=0 ADDR=0 
+| | | | | | | | | | | | name
+| | | | | | | | | | | N_ARG_LIST_NIL (0,0)
+| | | | | | | | N_STMT_LIST_NIL (0,0)
+
+start semantic analysis
+======= semantic tree ==========
+N_PROGRAM (0,20)
+| (ID="nope_t") TYPE:57506740 KIND:TYPE SPEC=TYPEDEF LEV=0 VAL=0 ADDR=0 
+| | TYPE
+| | | STRUCT
+| | | | FIELD
+| | | | | (ID="name") TYPE:57506780 KIND:FIELD SPEC=NULL LEV=1 VAL=0 ADDR=0 
+| | | | | | TYPE
+| | | | | | | POINTER
+| | | | | | | | ELEMENT_TYPE
+| | | | | | | | | (char 1)
+| (ID="func1") TYPE:57506880 KIND:FUNC SPEC=NULL LEV=0 VAL=0 ADDR=0 
+| | TYPE
+| | | FUNCTION
+| | | | PARAMETER
+| | | | TYPE
+| | | | | (void)
+| | | | BODY
+| | | | | N_STMT_COMPOUND (0,4)
+| | | | | | (ID="k") TYPE:57506740 KIND:VAR SPEC=AUTO LEV=1 VAL=0 ADDR=12 
+| | | | | | | TYPE
+| | | | | | | | (DONE:57506740)
+| | | | | | N_STMT_LIST (0,0)
+| | | | | | | N_STMT_EXPRESSION (0,0)
+| | | | | | | | N_EXP_ASSIGN (57506780,0)
+| | | | | | | | | N_EXP_STRUCT (57506780,1)
+| | | | | | | | | | N_EXP_IDENT (57506740,1)
+| | | | | | | | | | | (ID="k") TYPE:57506740 KIND:VAR SPEC=AUTO LEV=1 VAL=0 ADDR=12 
+ | | | | | | | | | | (ID="name") TYPE:57506780 KIND:FIELD SPEC=NULL LEV=1 VAL=0 ADDR=0 
+ | | | | | | | | | N_EXP_STRING_LITERAL (57501450,0)
+| | | | | | | | | | LITERAL: "asdf"
+| | | | | | | N_STMT_LIST (0,0)
+| | | | | | | | N_STMT_EXPRESSION (0,0)
+| | | | | | | | | N_EXP_FUNCTION_CALL (57501420,0)
+| | | | | | | | | | N_EXP_AMP (57506b50,0)
+| | | | | | | | | | | N_EXP_IDENT (575014e0,0)
+| | | | | | | | | | | | (ID="printf") TYPE:575014e0 KIND:FUNC SPEC=NULL LEV=0 VAL=0 ADDR=0 
+ | | | | | | | | | | N_ARG_LIST (0,4)
+| | | | | | | | | | | N_EXP_STRUCT (57506780,1)
+| | | | | | | | | | | | N_EXP_IDENT (57506740,1)
+| | | | | | | | | | | | | (ID="k") TYPE:57506740 KIND:VAR SPEC=AUTO LEV=1 VAL=0 ADDR=12 
+ | | | | | | | | | | | | (ID="name") TYPE:57506780 KIND:FIELD SPEC=NULL LEV=1 VAL=0 ADDR=0 
+ | | | | | | | | | | | N_ARG_LIST_NIL (0,0)
+| | | | | | | | N_STMT_LIST_NIL (0,0)
+[syntax tree end]
+[struct_variable.c test end]
+[switch.c test start]
+[original source code]
+
+int main() {
+	int day_of_week = 0;
+	switch(day_of_week) {
+		case 0:
+			printf("SUNDAY");
+			break;
+		case 1:
+			printf("MONDAY");
+			break;
+		default:
+			printf("HA?");
+			break;
+	}
+	return 0;
+}
+[original source code end]
+[syntax tree]
+
+start syntax analysis
+======= syntax tree ==========
+N_PROGRAM (0,0)
+| (ID="main") TYPE:57631750 KIND:FUNC SPEC=NULL LEV=0 VAL=0 ADDR=0 
+| | TYPE
+| | | FUNCTION
+| | | | PARAMETER
+| | | | TYPE
+| | | | | (int)
+| | | | BODY
+| | | | | N_STMT_COMPOUND (0,0)
+| | | | | | (ID="day_of_week") TYPE:5762c300 KIND:VAR SPEC=AUTO LEV=1 VAL=0 ADDR=0 
+| | | | | | | TYPE
+| | | | | | | | (int)
+| | | | | | | INIT
+| | | | | | | | N_INIT_LIST_ONE (0,0)
+| | | | | | | | | N_EXP_INT_CONST (0,0)
+| | | | | | | | | | 0
+| | | | | | N_STMT_LIST (0,0)
+| | | | | | | N_STMT_SWITCH (0,0)
+| | | | | | | | N_EXP_IDENT (0,0)
+| | | | | | | | | (ID="day_of_week") TYPE:5762c300 KIND:VAR SPEC=AUTO LEV=1 VAL=0 ADDR=0 
+| | | | | | | | N_STMT_COMPOUND (0,0)
+| | | | | | | | | N_STMT_LIST (0,0)
+| | | | | | | | | | N_STMT_LABEL_CASE (0,0)
+| | | | | | | | | | | N_EXP_INT_CONST (0,0)
+| | | | | | | | | | | | 0
+| | | | | | | | | | | N_STMT_EXPRESSION (0,0)
+| | | | | | | | | | | | N_EXP_FUNCTION_CALL (0,0)
+| | | | | | | | | | | | | N_EXP_IDENT (0,0)
+| | | | | | | | | | | | | | (ID="printf") TYPE:5762c4e0 KIND:FUNC SPEC=NULL LEV=0 VAL=0 ADDR=0 
+| | | | | | | | | | | | | N_ARG_LIST (0,0)
+| | | | | | | | | | | | | | N_EXP_STRING_LITERAL (0,0)
+| | | | | | | | | | | | | | | "SUNDAY"
+| | | | | | | | | | | | | | N_ARG_LIST_NIL (0,0)
+| | | | | | | | | | N_STMT_LIST (0,0)
+| | | | | | | | | | | N_STMT_BREAK (0,0)
+| | | | | | | | | | | N_STMT_LIST (0,0)
+| | | | | | | | | | | | N_STMT_LABEL_CASE (0,0)
+| | | | | | | | | | | | | N_EXP_INT_CONST (0,0)
+| | | | | | | | | | | | | | 1
+| | | | | | | | | | | | | N_STMT_EXPRESSION (0,0)
+| | | | | | | | | | | | | | N_EXP_FUNCTION_CALL (0,0)
+| | | | | | | | | | | | | | | N_EXP_IDENT (0,0)
+| | | | | | | | | | | | | | | | (ID="printf") TYPE:5762c4e0 KIND:FUNC SPEC=NULL LEV=0 VAL=0 ADDR=0 
+| | | | | | | | | | | | | | | N_ARG_LIST (0,0)
+| | | | | | | | | | | | | | | | N_EXP_STRING_LITERAL (0,0)
+| | | | | | | | | | | | | | | | | "MONDAY"
+| | | | | | | | | | | | | | | | N_ARG_LIST_NIL (0,0)
+| | | | | | | | | | | | N_STMT_LIST (0,0)
+| | | | | | | | | | | | | N_STMT_BREAK (0,0)
+| | | | | | | | | | | | | N_STMT_LIST (0,0)
+| | | | | | | | | | | | | | N_STMT_LABEL_DEFAULT (0,0)
+| | | | | | | | | | | | | | | N_STMT_EXPRESSION (0,0)
+| | | | | | | | | | | | | | | | N_EXP_FUNCTION_CALL (0,0)
+| | | | | | | | | | | | | | | | | N_EXP_IDENT (0,0)
+| | | | | | | | | | | | | | | | | | (ID="printf") TYPE:5762c4e0 KIND:FUNC SPEC=NULL LEV=0 VAL=0 ADDR=0 
+| | | | | | | | | | | | | | | | | N_ARG_LIST (0,0)
+| | | | | | | | | | | | | | | | | | N_EXP_STRING_LITERAL (0,0)
+| | | | | | | | | | | | | | | | | | | "HA?"
+| | | | | | | | | | | | | | | | | | N_ARG_LIST_NIL (0,0)
+| | | | | | | | | | | | | | N_STMT_LIST (0,0)
+| | | | | | | | | | | | | | | N_STMT_BREAK (0,0)
+| | | | | | | | | | | | | | | N_STMT_LIST_NIL (0,0)
+| | | | | | | N_STMT_LIST (0,0)
+| | | | | | | | N_STMT_RETURN (0,0)
+| | | | | | | | | N_EXP_INT_CONST (0,0)
+| | | | | | | | | | 0
+| | | | | | | | N_STMT_LIST_NIL (0,0)
+
+start semantic analysis
+======= semantic tree ==========
+N_PROGRAM (0,44)
+| (ID="main") TYPE:57631750 KIND:FUNC SPEC=NULL LEV=0 VAL=0 ADDR=0 
+| | TYPE
+| | | FUNCTION
+| | | | PARAMETER
+| | | | TYPE
+| | | | | (int)
+| | | | BODY
+| | | | | N_STMT_COMPOUND (0,4)
+| | | | | | (ID="day_of_week") TYPE:5762c300 KIND:VAR SPEC=AUTO LEV=1 VAL=0 ADDR=12 
+| | | | | | | TYPE
+| | | | | | | | (int)
+| | | | | | | INIT
+| | | | | | | | N_INIT_LIST_ONE (0,0)
+| | | | | | | | | N_EXP_INT_CONST (5762c300,0)
+| | | | | | | | | | INT=0
+| | | | | | N_STMT_LIST (0,0)
+| | | | | | | N_STMT_SWITCH (0,0)
+| | | | | | | | N_EXP_IDENT (5762c300,1)
+| | | | | | | | | (ID="day_of_week") TYPE:5762c300 KIND:VAR SPEC=AUTO LEV=1 VAL=0 ADDR=12 
+ | | | | | | | | N_STMT_COMPOUND (0,0)
+| | | | | | | | | N_STMT_LIST (0,0)
+| | | | | | | | | | N_STMT_LABEL_CASE (0,0)
+| | | | | | | | | | | INT=0
+| | | | | | | | | | | N_STMT_EXPRESSION (0,0)
+| | | | | | | | | | | | N_EXP_FUNCTION_CALL (5762c420,0)
+| | | | | | | | | | | | | N_EXP_AMP (57631da0,0)
+| | | | | | | | | | | | | | N_EXP_IDENT (5762c4e0,0)
+| | | | | | | | | | | | | | | (ID="printf") TYPE:5762c4e0 KIND:FUNC SPEC=NULL LEV=0 VAL=0 ADDR=0 
+ | | | | | | | | | | | | | N_ARG_LIST (0,4)
+| | | | | | | | | | | | | | N_EXP_STRING_LITERAL (5762c450,0)
+| | | | | | | | | | | | | | | LITERAL: "SUNDAY"
+| | | | | | | | | | | | | | N_ARG_LIST_NIL (0,0)
+| | | | | | | | | | N_STMT_LIST (0,0)
+| | | | | | | | | | | N_STMT_BREAK (0,0)
+| | | | | | | | | | | N_STMT_LIST (0,0)
+| | | | | | | | | | | | N_STMT_LABEL_CASE (0,0)
+| | | | | | | | | | | | | INT=1
+| | | | | | | | | | | | | N_STMT_EXPRESSION (0,0)
+| | | | | | | | | | | | | | N_EXP_FUNCTION_CALL (5762c420,0)
+| | | | | | | | | | | | | | | N_EXP_AMP (57631df0,0)
+| | | | | | | | | | | | | | | | N_EXP_IDENT (5762c4e0,0)
+| | | | | | | | | | | | | | | | | (ID="printf") TYPE:5762c4e0 KIND:FUNC SPEC=NULL LEV=0 VAL=0 ADDR=0 
+ | | | | | | | | | | | | | | | N_ARG_LIST (0,4)
+| | | | | | | | | | | | | | | | N_EXP_STRING_LITERAL (5762c450,0)
+| | | | | | | | | | | | | | | | | LITERAL: "MONDAY"
+| | | | | | | | | | | | | | | | N_ARG_LIST_NIL (0,0)
+| | | | | | | | | | | | N_STMT_LIST (0,0)
+| | | | | | | | | | | | | N_STMT_BREAK (0,0)
+| | | | | | | | | | | | | N_STMT_LIST (0,0)
+| | | | | | | | | | | | | | N_STMT_LABEL_DEFAULT (0,0)
+| | | | | | | | | | | | | | | N_STMT_EXPRESSION (0,0)
+| | | | | | | | | | | | | | | | N_EXP_FUNCTION_CALL (5762c420,0)
+| | | | | | | | | | | | | | | | | N_EXP_AMP (57631e40,0)
+| | | | | | | | | | | | | | | | | | N_EXP_IDENT (5762c4e0,0)
+| | | | | | | | | | | | | | | | | | | (ID="printf") TYPE:5762c4e0 KIND:FUNC SPEC=NULL LEV=0 VAL=0 ADDR=0 
+ | | | | | | | | | | | | | | | | | N_ARG_LIST (0,4)
+| | | | | | | | | | | | | | | | | | N_EXP_STRING_LITERAL (5762c450,0)
+| | | | | | | | | | | | | | | | | | | LITERAL: "HA?"
+| | | | | | | | | | | | | | | | | | N_ARG_LIST_NIL (0,0)
+| | | | | | | | | | | | | | N_STMT_LIST (0,0)
+| | | | | | | | | | | | | | | N_STMT_BREAK (0,0)
+| | | | | | | | | | | | | | | N_STMT_LIST_NIL (0,0)
+| | | | | | | N_STMT_LIST (0,0)
+| | | | | | | | N_STMT_RETURN (0,0)
+| | | | | | | | | N_EXP_INT_CONST (5762c300,0)
+| | | | | | | | | | INT=0
+| | | | | | | | N_STMT_LIST_NIL (0,0)
+[syntax tree end]
+[switch.c test end]
+[user_def_func_hello_world.c.c test start]
+[original source code]
+
+void hello_world() {
+    printf("hello world");
+}
+
+int main() {
+    hello_world();
+    
+    return 0;
+}
+[original source code end]
+[syntax tree]
+
+start syntax analysis
+======= syntax tree ==========
+N_PROGRAM (0,0)
+| (ID="hello_world") TYPE:57749750 KIND:FUNC SPEC=NULL LEV=0 VAL=0 ADDR=0 
+| | TYPE
+| | | FUNCTION
+| | | | PARAMETER
+| | | | TYPE
+| | | | | (void)
+| | | | BODY
+| | | | | N_STMT_COMPOUND (0,0)
+| | | | | | N_STMT_LIST (0,0)
+| | | | | | | N_STMT_EXPRESSION (0,0)
+| | | | | | | | N_EXP_FUNCTION_CALL (0,0)
+| | | | | | | | | N_EXP_IDENT (0,0)
+| | | | | | | | | | (ID="printf") TYPE:577444e0 KIND:FUNC SPEC=NULL LEV=0 VAL=0 ADDR=0 
+| | | | | | | | | N_ARG_LIST (0,0)
+| | | | | | | | | | N_EXP_STRING_LITERAL (0,0)
+| | | | | | | | | | | "hello world"
+| | | | | | | | | | N_ARG_LIST_NIL (0,0)
+| | | | | | | N_STMT_LIST_NIL (0,0)
+| (ID="main") TYPE:57749910 KIND:FUNC SPEC=NULL LEV=0 VAL=0 ADDR=0 
+| | TYPE
+| | | FUNCTION
+| | | | PARAMETER
+| | | | TYPE
+| | | | | (int)
+| | | | BODY
+| | | | | N_STMT_COMPOUND (0,0)
+| | | | | | N_STMT_LIST (0,0)
+| | | | | | | N_STMT_EXPRESSION (0,0)
+| | | | | | | | N_EXP_FUNCTION_CALL (0,0)
+| | | | | | | | | N_EXP_IDENT (0,0)
+| | | | | | | | | | (ID="hello_world") TYPE:57749750 KIND:FUNC SPEC=NULL LEV=0 VAL=0 ADDR=0 
+| | | | | | | | | N_ARG_LIST_NIL (0,0)
+| | | | | | | N_STMT_LIST (0,0)
+| | | | | | | | N_STMT_RETURN (0,0)
+| | | | | | | | | N_EXP_INT_CONST (0,0)
+| | | | | | | | | | 0
+| | | | | | | | N_STMT_LIST_NIL (0,0)
+
+start semantic analysis
+======= semantic tree ==========
+N_PROGRAM (0,28)
+| (ID="hello_world") TYPE:57749750 KIND:FUNC SPEC=NULL LEV=0 VAL=0 ADDR=0 
+| | TYPE
+| | | FUNCTION
+| | | | PARAMETER
+| | | | TYPE
+| | | | | (void)
+| | | | BODY
+| | | | | N_STMT_COMPOUND (0,0)
+| | | | | | N_STMT_LIST (0,0)
+| | | | | | | N_STMT_EXPRESSION (0,0)
+| | | | | | | | N_EXP_FUNCTION_CALL (57744420,0)
+| | | | | | | | | N_EXP_AMP (57749aa0,0)
+| | | | | | | | | | N_EXP_IDENT (577444e0,0)
+| | | | | | | | | | | (ID="printf") TYPE:577444e0 KIND:FUNC SPEC=NULL LEV=0 VAL=0 ADDR=0 
+ | | | | | | | | | N_ARG_LIST (0,4)
+| | | | | | | | | | N_EXP_STRING_LITERAL (57744450,0)
+| | | | | | | | | | | LITERAL: "hello world"
+| | | | | | | | | | N_ARG_LIST_NIL (0,0)
+| | | | | | | N_STMT_LIST_NIL (0,0)
+| (ID="main") TYPE:57749910 KIND:FUNC SPEC=NULL LEV=0 VAL=0 ADDR=0 
+| | TYPE
+| | | FUNCTION
+| | | | PARAMETER
+| | | | TYPE
+| | | | | (int)
+| | | | BODY
+| | | | | N_STMT_COMPOUND (0,0)
+| | | | | | N_STMT_LIST (0,0)
+| | | | | | | N_STMT_EXPRESSION (0,0)
+| | | | | | | | N_EXP_FUNCTION_CALL (57744420,0)
+| | | | | | | | | N_EXP_AMP (57749af0,0)
+| | | | | | | | | | N_EXP_IDENT (57749750,0)
+| | | | | | | | | | | (ID="hello_world") TYPE:57749750 KIND:FUNC SPEC=NULL LEV=0 VAL=0 ADDR=0 
+ | | | | | | | | | N_ARG_LIST_NIL (0,0)
+| | | | | | | N_STMT_LIST (0,0)
+| | | | | | | | N_STMT_RETURN (0,0)
+| | | | | | | | | N_EXP_INT_CONST (57744300,0)
+| | | | | | | | | | INT=0
+| | | | | | | | N_STMT_LIST_NIL (0,0)
+[syntax tree end]
+[user_def_func_hello_world.c.c test end]
+[variables.c test start]
+[original source code]
+
+
+void main() {
+    int i = 10;
+    float f = 3.14;
+    char c = 's';
+    
+    char *hello = "hello~~";
+    char world[10] = "world!";
+    
+    int *int_ptr = &i;
+    float *float_ptr = &f;
+
+    int int_arr[5];
+    float float_arr[10];
+}
+[original source code end]
+[syntax tree]
+
+start syntax analysis
+======= syntax tree ==========
+N_PROGRAM (0,0)
+| (ID="main") TYPE:579d4750 KIND:FUNC SPEC=NULL LEV=0 VAL=0 ADDR=0 
+| | TYPE
+| | | FUNCTION
+| | | | PARAMETER
+| | | | TYPE
+| | | | | (void)
+| | | | BODY
+| | | | | N_STMT_COMPOUND (0,0)
+| | | | | | (ID="i") TYPE:579cf300 KIND:VAR SPEC=AUTO LEV=1 VAL=0 ADDR=0 
+| | | | | | | TYPE
+| | | | | | | | (int)
+| | | | | | | INIT
+| | | | | | | | N_INIT_LIST_ONE (0,0)
+| | | | | | | | | N_EXP_INT_CONST (0,0)
+| | | | | | | | | | 10
+| | | | | | (ID="f") TYPE:579cf360 KIND:VAR SPEC=AUTO LEV=1 VAL=0 ADDR=0 
+| | | | | | | TYPE
+| | | | | | | | (float)
+| | | | | | | INIT
+| | | | | | | | N_INIT_LIST_ONE (0,0)
+| | | | | | | | | N_EXP_FLOAT_CONST (0,0)
+| | | | | | | | | | 3.14
+| | | | | | (ID="c") TYPE:579cf3c0 KIND:VAR SPEC=AUTO LEV=1 VAL=0 ADDR=0 
+| | | | | | | TYPE
+| | | | | | | | (char 1)
+| | | | | | | INIT
+| | | | | | | | N_INIT_LIST_ONE (0,0)
+| | | | | | | | | N_EXP_CHAR_CONST (0,0)
+| | | | | | | | | | 115
+| | | | | | (ID="hello") TYPE:579d4960 KIND:VAR SPEC=AUTO LEV=1 VAL=0 ADDR=0 
+| | | | | | | TYPE
+| | | | | | | | POINTER
+| | | | | | | | | ELEMENT_TYPE
+| | | | | | | | | | (char 1)
+| | | | | | | INIT
+| | | | | | | | N_INIT_LIST_ONE (0,0)
+| | | | | | | | | N_EXP_STRING_LITERAL (0,0)
+| | | | | | | | | | "hello~~"
+| | | | | | (ID="world") TYPE:579d4a80 KIND:VAR SPEC=AUTO LEV=1 VAL=0 ADDR=0 
+| | | | | | | TYPE
+| | | | | | | | ARRAY
+| | | | | | | | | INDEX
+| | | | | | | | | | N_EXP_INT_CONST (0,0)
+| | | | | | | | | | | 10
+| | | | | | | | | ELEMENT_TYPE
+| | | | | | | | | | (char 1)
+| | | | | | | INIT
+| | | | | | | | N_INIT_LIST_ONE (0,0)
+| | | | | | | | | N_EXP_STRING_LITERAL (0,0)
+| | | | | | | | | | "world!"
+| | | | | | (ID="int_ptr") TYPE:579d4b20 KIND:VAR SPEC=AUTO LEV=1 VAL=0 ADDR=0 
+| | | | | | | TYPE
+| | | | | | | | POINTER
+| | | | | | | | | ELEMENT_TYPE
+| | | | | | | | | | (int)
+| | | | | | | INIT
+| | | | | | | | N_INIT_LIST_ONE (0,0)
+| | | | | | | | | N_EXP_AMP (0,0)
+| | | | | | | | | | N_EXP_IDENT (0,0)
+| | | | | | | | | | | (ID="i") TYPE:579cf300 KIND:VAR SPEC=AUTO LEV=1 VAL=0 ADDR=0 
+| | | | | | (ID="float_ptr") TYPE:579d4c00 KIND:VAR SPEC=AUTO LEV=1 VAL=0 ADDR=0 
+| | | | | | | TYPE
+| | | | | | | | POINTER
+| | | | | | | | | ELEMENT_TYPE
+| | | | | | | | | | (float)
+| | | | | | | INIT
+| | | | | | | | N_INIT_LIST_ONE (0,0)
+| | | | | | | | | N_EXP_AMP (0,0)
+| | | | | | | | | | N_EXP_IDENT (0,0)
+| | | | | | | | | | | (ID="f") TYPE:579cf360 KIND:VAR SPEC=AUTO LEV=1 VAL=0 ADDR=0 
+| | | | | | (ID="int_arr") TYPE:579d4d30 KIND:VAR SPEC=AUTO LEV=1 VAL=0 ADDR=0 
+| | | | | | | TYPE
+| | | | | | | | ARRAY
+| | | | | | | | | INDEX
+| | | | | | | | | | N_EXP_INT_CONST (0,0)
+| | | | | | | | | | | 5
+| | | | | | | | | ELEMENT_TYPE
+| | | | | | | | | | (int)
+| | | | | | (ID="float_arr") TYPE:579d4dd0 KIND:VAR SPEC=AUTO LEV=1 VAL=0 ADDR=0 
+| | | | | | | TYPE
+| | | | | | | | ARRAY
+| | | | | | | | | INDEX
+| | | | | | | | | | N_EXP_INT_CONST (0,0)
+| | | | | | | | | | | 10
+| | | | | | | | | ELEMENT_TYPE
+| | | | | | | | | | (float)
+| | | | | | N_STMT_LIST_NIL (0,0)
+
+start semantic analysis
+======= semantic tree ==========
+N_PROGRAM (0,40)
+| (ID="main") TYPE:579d4750 KIND:FUNC SPEC=NULL LEV=0 VAL=0 ADDR=0 
+| | TYPE
+| | | FUNCTION
+| | | | PARAMETER
+| | | | TYPE
+| | | | | (void)
+| | | | BODY
+| | | | | N_STMT_COMPOUND (0,96)
+| | | | | | (ID="i") TYPE:579cf300 KIND:VAR SPEC=AUTO LEV=1 VAL=0 ADDR=12 
+| | | | | | | TYPE
+| | | | | | | | (int)
+| | | | | | | INIT
+| | | | | | | | N_INIT_LIST_ONE (0,0)
+| | | | | | | | | N_EXP_INT_CONST (579cf300,0)
+| | | | | | | | | | INT=10
+| | | | | | (ID="f") TYPE:579cf360 KIND:VAR SPEC=AUTO LEV=1 VAL=0 ADDR=16 
+| | | | | | | TYPE
+| | | | | | | | (float)
+| | | | | | | INIT
+| | | | | | | | N_INIT_LIST_ONE (0,0)
+| | | | | | | | | N_EXP_FLOAT_CONST (579cf360,0)
+| | | | | | | | | | LITERAL: 3.140000
+| | | | | | (ID="c") TYPE:579cf3c0 KIND:VAR SPEC=AUTO LEV=1 VAL=0 ADDR=20 
+| | | | | | | TYPE
+| | | | | | | | (char 1)
+| | | | | | | INIT
+| | | | | | | | N_INIT_LIST_ONE (0,0)
+| | | | | | | | | N_EXP_CHAR_CONST (579cf3c0,0)
+| | | | | | | | | | INT=115
+| | | | | | (ID="hello") TYPE:579d4960 KIND:VAR SPEC=AUTO LEV=1 VAL=0 ADDR=24 
+| | | | | | | TYPE
+| | | | | | | | POINTER
+| | | | | | | | | ELEMENT_TYPE
+| | | | | | | | | | (char 1)
+| | | | | | | INIT
+| | | | | | | | N_INIT_LIST_ONE (0,0)
+| | | | | | | | | N_EXP_STRING_LITERAL (579cf450,0)
+| | | | | | | | | | LITERAL: "hello~~"
+| | | | | | (ID="world") TYPE:579d4a80 KIND:VAR SPEC=AUTO LEV=1 VAL=0 ADDR=28 
+| | | | | | | TYPE
+| | | | | | | | ARRAY
+| | | | | | | | | INDEX
+| | | | | | | | | | INT=10
+| | | | | | | | | ELEMENT_TYPE
+| | | | | | | | | | (char 1)
+| | | | | | | INIT
+| | | | | | | | N_INIT_LIST_ONE (0,0)
+| | | | | | | | | N_EXP_STRING_LITERAL (579cf450,0)
+| | | | | | | | | | LITERAL: "world!"
+| | | | | | (ID="int_ptr") TYPE:579d4b20 KIND:VAR SPEC=AUTO LEV=1 VAL=0 ADDR=40 
+| | | | | | | TYPE
+| | | | | | | | POINTER
+| | | | | | | | | ELEMENT_TYPE
+| | | | | | | | | | (int)
+| | | | | | | INIT
+| | | | | | | | N_INIT_LIST_ONE (0,0)
+| | | | | | | | | N_EXP_AMP (579d4e60,0)
+| | | | | | | | | | N_EXP_IDENT (579cf300,1)
+| | | | | | | | | | | (ID="i") TYPE:579cf300 KIND:VAR SPEC=AUTO LEV=1 VAL=0 ADDR=12 
+ | | | | | | (ID="float_ptr") TYPE:579d4c00 KIND:VAR SPEC=AUTO LEV=1 VAL=0 ADDR=44 
+| | | | | | | TYPE
+| | | | | | | | POINTER
+| | | | | | | | | ELEMENT_TYPE
+| | | | | | | | | | (float)
+| | | | | | | INIT
+| | | | | | | | N_INIT_LIST_ONE (0,0)
+| | | | | | | | | N_EXP_AMP (579d4e90,0)
+| | | | | | | | | | N_EXP_IDENT (579cf360,1)
+| | | | | | | | | | | (ID="f") TYPE:579cf360 KIND:VAR SPEC=AUTO LEV=1 VAL=0 ADDR=16 
+ | | | | | | (ID="int_arr") TYPE:579d4d30 KIND:VAR SPEC=AUTO LEV=1 VAL=0 ADDR=48 
+| | | | | | | TYPE
+| | | | | | | | ARRAY
+| | | | | | | | | INDEX
+| | | | | | | | | | INT=5
+| | | | | | | | | ELEMENT_TYPE
+| | | | | | | | | | (int)
+| | | | | | (ID="float_arr") TYPE:579d4dd0 KIND:VAR SPEC=AUTO LEV=1 VAL=0 ADDR=68 
+| | | | | | | TYPE
+| | | | | | | | ARRAY
+| | | | | | | | | INDEX
+| | | | | | | | | | INT=10
+| | | | | | | | | ELEMENT_TYPE
+| | | | | | | | | | (float)
+| | | | | | N_STMT_LIST_NIL (0,0)
+[syntax tree end]
+[variables.c test end]
+[while.c test start]
+[original source code]
+
+int main() {
+    while (1) {
+        printf("while parsing test");
+    }
+}
+[original source code end]
+[syntax tree]
+
+start syntax analysis
+======= syntax tree ==========
+N_PROGRAM (0,0)
+| (ID="main") TYPE:569f1750 KIND:FUNC SPEC=NULL LEV=0 VAL=0 ADDR=0 
+| | TYPE
+| | | FUNCTION
+| | | | PARAMETER
+| | | | TYPE
+| | | | | (int)
+| | | | BODY
+| | | | | N_STMT_COMPOUND (0,0)
+| | | | | | N_STMT_LIST (0,0)
+| | | | | | | N_STMT_WHILE (0,0)
+| | | | | | | | N_EXP_INT_CONST (0,0)
+| | | | | | | | | 1
+| | | | | | | | N_STMT_COMPOUND (0,0)
+| | | | | | | | | N_STMT_LIST (0,0)
+| | | | | | | | | | N_STMT_EXPRESSION (0,0)
+| | | | | | | | | | | N_EXP_FUNCTION_CALL (0,0)
+| | | | | | | | | | | | N_EXP_IDENT (0,0)
+| | | | | | | | | | | | | (ID="printf") TYPE:569ec4e0 KIND:FUNC SPEC=NULL LEV=0 VAL=0 ADDR=0 
+| | | | | | | | | | | | N_ARG_LIST (0,0)
+| | | | | | | | | | | | | N_EXP_STRING_LITERAL (0,0)
+| | | | | | | | | | | | | | "while parsing test"
+| | | | | | | | | | | | | N_ARG_LIST_NIL (0,0)
+| | | | | | | | | | N_STMT_LIST_NIL (0,0)
+| | | | | | | N_STMT_LIST_NIL (0,0)
+
+start semantic analysis
+======= semantic tree ==========
+N_PROGRAM (0,36)
+| (ID="main") TYPE:569f1750 KIND:FUNC SPEC=NULL LEV=0 VAL=0 ADDR=0 
+| | TYPE
+| | | FUNCTION
+| | | | PARAMETER
+| | | | TYPE
+| | | | | (int)
+| | | | BODY
+| | | | | N_STMT_COMPOUND (0,0)
+| | | | | | N_STMT_LIST (0,0)
+| | | | | | | N_STMT_WHILE (0,0)
+| | | | | | | | N_EXP_INT_CONST (569ec300,0)
+| | | | | | | | | INT=1
+| | | | | | | | N_STMT_COMPOUND (0,0)
+| | | | | | | | | N_STMT_LIST (0,0)
+| | | | | | | | | | N_STMT_EXPRESSION (0,0)
+| | | | | | | | | | | N_EXP_FUNCTION_CALL (569ec420,0)
+| | | | | | | | | | | | N_EXP_AMP (569f1980,0)
+| | | | | | | | | | | | | N_EXP_IDENT (569ec4e0,0)
+| | | | | | | | | | | | | | (ID="printf") TYPE:569ec4e0 KIND:FUNC SPEC=NULL LEV=0 VAL=0 ADDR=0 
+ | | | | | | | | | | | | N_ARG_LIST (0,4)
+| | | | | | | | | | | | | N_EXP_STRING_LITERAL (569ec450,0)
+| | | | | | | | | | | | | | LITERAL: "while parsing test"
+| | | | | | | | | | | | | N_ARG_LIST_NIL (0,0)
+| | | | | | | | | | N_STMT_LIST_NIL (0,0)
+| | | | | | | N_STMT_LIST_NIL (0,0)
+[syntax tree end]
+[while.c test end]
