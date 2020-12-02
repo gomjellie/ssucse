@@ -4,11 +4,11 @@ import React from 'react';
 import 'rsuite/dist/styles/rsuite-dark.css';
 
 import {
-  Container, Header, Content, Footer, Navbar, FlexboxGrid, Panel,
-  Row, Col,
+  Container, Header, Content, Footer, Navbar,
+  Row, Col, FlexboxGrid,
 } from 'rsuite';
 
-import CheckForm from './Login';
+import LoginForm from './Login';
 
 class App extends React.Component {
   constructor(props) {
@@ -20,14 +20,11 @@ class App extends React.Component {
 
   componentDidMount() {
     fetch('http://localhost:5000/users/')
-      .then(res=>res.json())
-      .then(data=>this.setState({username: data.username}));
+      .then(res => res.json())
+      .then(data => this.setState({ username: data.username }));
   }
 
   render() {
-    // const { username } = this.state;
-    const username = "asdf";
-
     return (
       <div className="App">
         <Container>
@@ -44,9 +41,12 @@ class App extends React.Component {
             </Navbar>
           </Header>
           <Content>
-            <CheckForm />
+            <FlexboxGrid justify="center">
+              <FlexboxGrid.Item>
+                <LoginForm />
+              </FlexboxGrid.Item>
+            </FlexboxGrid>
           </Content>
-          <Footer>Footer</Footer>
         </Container>
       </div>
     )

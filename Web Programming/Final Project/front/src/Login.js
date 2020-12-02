@@ -2,11 +2,15 @@ import React from 'react';
 
 import {
   Button, Form, FormGroup, FormControl, ControlLabel, ButtonToolbar,
-  Schema, Panel,
+  Schema, Panel, Row, Col,
 } from 'rsuite';
 
 import Loadable from 'react-loadable';
 const { StringType, NumberType } = Schema.Types;
+
+function MyLoader() {
+  return <div>loading...</div>;
+}
 
 const JSONTree = Loadable({
   loader: () => import('react-json-tree'),
@@ -34,11 +38,6 @@ const model = Schema.Model({
   email: StringType()
     .isEmail('Please enter a valid email address.')
     .isRequired('This field is required.'),
-  age: NumberType('Please enter a valid number.').range(
-    18,
-    30,
-    'Please enter a number from 18 to 30'
-  ),
   password: StringType().isRequired('This field is required.'),
   verifyPassword: StringType()
     .addRule((value, data) => {
@@ -65,14 +64,13 @@ class TextField extends React.PureComponent {
   }
 }
 
-class CheckForm extends React.Component {
+class LoginForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       formValue: {
         name: '',
         email: '',
-        age: '',
         password: '',
         verifyPassword: ''
       },
@@ -115,7 +113,6 @@ class CheckForm extends React.Component {
           <TextField name="name" label="Username" />
 
           <TextField name="email" label="Email" />
-          <TextField name="age" label="Age" />
           <TextField name="password" label="Password" type="password" />
 
           <TextField name="verifyPassword" label="Verify password" type="password" />
@@ -133,4 +130,4 @@ class CheckForm extends React.Component {
   }
 }
 
-export default CheckForm;
+export default LoginForm;

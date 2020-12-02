@@ -3,7 +3,13 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var cors = require('cors');
+var passport = require('passport');
+var session = require('express-session');
 var logger = require('morgan');
+var connect = require('./schema');
+const dotenv = require('dotenv');
+
+dotenv.config();
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -14,6 +20,7 @@ var app = express();
 app.set('port', process.env.PORT || 5000);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
+connect();
 
 app.use(cors());
 app.use(logger('dev'));
