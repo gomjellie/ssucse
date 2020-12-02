@@ -4,8 +4,6 @@ const connect = () => {
   if (process.env.NODE_ENV !== 'production') {
     mongoose.set('debug', true);
   }
-
-  console.log("MONGODB_URL", process.env.MONGODB_URL);
   
   mongoose.connect(process.env.MONGODB_URL, {
     dbName: 'nodejs',

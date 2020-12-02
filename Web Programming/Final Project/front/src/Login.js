@@ -110,7 +110,7 @@ class LoginForm extends React.Component {
           formValue={formValue}
           model={model}
         >
-          <TextField name="name" label="Username" />
+          <TextField name="name" label="Name" />
 
           <TextField name="email" label="Email" />
           <TextField name="password" label="Password" type="password" />

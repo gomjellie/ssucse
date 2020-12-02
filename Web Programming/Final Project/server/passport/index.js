@@ -1,29 +1,25 @@
 const passport = require('passport');
-const local = require('./localStrategy');
+const JwtStrategy = require('passport-jwt').Strategy;
+const LocalStrategy = require('passport-local').Strategy;
+const { ExtractJwt } = require('passport-jwt');
+
 // const kakao = require('./kakaoStrategy');
-const { User } = require('../models');
+const { User } = require('../schemas/user');
 
-module.exports = () => {
-  passport.serializeUser((user, done) => {
-    done(null, user.id);
-  });
+passport.use(new JwtStrategy({
+  jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken('authorization'),
+  secretOrKey: process.env.JWT_SECRET || "asdfasdf",
+}, async (payload, done) => {
+  try {
+    const user = await User.findOne({_id: payload.sub});
 
-  passport.deserializeUser((id, done) => {
-    User.findOne({
-      where: { id },
-      include: [{
-        model: User,
-        attributes: ['id', 'nick'],
-        as: 'Followers',
-      }, {
-        model: User,
-        attributes: ['id', 'nick'],
-        as: 'Followings',
-      }],
-    })
-      .then(user => done(null, user))
-      .catch(err => done(err));
-  });
+    if (!user) {
+      return done(null, false);
+    }
 
-  local();
-};
+    done(null, user);
+  } catch (error) {
+    done(error, false);
+  }
+}
+));
