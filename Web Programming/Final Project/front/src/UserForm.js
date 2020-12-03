@@ -34,11 +34,11 @@ const JSONView = ({ formValue, formError }) => (
 );
 
 const model = Schema.Model({
-  name: StringType().isRequired('This field is required.'),
+  name: StringType().isRequired('이름이 없습니다'),
   email: StringType()
-    .isEmail('Please enter a valid email address.')
-    .isRequired('This field is required.'),
-  password: StringType().isRequired('This field is required.'),
+    .isEmail('유효한 이메일을 입력해주세요')
+    .isRequired('이메일이 없습니다'),
+  password: StringType().isRequired('비밀번호가 없습니다'),
   verifyPassword: StringType()
     .addRule((value, data) => {
       console.log(data);
@@ -48,8 +48,8 @@ const model = Schema.Model({
       }
 
       return true;
-    }, 'The two passwords do not match')
-    .isRequired('This field is required.')
+    }, '비밀번호가 일치하지 않습니다.')
+    .isRequired('비밀번호를 재입력해주세요')
 });
 
 class TextField extends React.PureComponent {
@@ -102,7 +102,7 @@ class UserForm extends React.Component {
         <FlexboxGrid justify="end">
           <FlexboxGrid.Item>
             {/* <JSONView formValue={formValue} formError={formError} /> */}
-            <Panel header={<h3>Sign Up</h3>} bordered >
+            <Panel header={<h3>회원가입</h3>} bordered >
               <Form
                 ref={ref => (this.form = ref)}
                 onChange={formValue => {
@@ -114,17 +114,15 @@ class UserForm extends React.Component {
                 formValue={formValue}
                 model={model}
               >
-                <TextField name="name" label="Name" />
+                <TextField name="name" label="이름" />
 
-                <TextField name="email" label="Email" />
-                <TextField name="password" label="Password" type="password" />
+                <TextField name="email" label="이메일 주소" />
+                <TextField name="password" label="비밀번호" type="password" />
 
-                <TextField name="verifyPassword" label="Verify password" type="password" />
+                <TextField name="verifyPassword" label="비밀번호 다시입력" type="password" />
 
                 <ButtonToolbar>
-                  <Button appearance="primary" onClick={this.handleSubmit}>
-                    Submit
-                  </Button>
+                  <Button appearance="primary" onClick={this.handleSubmit}>회원가입</Button>
 
                 </ButtonToolbar>
               </Form>

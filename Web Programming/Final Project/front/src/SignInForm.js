@@ -34,8 +34,8 @@ const JSONView = ({ formValue, formError }) => (
 );
 
 const model = Schema.Model({
-  name: StringType().isRequired('This field is required.'),
-  password: StringType().isRequired('This field is required.'),
+  name: StringType().isRequired('이름이 없습니다'),
+  password: StringType().isRequired('비밀번호가 없습니다'),
 });
 
 class TextField extends React.PureComponent {
@@ -82,7 +82,7 @@ class SignInForm extends React.Component {
         <FlexboxGrid justify="end">
           <FlexboxGrid.Item>
             {/* <JSONView formValue={formValue} formError={formError} /> */}
-            <Panel header={<h3>Login</h3>} bordered >
+            <Panel header={<h3>로그인</h3>} bordered >
               <Form
                 ref={ref => (this.form = ref)}
                 onChange={formValue => {
@@ -94,9 +94,9 @@ class SignInForm extends React.Component {
                 formValue={formValue}
                 model={model}
               >
-                <TextField name="name" label="Name" />
+                <TextField name="name" label="이름" />
 
-                <TextField name="password" label="Password" type="password" />
+                <TextField name="password" label="비밀번호" type="password" />
 
 
                 <ButtonToolbar>
