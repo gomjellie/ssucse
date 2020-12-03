@@ -2,7 +2,7 @@ import React from 'react';
 
 import {
   Button, Form, FormGroup, FormControl, ControlLabel, ButtonToolbar,
-  Schema, Panel, Row, Col,
+  Schema, Panel, Row, Col, Content, FlexboxGrid, 
 } from 'rsuite';
 
 import Loadable from 'react-loadable';
@@ -64,7 +64,7 @@ class TextField extends React.PureComponent {
   }
 }
 
-class LoginForm extends React.Component {
+class UserForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -74,18 +74,21 @@ class LoginForm extends React.Component {
         password: '',
         verifyPassword: ''
       },
-      formError: {}
+      formError: {},
+      action: 'Login',
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleCheckEmail = this.handleCheckEmail.bind(this);
   }
   handleSubmit() {
     const { formValue } = this.state;
+    const { onSubmit } = this.props;
     if (!this.form.check()) {
       console.error('Form Error');
       return;
     }
     console.log(formValue, 'Form Value');
+    onSubmit(formValue);
   }
 
   handleCheckEmail() {
@@ -98,36 +101,42 @@ class LoginForm extends React.Component {
 
     return (
       <div>
-        <JSONView formValue={formValue} formError={formError} />
-        <Form
-          ref={ref => (this.form = ref)}
-          onChange={formValue => {
-            this.setState({ formValue });
-          }}
-          onCheck={formError => {
-            this.setState({ formError });
-          }}
-          formValue={formValue}
-          model={model}
-        >
-          <TextField name="name" label="Name" />
+        <Content>
+          <FlexboxGrid justify="center">
+            <FlexboxGrid.Item>
+              <JSONView formValue={formValue} formError={formError} />
+              <Form
+                ref={ref => (this.form = ref)}
+                onChange={formValue => {
+                  this.setState({ formValue });
+                }}
+                onCheck={formError => {
+                  this.setState({ formError });
+                }}
+                formValue={formValue}
+                model={model}
+              >
+                <TextField name="name" label="Name" />
 
-          <TextField name="email" label="Email" />
-          <TextField name="password" label="Password" type="password" />
+                <TextField name="email" label="Email" />
+                <TextField name="password" label="Password" type="password" />
 
-          <TextField name="verifyPassword" label="Verify password" type="password" />
+                <TextField name="verifyPassword" label="Verify password" type="password" />
 
-          <ButtonToolbar>
-            <Button appearance="primary" onClick={this.handleSubmit}>
-              Submit
-            </Button>
+                <ButtonToolbar>
+                  <Button appearance="primary" onClick={this.handleSubmit}>
+                    Submit
+                  </Button>
 
-            <Button onClick={this.handleCheckEmail}>Check Email</Button>
-          </ButtonToolbar>
-        </Form>
+                  <Button onClick={this.handleCheckEmail}> 회원가입하기 </Button>
+                </ButtonToolbar>
+              </Form>
+            </FlexboxGrid.Item>
+          </FlexboxGrid>
+        </Content>
       </div>
     );
   }
 }
 
-export default LoginForm;
+export default UserForm;

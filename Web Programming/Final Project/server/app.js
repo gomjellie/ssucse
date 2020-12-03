@@ -2,6 +2,7 @@ var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
+var cookieSession = require('cookie-session');
 var bodyParser = require('body-parser');
 var cors = require('cors');
 var passport = require('passport');
@@ -9,10 +10,12 @@ var session = require('express-session');
 var logger = require('morgan');
 var connect = require('./schemas');
 var dotenv = require('dotenv');
-var passport = require('passport');
-require('./passport');
-
 dotenv.config();
+
+var passport = require('passport');
+
+
+require('./passport');
 
 var app = express();
 
@@ -29,18 +32,20 @@ app.use(express.urlencoded({ extended: false }));
 app.use(bodyParser.json({limit: '50mb', extended: true}));
 app.use(cookieParser());
 app.use(session({
-  secret: process.env.COOKIE_SECRET,
+  secret: process.env.JWT_SECRET,
+  cookie: { maxAge: 60 * 60 * 1000 },
   resave: true,
   saveUninitialized: true,
-}))
+}));
 app.use(passport.initialize());
+app.use(passport.session());
 app.use(express.static(path.join(__dirname, 'public')));
 
-var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+var indexRouter = require('./routes/index');
 
-app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use('/', indexRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

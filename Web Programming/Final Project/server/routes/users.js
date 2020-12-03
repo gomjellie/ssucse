@@ -1,9 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var Auth = require('../services/auth');
-var User = require('../schemas/user');
 var jwt = require('jsonwebtoken');
-const { response } = require('../app');
 
 router.post('/signUp', async function(req, res) {
   try {
@@ -15,7 +13,8 @@ router.post('/signUp', async function(req, res) {
       tokenType: "Bearer",
       user: {
         id: user._id,
-        email: user.email
+        name: user.name,
+        email: user.email,
       },
     });
   } catch (error) {
@@ -35,6 +34,7 @@ router.post('/signIn', async function(req, res) {
       tokenType: "Bearer",
       user: {
         id: user._id,
+        name: user.name,
         email: user.email
       },
     });

@@ -8,7 +8,7 @@ const { User } = require('../schemas/user');
 
 passport.use(new JwtStrategy({
   jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken('authorization'),
-  secretOrKey: process.env.JWT_SECRET || "asdfasdf",
+  secretOrKey: process.env.JWT_SECRET,
 }, async (payload, done) => {
   try {
     const user = await User.findOne({_id: payload.sub});
@@ -23,3 +23,13 @@ passport.use(new JwtStrategy({
   }
 }
 ));
+
+passport.serializeUser((user, done) => {
+  console.log('serializeUser', user);
+  done(null, user);
+});
+
+passport.deserializeUser((user, done) => {
+  console.log('deserializeUser', user);
+  done(null, user);
+});
