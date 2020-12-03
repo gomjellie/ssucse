@@ -71,6 +71,7 @@ class App extends React.Component {
     await fetch(`http://localhost:5000/users/${action}`, {
       method: 'POST',
       mode: 'cors',
+      // credentials: "include",
       headers: {
         'Content-Type': 'application/json',
       },
@@ -81,9 +82,10 @@ class App extends React.Component {
       // .then(data => this.setState({ name: data.user.name }));
     
     await fetch('http://localhost:5000/test', {
+      // credentials: "include",
       headers: {
-        authorization: `${this.state.accessToken}`,
         origin: 'http://localhost:5000',
+        
       }
     })
       .then(console.log);

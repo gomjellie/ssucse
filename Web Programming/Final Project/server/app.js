@@ -14,7 +14,6 @@ dotenv.config();
 var passport = require('passport');
 
 
-
 var app = express();
 
 require('./passport');
@@ -30,17 +29,18 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser(process.env.COOKIE_SECRET));
+
 app.use(session({
-  secret: process.env.JWT_SECRET,
+  secret: process.env.COOKIE_SECRET,
   cookie: { maxAge: 60 * 60 * 1000 },
   resave: false,
   saveUninitialized: false,
 }));
 
-
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(express.static(path.join(__dirname, '../front/build/')));
+
 
 var reactRouter = require('./routes/react');
 var usersRouter = require('./routes/users');

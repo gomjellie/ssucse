@@ -4,7 +4,7 @@ const JwtStrategy = require('passport-jwt').Strategy;
 const LocalStrategy = require('passport-local').Strategy;
 const { ExtractJwt } = require('passport-jwt');
 
-const { User } = require('../schemas/user');
+const User = require('../schemas/user');
 
 passport.serializeUser((user, done) => {
   console.log('serializeUser', user);
@@ -16,11 +16,9 @@ passport.deserializeUser((user, done) => {
   done(null, user);
 });
 
-console.log('JWT_SECRET: ', process.env.JWT_SECRET);
-
 passport.use(new JwtStrategy({
   jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-  secretOrKey: process.env.JWT_SECRET,
+  secretOrKey: process.env.COOKIE_SECRET,
 }, async (payload, done) => {
   try {
     console.log("!----------payload", payload, payload.sub);
@@ -37,25 +35,29 @@ passport.use(new JwtStrategy({
 }
 ));
 
-// passport.use(new LocalStrategy({
-//   usernameField: 'name',
-//   passwordField: 'password',
-// }, async (username, password, donc) => {
-//   try {
-//     console.log("!----------localstrategy");
-//     const user = await User.findOneById({username})
-//       .then((user) => {
-//         const match = compare(password, user.password);
-//         if (match)
-//           return match;
-//       })
-//       .catch((e) => {
-//         if (!user) {
-//           return done(null, false);
-//         }
-//       })
-//   } catch (error) {
-//     console.log(error);
-//   }
-// }
-// ));
+passport.use(new LocalStrategy({
+  usernameField: 'name',
+  passwordField: 'password',
+}, async (username, password, done) => {
+  try {
+    console.log("localstrategy: ", username, " ", password);
+    const user = await User.findOne({name: username})
+      .then((user) => {
+        const match = compare(password, user.password);
+        if (match)
+          done(null, user);
+        else {
+          done(null, false, { message: 'incorrect password'});
+        }
+      })
+      .catch((e) => {
+        if (!user) {
+          return done(null, false);
+        }
+      })
+  } catch (error) {
+    console.log(error);
+    done(error);
+  }
+}
+));
