@@ -5,7 +5,6 @@ var cookieParser = require('cookie-parser');
 var cookieSession = require('cookie-session');
 var bodyParser = require('body-parser');
 var cors = require('cors');
-var passport = require('passport');
 var session = require('express-session');
 var logger = require('morgan');
 var connect = require('./schemas');
@@ -15,9 +14,10 @@ dotenv.config();
 var passport = require('passport');
 
 
-require('./passport');
 
 var app = express();
+
+require('./passport');
 
 // view engine setup
 app.set('port', process.env.PORT || 5000);
@@ -29,23 +29,26 @@ app.use(cors());
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(bodyParser.json({limit: '50mb', extended: true}));
-app.use(cookieParser());
+app.use(cookieParser(process.env.COOKIE_SECRET));
 app.use(session({
   secret: process.env.JWT_SECRET,
   cookie: { maxAge: 60 * 60 * 1000 },
-  resave: true,
-  saveUninitialized: true,
+  resave: false,
+  saveUninitialized: false,
 }));
+
+
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, '../front/build/')));
 
+var reactRouter = require('./routes/react');
 var usersRouter = require('./routes/users');
 var indexRouter = require('./routes/index');
 
+app.use('/', reactRouter);
 app.use('/users', usersRouter);
-app.use('/', indexRouter);
+app.use('/test', indexRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

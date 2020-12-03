@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var Auth = require('../services/auth');
 var jwt = require('jsonwebtoken');
+var passport = require('passport');
 
 router.post('/signUp', async function(req, res) {
   try {
@@ -28,7 +29,8 @@ router.post('/signIn', async function(req, res) {
   try {
     const user = await Auth.signIn(req.body);
     const accessToken = jwt.sign({ sub: user._id }, process.env.JWT_SECRET, { expiresIn: "30d" });
-
+    
+    console.log('accessToken', accessToken);
     res.status(200).json({
       accessToken,
       tokenType: "Bearer",

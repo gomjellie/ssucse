@@ -49,7 +49,8 @@ class App extends React.Component {
     super(props);
     this.state = {
       expand: true,
-      name: 'Guest'
+      name: 'Guest',
+      accessToken: '',
     };
     this.handleToggle = this.handleToggle.bind(this);
   }
@@ -76,10 +77,15 @@ class App extends React.Component {
       body: JSON.stringify(formValue),
     })
       .then(res => res.json())
-      .then(console.log);
+      .then(data => this.setState({accessToken: data.accessToken}));
       // .then(data => this.setState({ name: data.user.name }));
     
-    await fetch('http://localhost:5000/')
+    await fetch('http://localhost:5000/test', {
+      headers: {
+        authorization: `${this.state.accessToken}`,
+        origin: 'http://localhost:5000',
+      }
+    })
       .then(console.log);
   
   }
