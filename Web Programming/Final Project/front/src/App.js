@@ -126,8 +126,8 @@ class App extends React.Component {
           >
             <Sidenav.Header>
               <div style={headerStyles}>
-                <Icon icon="logo-analytics" size="lg" style={{ verticalAlign: 0 }} />
-                <span style={{ marginLeft: 12 }}> {name}님 안녕하세요 </span>
+                <Icon icon="linux" size="lg" style={{ verticalAlign: 0 }} />
+                <span style={{ marginLeft: 15 }}> {name}님 안녕하세요 </span>
               </div>
             </Sidenav.Header>
             <Sidenav
