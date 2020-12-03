@@ -12,10 +12,10 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Link
 } from "react-router-dom";
 
 import UserForm from './UserForm';
+import SignInForm from './SignInForm';
 
 const NavToggle = ({ expand, onChange }) => {
   return (
@@ -62,34 +62,21 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    // fetch('http://localhost:5000/users/')
-    //   .then(res => res.json())
-    //   .then(data => this.setState({ username: data.username }));
+
   }
 
   async onSubmit(action, formValue) {
     await fetch(`http://localhost:5000/users/${action}`, {
       method: 'POST',
       mode: 'cors',
-      // credentials: "include",
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(formValue),
     })
       .then(res => res.json())
-      .then(data => this.setState({accessToken: data.accessToken}));
-      // .then(data => this.setState({ name: data.user.name }));
+      .then(data => this.setState({ name: data.username }));
     
-    await fetch('http://localhost:5000/test', {
-      // credentials: "include",
-      headers: {
-        origin: 'http://localhost:5000',
-        
-      }
-    })
-      .then(console.log);
-  
   }
 
   render() {
@@ -139,7 +126,7 @@ class App extends React.Component {
                 <UserForm onSubmit={(data) => this.onSubmit('signUp', data)} />
               </Route>
               <Route path="/">
-                <UserForm onSubmit={(data) => this.onSubmit('signIn', data)} />
+                <SignInForm onSubmit={(data) => this.onSubmit('signIn', data)} />
               </Route>
             </Switch>
           </Container>

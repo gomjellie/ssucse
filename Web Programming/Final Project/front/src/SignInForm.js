@@ -35,21 +35,7 @@ const JSONView = ({ formValue, formError }) => (
 
 const model = Schema.Model({
   name: StringType().isRequired('This field is required.'),
-  email: StringType()
-    .isEmail('Please enter a valid email address.')
-    .isRequired('This field is required.'),
   password: StringType().isRequired('This field is required.'),
-  verifyPassword: StringType()
-    .addRule((value, data) => {
-      console.log(data);
-
-      if (value !== data.password) {
-        return false;
-      }
-
-      return true;
-    }, 'The two passwords do not match')
-    .isRequired('This field is required.')
 });
 
 class TextField extends React.PureComponent {
@@ -64,21 +50,18 @@ class TextField extends React.PureComponent {
   }
 }
 
-class UserForm extends React.Component {
+class SignInForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       formValue: {
         name: '',
-        email: '',
         password: '',
-        verifyPassword: ''
       },
       formError: {},
       action: 'Login',
     };
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleCheckEmail = this.handleCheckEmail.bind(this);
   }
   handleSubmit() {
     const { formValue } = this.state;
@@ -91,9 +74,6 @@ class UserForm extends React.Component {
     onSubmit(formValue);
   }
 
-  handleCheckEmail() {
-    
-  }
   render() {
     const { formError, formValue } = this.state;
 
@@ -102,7 +82,7 @@ class UserForm extends React.Component {
         <FlexboxGrid justify="end">
           <FlexboxGrid.Item>
             {/* <JSONView formValue={formValue} formError={formError} /> */}
-            <Panel header={<h3>Sign Up</h3>} bordered >
+            <Panel header={<h3>Login</h3>} bordered >
               <Form
                 ref={ref => (this.form = ref)}
                 onChange={formValue => {
@@ -116,16 +96,14 @@ class UserForm extends React.Component {
               >
                 <TextField name="name" label="Name" />
 
-                <TextField name="email" label="Email" />
                 <TextField name="password" label="Password" type="password" />
 
-                <TextField name="verifyPassword" label="Verify password" type="password" />
 
                 <ButtonToolbar>
                   <Button appearance="primary" onClick={this.handleSubmit}>
-                    Submit
+                    로그인
                   </Button>
-
+                  <Button href='/signUp'> 회원가입으로 </Button>
                 </ButtonToolbar>
               </Form>
             </Panel>
@@ -136,4 +114,4 @@ class UserForm extends React.Component {
   }
 }
 
-export default UserForm;
+export default SignInForm;
