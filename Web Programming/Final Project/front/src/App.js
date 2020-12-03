@@ -17,7 +17,7 @@ import history from './history';
 import UserForm from './UserForm';
 import SignInForm from './SignInForm';
 
-const NavToggle = ({ expand, onChange }) => {
+const NavToggle = ({ expand, onChange, onSignOut }) => {
   return (
     <Navbar appearance="subtle" className="nav-toggle">
       <Navbar.Body>
@@ -34,6 +34,7 @@ const NavToggle = ({ expand, onChange }) => {
               fetch('http://localhost:8000/api/users/signOut')
                 .then(() => {
                   history.push('/signOut');
+                  onSignOut();
                 });
             }}>로그아웃</Dropdown.Item>
           </Dropdown>
@@ -58,6 +59,13 @@ class App extends React.Component {
       accessToken: '',
     };
     this.handleToggle = this.handleToggle.bind(this);
+    this.onSignOut = this.onSignOut.bind(this);
+  }
+
+  onSignOut() {
+    this.setState({
+      name: 'Guest',
+    });
   }
 
   handleToggle() {
@@ -86,8 +94,10 @@ class App extends React.Component {
       body: JSON.stringify(formValue),
     })
       .then(res => res.json())
-      .then(data => this.setState({ name: data.username }));
-
+      .then(data => {
+        this.setState({ name: data.username });
+        history.push('/');
+      });
   }
 
   render() {
@@ -126,7 +136,7 @@ class App extends React.Component {
                 </Nav>
               </Sidenav.Body>
             </Sidenav>
-            <NavToggle expand={expand} onChange={this.handleToggle} />
+            <NavToggle expand={expand} onChange={this.handleToggle} onSignOut={this.onSignOut} />
           </Sidebar>
           <div style={absoluteCenterStyle}>
             <Switch>
