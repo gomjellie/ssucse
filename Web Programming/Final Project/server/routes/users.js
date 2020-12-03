@@ -66,7 +66,9 @@ router.post('/signIn', async function(req, res, next) {
 router.get('/info', async function(req, res, next) {
   console.log('/info ', req.session);
   if (!req.isAuthenticated()) {
-    return res.status(401).send("failed");
+    return res.status(401).json({
+      username: 'Guest',
+    });
   }
   res.status(200).json({
     username: req.session.passport.user.name,
