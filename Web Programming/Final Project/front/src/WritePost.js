@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Panel, Input } from 'rsuite';
 
-const WritePost = ({ onTitleChange, onContentChange }) => (
+const WritePost = ({ onTitleChange, onContentChange, onHashTagChange }) => (
   <Panel header={<h3>새 글작성</h3>} bordered >
     <Input style={{ width: 500 }} placeholder="제목" onChange={onTitleChange} />
     <hr />
@@ -14,6 +14,8 @@ const WritePost = ({ onTitleChange, onContentChange }) => (
       size="lg"
       onChange={onContentChange}
     />
+    <hr />
+    <Input style={{ width: 500 }} placeholder="해쉬태그" onChange={onHashTagChange} />
   </Panel>
 );
 
