@@ -133,9 +133,11 @@ class App extends React.Component {
               expanded={expand}
               defaultOpenKeys={['user']}
               appearance="subtle"
+              activeKey={active}
+              onSelect={this.handleSelect}
             >
               <Sidenav.Body>
-                <Nav activeKey={active} onSelect={this.handleSelect}>
+                <Nav>
                   <Dropdown
                     eventKey="user"
                     trigger="hover"
