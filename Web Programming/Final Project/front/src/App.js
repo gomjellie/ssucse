@@ -16,6 +16,7 @@ import {
 import history from './history';
 import UserForm from './UserForm';
 import SignInForm from './SignInForm';
+import About from './About';
 
 const NavToggle = ({ expand, onChange, onSignOut }) => {
   return (
@@ -142,6 +143,9 @@ class App extends React.Component {
             <Switch>
               <Route exact path="/">
                 <h2>HEAD </h2>
+              </Route>
+              <Route path="/about">
+                <About />
               </Route>
               <Route path="/signUp">
                 <UserForm onSubmit={(data) => this.onSubmit('signUp', data)} />
