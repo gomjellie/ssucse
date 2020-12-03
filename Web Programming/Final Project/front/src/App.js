@@ -18,6 +18,15 @@ import UserForm from './UserForm';
 import SignInForm from './SignInForm';
 import About from './About';
 
+const signOut = async () => {
+  return new Promise((resolve, reject) => {
+    fetch('http://localhost:8000/api/users/signOut')
+      .then(() => {
+        resolve();
+      });
+  });
+}
+
 const NavToggle = ({ expand, onChange, onSignOut }) => {
   return (
     <Navbar appearance="subtle" className="nav-toggle">
@@ -30,13 +39,8 @@ const NavToggle = ({ expand, onChange, onSignOut }) => {
               return <Icon style={iconStyles} icon="cog" />;
             }}
           >
-
             <Dropdown.Item eventKey="9" onSelect={async (eventKey) => {
-              fetch('http://localhost:8000/api/users/signOut')
-                .then(() => {
-                  history.push('/signOut');
-                  onSignOut();
-                });
+              signOut().then(onSignOut);
             }}>로그아웃</Dropdown.Item>
           </Dropdown>
         </Nav>
@@ -57,16 +61,23 @@ class App extends React.Component {
     this.state = {
       expand: true,
       name: 'Guest',
-      accessToken: '',
+      active: '유저관리',
     };
     this.handleToggle = this.handleToggle.bind(this);
     this.onSignOut = this.onSignOut.bind(this);
+    this.handleSelect = this.handleSelect.bind(this);
+  }
+
+  handleSelect(activeKey) {
+    console.log('handleSelect');
+    this.setState({ active: activeKey });
   }
 
   onSignOut() {
     this.setState({
       name: 'Guest',
     });
+    history.push('/signOut');
   }
 
   handleToggle() {
@@ -102,7 +113,7 @@ class App extends React.Component {
   }
 
   render() {
-    const { expand, name } = this.state;
+    const { expand, name, active } = this.state;
 
     return (
       <div className="App">
@@ -115,25 +126,36 @@ class App extends React.Component {
             <Sidenav.Header>
               <div style={headerStyles}>
                 <Icon icon="logo-analytics" size="lg" style={{ verticalAlign: 0 }} />
-                <span style={{ marginLeft: 12 }}> {name} </span>
+                <span style={{ marginLeft: 12 }}> {name}님 안녕하세요 </span>
               </div>
             </Sidenav.Header>
             <Sidenav
               expanded={expand}
-              defaultOpenKeys={['3']}
+              defaultOpenKeys={['user']}
               appearance="subtle"
             >
               <Sidenav.Body>
-                <Nav>
-                  <Nav.Item eventKey="1" icon={<Icon icon="group" />}>
+                <Nav activeKey={active} onSelect={this.handleSelect}>
+                  <Dropdown
+                    eventKey="user"
+                    trigger="hover"
+                    title="유저관리"
+                    icon={<Icon icon="magic" />}
+                    placement="rightStart"
+                  >
+                    <Dropdown.Item onClick={() => history.push('/signUp')} eventKey="3-1">회원가입</Dropdown.Item>
+                    <Dropdown.Item onClick={() => history.push('/signIn')} eventKey="3-2">로그인</Dropdown.Item>
+                    <Dropdown.Item onClick={() => signOut().then(this.onSignOut)} eventKey="3-3">로그아웃</Dropdown.Item>
+                  </Dropdown>
+                  <Nav.Item eventKey="about" onClick={() => history.push('/about')} icon={<Icon icon="pagelines" />}>
                     소개 페이지
-                    </Nav.Item>
-                  <Nav.Item eventKey="2" active icon={<Icon icon="dashboard" />}>
+                  </Nav.Item>
+                  <Nav.Item eventKey="board" icon={<Icon icon="frame" />}>
                     게시판
-                    </Nav.Item>
-                  <Nav.Item eventKey="3" icon={<Icon icon="magic" />}>
+                  </Nav.Item>
+                  <Nav.Item eventKey="galary" icon={<Icon icon="image" />}>
                     갤러리
-                    </Nav.Item>
+                  </Nav.Item>
                 </Nav>
               </Sidenav.Body>
             </Sidenav>
