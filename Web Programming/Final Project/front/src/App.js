@@ -17,6 +17,7 @@ import history from './history';
 import UserForm from './UserForm';
 import SignInForm from './SignInForm';
 import About from './About';
+import Board from './Board';
 
 const signOut = async () => {
   return new Promise((resolve, reject) => {
@@ -152,7 +153,7 @@ class App extends React.Component {
                   <Nav.Item eventKey="about" onClick={() => history.push('/about')} icon={<Icon icon="pagelines" />}>
                     소개 페이지
                   </Nav.Item>
-                  <Nav.Item eventKey="board" icon={<Icon icon="frame" />}>
+                  <Nav.Item eventKey="board" onClick={() => history.push('/board')} icon={<Icon icon="frame" />}>
                     게시판
                   </Nav.Item>
                   <Nav.Item eventKey="galary" icon={<Icon icon="image" />}>
@@ -170,6 +171,9 @@ class App extends React.Component {
               </Route>
               <Route path="/about">
                 <About />
+              </Route>
+              <Route path="/board">
+                <Board />
               </Route>
               <Route path="/signUp">
                 <UserForm onSubmit={(data) => this.onSubmit('signUp', data)} />
