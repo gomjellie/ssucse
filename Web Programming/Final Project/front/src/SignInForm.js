@@ -103,7 +103,7 @@ class SignInForm extends React.Component {
                   <Button appearance="primary" onClick={this.handleSubmit}>
                     로그인
                   </Button>
-                  <Button href='/signUp'> 회원가입으로 </Button>
+                  <Button appearance="link" href='/signUp'>회원이 아닌가요?</Button>
                 </ButtonToolbar>
               </Form>
             </Panel>
