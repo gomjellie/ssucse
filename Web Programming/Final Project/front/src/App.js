@@ -9,11 +9,11 @@ import {
 } from 'rsuite';
 
 import {
-  BrowserRouter as Router,
   Switch,
   Route,
 } from "react-router-dom";
 
+import history from './history';
 import UserForm from './UserForm';
 import SignInForm from './SignInForm';
 
@@ -30,7 +30,12 @@ const NavToggle = ({ expand, onChange }) => {
             }}
           >
 
-            <Dropdown.Item>Sign out</Dropdown.Item>
+            <Dropdown.Item eventKey="9" onSelect={async (eventKey) => {
+              fetch('http://localhost:8000/api/users/signOut')
+                .then(() => {
+                  history.push('/signOut');
+                });
+            }}>로그아웃</Dropdown.Item>
           </Dropdown>
         </Nav>
 
@@ -62,11 +67,17 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-
+    try {
+      fetch('http://localhost:8000/api/users/info').then(res => res.json())
+        .then(data => this.setState({ name: data.username }));
+    } catch (error) {
+      console.log(this.state);
+      this.setState({ name: 'Guest' });
+    }
   }
 
   async onSubmit(action, formValue) {
-    await fetch(`http://localhost:5000/users/${action}`, {
+    await fetch(`http://localhost:8000/api/users/${action}`, {
       method: 'POST',
       mode: 'cors',
       headers: {
@@ -76,7 +87,7 @@ class App extends React.Component {
     })
       .then(res => res.json())
       .then(data => this.setState({ name: data.username }));
-    
+
   }
 
   render() {
@@ -84,53 +95,56 @@ class App extends React.Component {
 
     return (
       <div className="App">
-        <Router>
-          <Container>
-            <Sidebar
-              style={{ display: 'flex', flexDirection: 'column' }}
-              width={expand ? 260 : 56}
-              collapsible
+        <Container>
+          <Sidebar
+            style={{ display: 'flex', flexDirection: 'column' }}
+            width={expand ? 260 : 56}
+            collapsible
+          >
+            <Sidenav.Header>
+              <div style={headerStyles}>
+                <Icon icon="logo-analytics" size="lg" style={{ verticalAlign: 0 }} />
+                <span style={{ marginLeft: 12 }}> {name} </span>
+              </div>
+            </Sidenav.Header>
+            <Sidenav
+              expanded={expand}
+              defaultOpenKeys={['3']}
+              appearance="subtle"
             >
-              <Sidenav.Header>
-                <div style={headerStyles}>
-                  <Icon icon="logo-analytics" size="lg" style={{ verticalAlign: 0 }} />
-                  <span style={{ marginLeft: 12 }}> {name} </span>
-                </div>
-              </Sidenav.Header>
-              <Sidenav
-                expanded={expand}
-                defaultOpenKeys={['3']}
-                appearance="subtle"
-              >
-                <Sidenav.Body>
-                  <Nav>
-                    <Nav.Item eventKey="1" icon={<Icon icon="group" />}>
-                      소개 페이지
+              <Sidenav.Body>
+                <Nav>
+                  <Nav.Item eventKey="1" icon={<Icon icon="group" />}>
+                    소개 페이지
                     </Nav.Item>
-                    <Nav.Item eventKey="2" active icon={<Icon icon="dashboard" />}>
-                      게시판
+                  <Nav.Item eventKey="2" active icon={<Icon icon="dashboard" />}>
+                    게시판
                     </Nav.Item>
-                    <Nav.Item eventKey="3" icon={<Icon icon="magic" />}>
-                      갤러리
+                  <Nav.Item eventKey="3" icon={<Icon icon="magic" />}>
+                    갤러리
                     </Nav.Item>
-                  </Nav>
-                </Sidenav.Body>
-              </Sidenav>
-              <NavToggle expand={expand} onChange={this.handleToggle} />
-            </Sidebar>
+                </Nav>
+              </Sidenav.Body>
+            </Sidenav>
+            <NavToggle expand={expand} onChange={this.handleToggle} />
+          </Sidebar>
+          <div style={absoluteCenterStyle}>
             <Switch>
-              {/* <Route path="/about">
-              <About />
-            </Route> */}
+              <Route exact path="/">
+                <h2>HEAD </h2>
+              </Route>
               <Route path="/signUp">
                 <UserForm onSubmit={(data) => this.onSubmit('signUp', data)} />
               </Route>
-              <Route path="/">
+              <Route path="/signIn">
                 <SignInForm onSubmit={(data) => this.onSubmit('signIn', data)} />
               </Route>
+              <Route path="/signOut">
+                <h2>로그아웃에 성공했습니다</h2>
+              </Route>
             </Switch>
-          </Container>
-        </Router>
+          </div>
+        </Container>
       </div>
     )
   }
@@ -152,5 +166,10 @@ const iconStyles = {
   lineHeight: '56px',
   textAlign: 'center'
 };
+
+const absoluteCenterStyle = {
+  position: 'absolute', left: '50%', top: '50%',
+  transform: 'translate(-50%, -50%)'
+}
 
 export default App;

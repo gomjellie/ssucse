@@ -15,6 +15,18 @@ const isNotLoggedIn = (req, res, next) => {
   });
 }
 
+const isLoggedIn = (req, res, next) => {
+  console.log('isLoggedIn ', req.session);
+  if (req.isAuthenticated()) {
+    next();
+  }
+  else {
+    res.status(500).json({
+      message: '로그인 되어있지 않습니다.',
+    });
+  }
+}
+
 router.post('/signUp', async function(req, res) {
   try {
     const user = await Auth.signUp(req.body);
@@ -49,6 +61,25 @@ router.post('/signIn', async function(req, res, next) {
       });
     });
   })(req, res, next);
+});
+
+router.get('/info', async function(req, res, next) {
+  console.log('/info ', req.session);
+  if (!req.isAuthenticated()) {
+    return res.status(401).send("failed");
+  }
+  res.status(200).json({
+    username: req.session.passport.user.name,
+  });
+});
+
+router.get('/signOut', isLoggedIn, (req, res, next) => {
+  console.log('/signOut isAuthenticated?: ', req.isAuthenticated());
+  req.logout();
+  req.session.destroy();
+  res.json({
+    message: '로그아웃 성공',
+  });
 });
 
 module.exports = router;
