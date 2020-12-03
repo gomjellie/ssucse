@@ -18,6 +18,7 @@ import UserForm from './UserForm';
 import SignInForm from './SignInForm';
 import About from './About';
 import Board from './Board';
+import WritePost from './WritePost';
 
 const signOut = async () => {
   return new Promise((resolve, reject) => {
@@ -132,7 +133,7 @@ class App extends React.Component {
             </Sidenav.Header>
             <Sidenav
               expanded={expand}
-              defaultOpenKeys={['user']}
+              defaultOpenKeys={['user', "board"]}
               appearance="subtle"
               activeKey={active}
               onSelect={this.handleSelect}
@@ -146,16 +147,25 @@ class App extends React.Component {
                     icon={<Icon icon="magic" />}
                     placement="rightStart"
                   >
-                    <Dropdown.Item onClick={() => history.push('/signUp')} eventKey="3-1">회원가입</Dropdown.Item>
-                    <Dropdown.Item onClick={() => history.push('/signIn')} eventKey="3-2">로그인</Dropdown.Item>
-                    <Dropdown.Item onClick={() => signOut().then(this.onSignOut)} eventKey="3-3">로그아웃</Dropdown.Item>
+                    <Dropdown.Item onClick={() => history.push('/signUp')} eventKey="signUp">회원가입</Dropdown.Item>
+                    <Dropdown.Item onClick={() => history.push('/signIn')} eventKey="signIn">로그인</Dropdown.Item>
+                    {
+                      name !== 'Guest' && <Dropdown.Item onClick={() => signOut().then(this.onSignOut)} eventKey="signOut">로그아웃</Dropdown.Item>
+                    }
                   </Dropdown>
                   <Nav.Item eventKey="about" onClick={() => history.push('/about')} icon={<Icon icon="pagelines" />}>
                     소개 페이지
                   </Nav.Item>
-                  <Nav.Item eventKey="board" onClick={() => history.push('/board')} icon={<Icon icon="frame" />}>
-                    게시판
-                  </Nav.Item>
+                  <Dropdown
+                    eventKey="board"
+                    trigger="hover"
+                    title="게시판"
+                    icon={<Icon icon="frame" />}
+                    placement="rightStart"
+                  >
+                    <Dropdown.Item onClick={() => history.push('/writePost')} eventKey="writePost">글쓰기</Dropdown.Item>
+                    <Dropdown.Item onClick={() => history.push('/board')} eventKey="board">글목록</Dropdown.Item>
+                  </Dropdown>
                   <Nav.Item eventKey="galary" icon={<Icon icon="image" />}>
                     갤러리
                   </Nav.Item>
@@ -167,13 +177,16 @@ class App extends React.Component {
           <div style={absoluteCenterStyle}>
             <Switch>
               <Route exact path="/">
-                <h2>HEAD </h2>
+                <h2>메인 페이지 입니다.</h2>
               </Route>
               <Route path="/about">
                 <About />
               </Route>
               <Route path="/board">
                 <Board />
+              </Route>
+              <Route path="/writePost">
+                <WritePost />
               </Route>
               <Route path="/signUp">
                 <UserForm onSubmit={(data) => this.onSubmit('signUp', data)} />
@@ -210,8 +223,8 @@ const iconStyles = {
 };
 
 const absoluteCenterStyle = {
-  position: 'absolute', left: '50%', top: '50%',
-  transform: 'translate(-50%, -50%)'
+  position: 'absolute', left: '50%', top: 50,
+  transform: 'translate(-50%, -0%)'
 }
 
 export default App;
