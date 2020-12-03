@@ -19,7 +19,7 @@ passport.deserializeUser((user, done) => {
 console.log('JWT_SECRET: ', process.env.JWT_SECRET);
 
 passport.use(new JwtStrategy({
-  jwtFromRequest: ExtractJwt.fromHeader('Authorization'),
+  jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
   secretOrKey: process.env.JWT_SECRET,
 }, async (payload, done) => {
   try {
