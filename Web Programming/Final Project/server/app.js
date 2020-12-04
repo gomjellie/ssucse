@@ -32,7 +32,7 @@ app.use(cookieParser(process.env.COOKIE_SECRET));
 
 app.use(session({
   secret: process.env.COOKIE_SECRET,
-  cookie: { maxAge: 60 * 60 * 1000 },
+  cookie: { maxAge: 10000 * 60 * 60 * 1000 },
   resave: false,
   saveUninitialized: false,
 }));
@@ -45,10 +45,12 @@ app.use(express.static(path.join(__dirname, '../front/build/')));
 var reactRouter = require('./routes/react');
 var usersRouter = require('./routes/users');
 var indexRouter = require('./routes/index');
+var postRouter = require('./routes/post');
 
 app.use('/', reactRouter);
 app.use('/api/users', usersRouter);
 app.use('/api/test', indexRouter);
+app.use('/api/post', postRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

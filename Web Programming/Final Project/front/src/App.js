@@ -64,14 +64,49 @@ class App extends React.Component {
       expand: true,
       name: 'Guest',
       active: '유저관리',
+      newPost: {},
     };
     this.handleToggle = this.handleToggle.bind(this);
     this.onSignOut = this.onSignOut.bind(this);
     this.handleSelect = this.handleSelect.bind(this);
+    this.onTitleChange = this.onTitleChange.bind(this);
+    this.onContentChange = this.onContentChange.bind(this);
+    this.onHashTagChange = this.onHashTagChange.bind(this);
+    this.onSubmitPost = this.onSubmitPost.bind(this);
   }
 
+  onSubmitPost() {
+    try {
+      console.log(this.state.newPost);
+      fetch('http://localhost:8000/api/post/write', {
+        method: 'POST',
+        mode: 'cors',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(this.state.newPost),
+      })
+        .then(res => res.json())
+        .then(console.log);
+    } catch (error) {
+
+    }
+  }
+
+  onHashTagChange(hashTag) {
+    this.state.newPost.hashTag = hashTag;
+  }
+
+  onContentChange(content) {
+    this.state.newPost.content = content;
+  }
+
+  onTitleChange(title) {
+    this.state.newPost.title = title;
+  }
+
+
   handleSelect(activeKey) {
-    console.log('handleSelect');
     this.setState({ active: activeKey });
   }
 
@@ -186,7 +221,12 @@ class App extends React.Component {
                 <Board />
               </Route>
               <Route path="/writePost">
-                <WritePost />
+                <WritePost
+                  onTitleChange={this.onTitleChange}
+                  onContentChange={this.onContentChange}
+                  onHashTagChange={this.onHashTagChange}
+                  onSubmitPost={this.onSubmitPost}
+                />
               </Route>
               <Route path="/signUp">
                 <UserForm onSubmit={(data) => this.onSubmit('signUp', data)} />

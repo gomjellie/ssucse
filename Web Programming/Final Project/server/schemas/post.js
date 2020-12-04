@@ -1,14 +1,14 @@
 const mongoose = require('mongoose');
 
 const { Schema } = mongoose;
-import { userSchema } from './user';
+const { userSchema } = require('./user');
 
 const postSchema = new Schema({
   title: {
     type: String,
     required: true,
   },
-  writer: {
+  writerName: {
     type: String,
     required: true,
   },
@@ -29,6 +29,10 @@ const postSchema = new Schema({
     type: Date,
     default: Date.now,
   },
+});
+
+postSchema.virtual('id').get(function () {
+  return this._id;
 });
 
 module.exports = mongoose.model('Post', postSchema);

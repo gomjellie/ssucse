@@ -6,23 +6,32 @@ var passport = require('passport');
 
 var { isLoggedIn } = require('../middlewares/sessionChecker');
 
-router.post('/writePost', isLoggedIn, async function(req, res, next) {
-  let reqPost = req.body.json();
+router.post('/write', isLoggedIn, async function(req, res, next) {
+  let reqPost = req.body;
   
-  const {name, email} = req.session.passport;
-  console.log(reqPost);
+  console.log(req.session);
+  const {name, email} = req.session.passport.user;
   
-  
-  Post.createPost({
+  const newPost = {
     title: reqPost.title,
     content: reqPost.content,
     hashTag: reqPost.hashTag,
     writerName: name,
     writerEmail: email,
-  });
+  };
+
+  console.log(newPost);
+  
+  Post.createPost(newPost);
+  
   res.json({
-    message: 'hello',
+    message: 'post success',
+    post: newPost,
   });
+});
+
+router.get('/list', isLoggedIn, async function(req, res, next) {
+  
 });
 
 module.exports = router;
