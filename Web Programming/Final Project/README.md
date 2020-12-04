@@ -11,6 +11,17 @@ cd ./server && node app.js
 ```sh
 cd ./front && npm start
 ```
+
+.env설정
+
+```sh
+PORT=5000
+NODE_ENV='development'
+MONGODB_URL='mongodb://계정:비밀번호@localhost:27017/admin'
+JWT_SECRET='WEBP_JWT_SECRET'
+COOKIE_SECRET='COOKIE_SECRET'
+```
+
 ## 기본 기능 구성 (총 40점)
 
 (10점) 사용자 등록 / 로그인 / 로그아웃 (/)
