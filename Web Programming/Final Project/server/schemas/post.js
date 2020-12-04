@@ -12,6 +12,14 @@ const postSchema = new Schema({
     type: String,
     required: true,
   },
+  writerEmail: {
+    type: String,
+    required: true,
+  },
+  hashTag: {
+    type: String,
+    required: false,
+  },
   content: {
     type: String,
     required: true,
