@@ -1,34 +1,29 @@
 import React from 'react';
 
-import { PanelGroup, Panel, Placeholder } from 'rsuite';
+import { PanelGroup, Panel, Divider, FlexboxGrid, Button, Modal } from 'rsuite';
 
-const { Paragraph } = Placeholder;
+const Board = ({ posts, onPostEdit, onPostDelete }) => {
+  const onPost = () => () => onPostEdit(post._id, post.content);
 
-const Board = () => (
-  <PanelGroup style={{width: 500}}>
-    <Panel header={<h3>게시판 글1</h3>} bordered >
-      <Paragraph style={{ marginTop: 30 }} />
-    </Panel>
-    <Panel header={<h3>게시판 글2</h3>} bordered >
-      <Paragraph style={{ marginTop: 30 }} graph="circle" />
-      <Paragraph style={{ marginTop: 30 }} graph="square" />
-      <Paragraph style={{ marginTop: 30 }} graph="image" />
-    </Panel>
-    <Panel header={<h3>게시판 글2</h3>} bordered >
-      <Paragraph style={{ marginTop: 30 }} rows={5} graph="image" active />
-    </Panel>
-    <Panel header={<h3>게시판 글1</h3>} bordered >
-      <Paragraph style={{ marginTop: 30 }} />
-    </Panel>
-    <Panel header={<h3>게시판 글2</h3>} bordered >
-      <Paragraph style={{ marginTop: 30 }} graph="circle" />
-      <Paragraph style={{ marginTop: 30 }} graph="square" />
-      <Paragraph style={{ marginTop: 30 }} graph="image" />
-    </Panel>
-    <Panel header={<h3>게시판 글2</h3>} bordered >
-      <Paragraph style={{ marginTop: 30 }} rows={5} graph="image" active />
-    </Panel>
-  </PanelGroup>
-);
+  return (
+    <PanelGroup>
+      <div style={{ width: 500 }}>
+        {posts.map((post, index) => (
+          <Panel header={`${post.title} - ${post.writerName} - ${post.createdAt.substr(0, 10)}`} collapsible bordered>
+            {post.content}
+            <Divider />
+            <FlexboxGrid justify="end">
+              <FlexboxGrid.Item>
+                <Button size="xs" appearance="link" active onClick={onPost}>수정하기</Button>
+                <Divider vertical />
+                <Button size="xs" appearance="link" active onClick={() => onPostDelete(post._id)}>삭제하기</Button>
+              </FlexboxGrid.Item>
+            </FlexboxGrid>
+          </Panel>
+        ))}
+      </div>
+    </PanelGroup>
+  );
+}
 
 export default Board;

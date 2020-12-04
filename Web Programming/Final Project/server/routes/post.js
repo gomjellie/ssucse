@@ -8,8 +8,6 @@ var { isLoggedIn } = require('../middlewares/sessionChecker');
 
 router.post('/write', isLoggedIn, async function(req, res, next) {
   let reqPost = req.body;
-  
-  console.log(req.session);
   const {name, email} = req.session.passport.user;
   
   const newPost = {
@@ -20,8 +18,6 @@ router.post('/write', isLoggedIn, async function(req, res, next) {
     writerEmail: email,
   };
 
-  console.log(newPost);
-  
   Post.createPost(newPost);
   
   res.json({
@@ -31,7 +27,45 @@ router.post('/write', isLoggedIn, async function(req, res, next) {
 });
 
 router.get('/list', isLoggedIn, async function(req, res, next) {
+  const posts = await Post.readPostList();
+
+  console.log(posts);
+  res.json({
+    posts: posts,
+  });
+});
+
+router.delete('/delete/:id', isLoggedIn, async (req, res, next) => {
+  const id = req.params.id;
   
+  const success = await Post.deletePost(id);
+
+  if (!success) {
+    res.status(404).json({
+      message: `id: ${id}에 해당하는 포스트를 발견하지 못했습니다.`,
+    });
+  }
+
+  res.json({
+    message: '삭제 성공',
+  });
+});
+
+router.put('/update', isLoggedIn, async (req, res, next) => {
+  const { id, content } = req.body;
+
+  const success = await Post.updatePost(id, content);
+
+  if (!success) {
+    res.status(404).json({
+      message: `id: ${id} 를 업데이트하지 못했습니다`,
+    });
+  }
+
+  res.json({
+    message: '업데이트 성공',
+  });
+
 });
 
 module.exports = router;

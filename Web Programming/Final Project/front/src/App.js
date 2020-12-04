@@ -65,6 +65,7 @@ class App extends React.Component {
       name: 'Guest',
       active: '유저관리',
       newPost: {},
+      posts: [],
     };
     this.handleToggle = this.handleToggle.bind(this);
     this.onSignOut = this.onSignOut.bind(this);
@@ -73,9 +74,33 @@ class App extends React.Component {
     this.onContentChange = this.onContentChange.bind(this);
     this.onHashTagChange = this.onHashTagChange.bind(this);
     this.onSubmitPost = this.onSubmitPost.bind(this);
+    this.getPosts = this.getPosts.bind(this);
   }
 
-  onSubmitPost() {
+  async onPostEdit(id, content) {
+    return fetch('http://localhost:8000/api/post/update', {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({id, content}),
+    });
+  }
+
+  async onPostDelete(id) {
+    return fetch(`http://localhost:8000/api/post/delete/${id}`, {
+      method: 'DELETE',
+    }).then(res => res.json())
+      .then(res =>console.log());
+  }
+
+  async getPosts() {
+    return fetch('http://localhost:8000/api/post/list')
+      .then(res => res.json())
+      .then(res => this.setState({posts: res.posts}));
+  }
+
+  async onSubmitPost() {
     try {
       console.log(this.state.newPost);
       fetch('http://localhost:8000/api/post/write', {
@@ -199,7 +224,7 @@ class App extends React.Component {
                     placement="rightStart"
                   >
                     <Dropdown.Item onClick={() => history.push('/writePost')} eventKey="writePost">글쓰기</Dropdown.Item>
-                    <Dropdown.Item onClick={() => history.push('/board')} eventKey="board">글목록</Dropdown.Item>
+                    <Dropdown.Item onClick={() => {this.getPosts().then(history.push('/board'));}} eventKey="board">글목록</Dropdown.Item>
                   </Dropdown>
                   <Nav.Item eventKey="galary" icon={<Icon icon="image" />}>
                     갤러리
@@ -218,7 +243,11 @@ class App extends React.Component {
                 <About />
               </Route>
               <Route path="/board">
-                <Board />
+                <Board
+                  posts={this.state.posts}
+                  onPostEdit={this.onPostEdit}
+                  onPostDelete={this.onPostDelete}
+                />
               </Route>
               <Route path="/writePost">
                 <WritePost

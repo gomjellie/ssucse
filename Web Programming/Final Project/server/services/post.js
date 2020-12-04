@@ -23,4 +23,16 @@ async function readPostList () {
   return posts;
 }
 
-module.exports = { createPost, readPostList };
+async function deletePost (_id) {
+  const res = await Post.deleteOne({_id});
+
+  return res;
+}
+
+async function updatePost (id, content) {
+  const res = await Post.updateOne({_id: id}, {content});
+
+  return res;
+}
+
+module.exports = { createPost, readPostList, deletePost, updatePost };
