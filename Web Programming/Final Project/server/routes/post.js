@@ -26,7 +26,7 @@ router.post('/write', isLoggedIn, async function(req, res, next) {
   });
 });
 
-router.get('/list', isLoggedIn, async function(req, res, next) {
+router.get('/list', async function(req, res, next) {
   const posts = await Post.readPostList();
 
   console.log(posts);

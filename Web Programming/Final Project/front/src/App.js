@@ -1,5 +1,6 @@
 import React from 'react';
 
+import './App.css';
 import 'rsuite/dist/styles/rsuite-dark.css';
 
 import {
@@ -18,6 +19,8 @@ import SignInForm from './SignInForm';
 import About from './About';
 import Board from './Board';
 import WritePost from './WritePost';
+import WriteImage from './WriteImage';
+import Gallary from './Gallary';
 
 const signOut = async () => {
   return new Promise((resolve, reject) => {
@@ -193,7 +196,7 @@ class App extends React.Component {
             </Sidenav.Header>
             <Sidenav
               expanded={expand}
-              defaultOpenKeys={['user', "board", "galary"]}
+              defaultOpenKeys={['user', "board", "gallary"]}
               appearance="subtle"
               activeKey={active}
               onSelect={this.handleSelect}
@@ -225,14 +228,14 @@ class App extends React.Component {
                     <Dropdown.Item onClick={() => {this.getPosts().then(history.push('/board'));}} eventKey="board">글목록</Dropdown.Item>
                   </Dropdown>
                   <Dropdown
-                    eventKey="galary"
+                    eventKey="gallary"
                     trigger="hover"
                     title="갤러리"
                     icon={<Icon icon="image" />}
                     placement="rightStart"
                   >
                     <Dropdown.Item disabled={!isLoggedIn} onClick={() => history.push('/writeImage')} eventKey="writeImage">사진 업로드</Dropdown.Item>
-                    <Dropdown.Item onClick={() => {this.getPosts().then(history.push('/galary'));}} eventKey="galary">갤러리 목록</Dropdown.Item>
+                    <Dropdown.Item onClick={() => {this.getPosts().then(history.push('/gallary'));}} eventKey="gallary">갤러리 목록</Dropdown.Item>
                   </Dropdown>
                 </Nav>
               </Sidenav.Body>
@@ -262,20 +265,11 @@ class App extends React.Component {
                   onSubmitPost={this.onSubmitPost}
                 />
               </Route>
-              <Route path="/galary">
-                <Board
-                  posts={this.state.posts}
-                  onPostEdit={this.onPostEdit}
-                  onPostDelete={this.onPostDelete}
-                />
+              <Route path="/gallary">
+                <Gallary />
               </Route>
               <Route path="/writeImage">
-                <WritePost
-                  onTitleChange={this.onTitleChange}
-                  onContentChange={this.onContentChange}
-                  onHashTagChange={this.onHashTagChange}
-                  onSubmitPost={this.onSubmitPost}
-                />
+                <WriteImage />
               </Route>
               <Route path="/signUp">
                 <UserForm onSubmit={(data) => this.onSubmit('signUp', data)} />
