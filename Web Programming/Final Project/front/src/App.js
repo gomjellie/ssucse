@@ -1,6 +1,5 @@
 import React from 'react';
 
-// import './App.css';
 import 'rsuite/dist/styles/rsuite-dark.css';
 
 import {
@@ -176,6 +175,7 @@ class App extends React.Component {
 
   render() {
     const { expand, name, active } = this.state;
+    const isLoggedIn = name !== 'Guest';
 
     return (
       <div className="App">
@@ -207,11 +207,9 @@ class App extends React.Component {
                     icon={<Icon icon="magic" />}
                     placement="rightStart"
                   >
-                    <Dropdown.Item onClick={() => history.push('/signUp')} eventKey="signUp">회원가입</Dropdown.Item>
-                    <Dropdown.Item onClick={() => history.push('/signIn')} eventKey="signIn">로그인</Dropdown.Item>
-                    {
-                      name !== 'Guest' && <Dropdown.Item onClick={() => signOut().then(this.onSignOut)} eventKey="signOut">로그아웃</Dropdown.Item>
-                    }
+                    <Dropdown.Item disabled={isLoggedIn} onClick={() => history.push('/signUp')} eventKey="signUp">회원가입</Dropdown.Item>
+                    <Dropdown.Item disabled={isLoggedIn} onClick={() => history.push('/signIn')} eventKey="signIn">로그인</Dropdown.Item>
+                    <Dropdown.Item disabled={!isLoggedIn} onClick={() => signOut().then(this.onSignOut)} eventKey="signOut">로그아웃</Dropdown.Item>
                   </Dropdown>
                   <Nav.Item eventKey="about" onClick={() => history.push('/about')} icon={<Icon icon="pagelines" />}>
                     소개 페이지
@@ -223,7 +221,7 @@ class App extends React.Component {
                     icon={<Icon icon="frame" />}
                     placement="rightStart"
                   >
-                    <Dropdown.Item onClick={() => history.push('/writePost')} eventKey="writePost">글쓰기</Dropdown.Item>
+                    <Dropdown.Item disabled={!isLoggedIn} onClick={() => history.push('/writePost')} eventKey="writePost">글쓰기</Dropdown.Item>
                     <Dropdown.Item onClick={() => {this.getPosts().then(history.push('/board'));}} eventKey="board">글목록</Dropdown.Item>
                   </Dropdown>
                   <Nav.Item eventKey="galary" icon={<Icon icon="image" />}>
