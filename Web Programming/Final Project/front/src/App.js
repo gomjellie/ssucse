@@ -193,7 +193,7 @@ class App extends React.Component {
             </Sidenav.Header>
             <Sidenav
               expanded={expand}
-              defaultOpenKeys={['user', "board"]}
+              defaultOpenKeys={['user', "board", "galary"]}
               appearance="subtle"
               activeKey={active}
               onSelect={this.handleSelect}
@@ -224,9 +224,16 @@ class App extends React.Component {
                     <Dropdown.Item disabled={!isLoggedIn} onClick={() => history.push('/writePost')} eventKey="writePost">글쓰기</Dropdown.Item>
                     <Dropdown.Item onClick={() => {this.getPosts().then(history.push('/board'));}} eventKey="board">글목록</Dropdown.Item>
                   </Dropdown>
-                  <Nav.Item eventKey="galary" icon={<Icon icon="image" />}>
-                    갤러리
-                  </Nav.Item>
+                  <Dropdown
+                    eventKey="galary"
+                    trigger="hover"
+                    title="갤러리"
+                    icon={<Icon icon="image" />}
+                    placement="rightStart"
+                  >
+                    <Dropdown.Item disabled={!isLoggedIn} onClick={() => history.push('/writeImage')} eventKey="writeImage">사진 업로드</Dropdown.Item>
+                    <Dropdown.Item onClick={() => {this.getPosts().then(history.push('/galary'));}} eventKey="galary">갤러리 목록</Dropdown.Item>
+                  </Dropdown>
                 </Nav>
               </Sidenav.Body>
             </Sidenav>
@@ -248,6 +255,21 @@ class App extends React.Component {
                 />
               </Route>
               <Route path="/writePost">
+                <WritePost
+                  onTitleChange={this.onTitleChange}
+                  onContentChange={this.onContentChange}
+                  onHashTagChange={this.onHashTagChange}
+                  onSubmitPost={this.onSubmitPost}
+                />
+              </Route>
+              <Route path="/galary">
+                <Board
+                  posts={this.state.posts}
+                  onPostEdit={this.onPostEdit}
+                  onPostDelete={this.onPostDelete}
+                />
+              </Route>
+              <Route path="/writeImage">
                 <WritePost
                   onTitleChange={this.onTitleChange}
                   onContentChange={this.onContentChange}
