@@ -43,7 +43,7 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(express.static(path.join(__dirname, '../front/build/')));
-app.use('/api/static', express.static(path.join(__dirname, './uploads')));
+app.use('/api/images', express.static(path.join(__dirname, './uploads')));
 
 var reactRouter = require('./routes/react');
 var usersRouter = require('./routes/users');
