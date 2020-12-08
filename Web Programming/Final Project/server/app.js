@@ -24,7 +24,10 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 connect();
 
-app.use(cors());
+app.use(cors({
+  credentials: true, // 쿠키 공유허용
+  // origin: 'http://localhost:3000',
+}));
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
