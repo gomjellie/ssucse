@@ -68,6 +68,7 @@ class App extends React.Component {
       active: '유저관리',
       newPost: {},
       posts: [],
+      pics: [],
     };
     this.handleToggle = this.handleToggle.bind(this);
     this.onSignOut = this.onSignOut.bind(this);
@@ -77,6 +78,13 @@ class App extends React.Component {
     this.onHashTagChange = this.onHashTagChange.bind(this);
     this.onSubmitPost = this.onSubmitPost.bind(this);
     this.getPosts = this.getPosts.bind(this);
+    this.getPics = this.getPics.bind(this);
+  }
+
+  async getPics() {
+    return fetch('http://localhost:8000/api/gallary/list')
+      .then(res => res.json())
+      .then(res => this.setState({pics: res.pics}));
   }
 
   async onPostEdit(id, content) {
@@ -235,7 +243,7 @@ class App extends React.Component {
                     placement="rightStart"
                   >
                     <Dropdown.Item disabled={!isLoggedIn} onClick={() => history.push('/writeImage')} eventKey="writeImage">사진 업로드</Dropdown.Item>
-                    <Dropdown.Item onClick={() => {this.getPosts().then(history.push('/gallary'));}} eventKey="gallary">갤러리 목록</Dropdown.Item>
+                    <Dropdown.Item onClick={() => {this.getPics().then(history.push('/gallary'));}} eventKey="gallary">갤러리 목록</Dropdown.Item>
                   </Dropdown>
                 </Nav>
               </Sidenav.Body>
@@ -266,7 +274,9 @@ class App extends React.Component {
                 />
               </Route>
               <Route path="/gallary">
-                <Gallary />
+                <Gallary
+                  pics={this.state.pics}
+                />
               </Route>
               <Route path="/writeImage">
                 <WriteImage />

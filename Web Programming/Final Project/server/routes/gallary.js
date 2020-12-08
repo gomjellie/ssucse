@@ -27,7 +27,7 @@ const upload = multer({
   limits: { fileSize: 5 * 1024 * 1024 },
 });
 
-router.post('/img', isLoggedIn, upload.single('img'), (req, res) => {
+router.post('/img', isLoggedIn, upload.single('img'), async (req, res) => {
   console.log(req.file);
   res.json({ url: `/img/${req.file.filename}`});
 });
@@ -47,6 +47,24 @@ router.post('/new', isLoggedIn, async (req, res) => {
 
   res.json({
     body: req.body,
+  });
+});
+
+router.get('/list', async (req, res) => {
+  const pics = await Gallary.getList();
+
+  const reduced = pics.reduce((acc, pic) => {
+    acc.push({
+      name: pic.fileName,
+      title: pic.title,
+      writer: pic.writerName,
+      date: pic.createdAt,
+    });
+    return acc;
+  }, []);
+
+  res.json({
+    pics: reduced,
   });
 });
 
