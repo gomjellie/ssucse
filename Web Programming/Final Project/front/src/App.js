@@ -276,6 +276,7 @@ class App extends React.Component {
               <Route path="/gallary">
                 <Gallary
                   pics={this.state.pics}
+                  getPics={this.getPics}
                 />
               </Route>
               <Route path="/writeImage">

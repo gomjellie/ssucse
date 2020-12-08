@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Panel, FlexboxGrid, Button, Divider } from 'rsuite';
 
-const Card = ({ pic }) => (
+const Card = ({ pic, getPics }) => (
   <Panel shaded bordered bodyFill>
     <img src={`http://localhost:8000/api/images/${pic.name}`} style={{ width: 240 }} />
     <Panel header={pic.title}>
@@ -19,7 +19,11 @@ const Card = ({ pic }) => (
         <FlexboxGrid.Item>
           <Button size="xs" appearance="link" active>수정하기</Button>
           <Divider vertical />
-          <Button size="xs" appearance="link" active>삭제하기</Button>
+          <Button size="xs" appearance="link" onClick={() => {
+            fetch(`http://localhost:8000/api/gallary/${pic.id}`, {
+              method: 'DELETE',
+            }).then(() => getPics());
+          }} active>삭제하기</Button>
         </FlexboxGrid.Item>
 
       </FlexboxGrid>
@@ -33,14 +37,14 @@ class Gallary extends React.Component {
   }
 
   render() {
-    const { pics } = this.props;
+    const { pics, getPics } = this.props;
     return (
       <div>
         <FlexboxGrid justify='space-between'>
           {
             pics.map(pic => (
               <FlexboxGrid.Item colspan={8}>
-                <Card pic={pic} />
+                <Card pic={pic} getPics={getPics}/>
               </FlexboxGrid.Item>
             ))
           }

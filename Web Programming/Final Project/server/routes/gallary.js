@@ -29,13 +29,13 @@ const upload = multer({
 
 router.post('/img', isLoggedIn, upload.single('img'), async (req, res) => {
   console.log(req.file);
-  res.json({ url: `/img/${req.file.filename}`});
+  res.json({ url: `/img/${req.file.filename}` });
 });
 
 router.post('/new', isLoggedIn, async (req, res) => {
-  const {name, email} = req.session.passport.user;
-  const {files, title} = req.body;
-  
+  const { name, email } = req.session.passport.user;
+  const { files, title } = req.body;
+
   files.forEach(async file => {
     await Gallary.create({
       fileName: file.name,
@@ -59,12 +59,29 @@ router.get('/list', async (req, res) => {
       title: pic.title,
       writer: pic.writerName,
       date: pic.createdAt,
+      id: pic._id,
     });
     return acc;
   }, []);
 
   res.json({
     pics: reduced,
+  });
+});
+
+router.delete('/:id', isLoggedIn, async (req, res) => {
+  const id = req.params.id;
+
+  const success = Gallary.deletePic(id);
+
+  if (!success) {
+    res.status(404).json({
+      message: `id: ${id}에 해당하는 사진을 못 찾았습니다.`,
+    });
+  }
+
+  res.json({
+    message: '삭제 성공',
   });
 });
 
