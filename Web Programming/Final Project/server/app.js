@@ -49,11 +49,13 @@ var reactRouter = require('./routes/react');
 var usersRouter = require('./routes/users');
 var indexRouter = require('./routes/index');
 var postRouter = require('./routes/post');
+var gallaryRouter = require('./routes/gallary');
 
 app.use('/', reactRouter);
 app.use('/api/users', usersRouter);
 app.use('/api/test', indexRouter);
 app.use('/api/post', postRouter);
+app.use('/api/gallary', gallaryRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

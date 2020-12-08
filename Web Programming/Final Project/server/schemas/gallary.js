@@ -1,9 +1,8 @@
 const mongoose = require('mongoose');
 
 const { Schema } = mongoose;
-const { userSchema } = require('./user');
 
-const postSchema = new Schema({
+const gallarySchema = new Schema({
   title: {
     type: String,
     required: true,
@@ -17,10 +16,10 @@ const postSchema = new Schema({
     required: true,
   },
   hashTag: {
-    type: String,
+    type: [String],
     required: false,
   },
-  content: {
+  fileName: {
     type: String,
     required: true,
   },
@@ -30,8 +29,8 @@ const postSchema = new Schema({
   },
 });
 
-postSchema.virtual('id').get(function () {
+gallarySchema.virtual('id').get(function () {
   return this._id;
 });
 
-module.exports = mongoose.model('Post', postSchema);
+module.exports = mongoose.model('Gallary', gallarySchema);
