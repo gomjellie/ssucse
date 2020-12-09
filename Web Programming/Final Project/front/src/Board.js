@@ -36,10 +36,10 @@ class Board extends React.Component {
         <PanelGroup>
           <div style={{ width: 500 }}>
             {posts.map((post, index) => (
-              <Panel header={`${post.title} - ${post.writerName} - ${post.createdAt.substr(0, 10)}`} collapsible bordered>
+              <Panel key={index} header={`${post.title} - ${post.writerName} - ${post.createdAt.substr(0, 10)}`} collapsible bordered>
                 {post.content}
                 <Divider />
-                <DynamicTag tags={post.hashTag} editable={false}/>
+                <DynamicTag tags={post.hashTag} />
                 {
                   name == post.writerName &&
                   <FlexboxGrid justify="end">

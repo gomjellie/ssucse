@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { Panel, FlexboxGrid, Button, Divider } from 'rsuite';
+import DynamicTag from './DynamicTag';
 
 const Card = ({ pic, getPics, user }) => (
   <Panel shaded bordered bodyFill>
@@ -13,11 +14,11 @@ const Card = ({ pic, getPics, user }) => (
           <a>{`${pic.writer}`}</a>
           {` - ${pic.date.substr(0, 10)}`}
         </small>
-
       </p>
+      <DynamicTag tags={pic.hashTag} />
       {
         user == pic.writer &&
-        <FlexboxGrid justify="end">
+        <FlexboxGrid style={{ paddingTop: 10 }} justify="end">
           <FlexboxGrid.Item>
             <Button size="xs" appearance="link" active>수정하기</Button>
             <Divider vertical />
@@ -45,8 +46,8 @@ class Gallary extends React.Component {
       <div>
         <FlexboxGrid justify='space-between'>
           {
-            pics.map(pic => (
-              <FlexboxGrid.Item colspan={8}>
+            pics.map((pic, idx) => (
+              <FlexboxGrid.Item key={idx} colspan={8}>
                 <Card pic={pic} getPics={getPics} user={user} />
               </FlexboxGrid.Item>
             ))

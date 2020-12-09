@@ -18,7 +18,7 @@ const WritePost = ({ onTitleChange, onContentChange, onHashTagChange, onSubmitPo
     />
     <hr />
     
-    <DynamicTag style={{ width: 500 }} onTagChange={onHashTagChange} />
+    <DynamicTag style={{ width: 500 }} onTagChange={onHashTagChange} editable />
     {/* <Input style={{ width: 500 }} placeholder="해쉬태그" onChange={onHashTagChange} /> */}
     <hr />
     <ButtonToolbar>

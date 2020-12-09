@@ -107,14 +107,14 @@ class DynamicTag extends React.Component {
   }
 }
 
-DynamicTag.PropTypes = {
+DynamicTag.propTypes = {
   editable: PropTypes.bool,
   onTagChange: PropTypes.func,
   tags: PropTypes.array,
 }
 
 DynamicTag.defaultProps = {
-  editable: true,
+  editable: false,
   tags: [],
 }
 

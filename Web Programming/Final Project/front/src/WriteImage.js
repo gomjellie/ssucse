@@ -69,7 +69,7 @@ class WriteImage extends React.Component {
         </Uploader>
         <br />
         {/* <Input style={{ width: 500 }} placeholder="해쉬태그" onChange={onHashTagChange} /> */}
-        <DynamicTag onTagChange={this.handleHashTagChange} />
+        <DynamicTag onTagChange={this.handleHashTagChange} editable />
         <hr />
         <ButtonToolbar>
           <Button appearance="primary" onClick={this.handleSubmitPost}>글쓰기</Button>
