@@ -16,10 +16,7 @@ const postSchema = new Schema({
     type: String,
     required: true,
   },
-  hashTag: {
-    type: String,
-    required: false,
-  },
+  hashTag: [String],
   content: {
     type: String,
     required: true,

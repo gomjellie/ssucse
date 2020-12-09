@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { PanelGroup, Panel, Divider, FlexboxGrid, Button, Modal, Input } from 'rsuite';
+import DynamicTag from './DynamicTag';
 
 class Board extends React.Component {
   constructor(props) {
@@ -38,7 +39,7 @@ class Board extends React.Component {
               <Panel header={`${post.title} - ${post.writerName} - ${post.createdAt.substr(0, 10)}`} collapsible bordered>
                 {post.content}
                 <Divider />
-
+                <DynamicTag tags={post.hashTag} editable={false}/>
                 {
                   name == post.writerName &&
                   <FlexboxGrid justify="end">

@@ -5,8 +5,8 @@ async function createPost (newPost) {
   
   if (title === undefined
     || content === undefined
-    || hashTag === undefined || writerName === undefined || writerEmail === undefined)
-    throw new Error("newPost Must have title, content, hashTag property");
+    || writerName === undefined || writerEmail === undefined)
+    throw new Error("newPost Must have title, content property");
 
   const user = await Post.create(newPost);
 

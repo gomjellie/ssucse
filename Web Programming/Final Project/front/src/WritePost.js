@@ -2,6 +2,8 @@ import React from 'react';
 
 import { Panel, Input, Button, ButtonToolbar } from 'rsuite';
 
+import DynamicTag from './DynamicTag';
+
 const WritePost = ({ onTitleChange, onContentChange, onHashTagChange, onSubmitPost }) => (
   <Panel header={<h3>새 글작성</h3>} bordered >
     <Input style={{ width: 500 }} placeholder="제목" onChange={onTitleChange} />
@@ -15,7 +17,9 @@ const WritePost = ({ onTitleChange, onContentChange, onHashTagChange, onSubmitPo
       onChange={onContentChange}
     />
     <hr />
-    <Input style={{ width: 500 }} placeholder="해쉬태그" onChange={onHashTagChange} />
+    
+    <DynamicTag style={{ width: 500 }} onTagChange={onHashTagChange} />
+    {/* <Input style={{ width: 500 }} placeholder="해쉬태그" onChange={onHashTagChange} /> */}
     <hr />
     <ButtonToolbar>
       <Button appearance="primary" onClick={onSubmitPost}>글쓰기</Button>

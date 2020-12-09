@@ -9,15 +9,20 @@ class WriteImage extends React.Component {
     this.state = {
       title: "",
       files: [],
+      hashTag: [],
     };
     this.handleTitleChange = this.handleTitleChange.bind(this);
     this.handleFileChange = this.handleFileChange.bind(this);
     this.handleSubmitPost = this.handleSubmitPost.bind(this);
+    this.handleHashTagChange = this.handleHashTagChange.bind(this);
+  }
+
+  handleHashTagChange(newTags) {
+    this.setState({ hashTag: newTags });
   }
 
   handleFileChange(files) {
     this.setState({ files });
-    console.log(this.state.files);
   }
 
   handleTitleChange(title) {
@@ -25,14 +30,14 @@ class WriteImage extends React.Component {
   }
 
   handleSubmitPost() {
-    const {title, files} = this.state;
+    const {title, files, hashTag} = this.state;
     fetch("http://localhost:8000/api/gallary/new", {
       method: 'POST',
       mode: 'cors',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({title, files}),
+      body: JSON.stringify({title, files, hashTag}),
     });
   }
 
@@ -64,7 +69,7 @@ class WriteImage extends React.Component {
         </Uploader>
         <br />
         {/* <Input style={{ width: 500 }} placeholder="해쉬태그" onChange={onHashTagChange} /> */}
-        <DynamicTag />
+        <DynamicTag onTagChange={this.handleHashTagChange} />
         <hr />
         <ButtonToolbar>
           <Button appearance="primary" onClick={this.handleSubmitPost}>글쓰기</Button>

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import { IconButton, Input, TagGroup, Tag, Icon } from 'rsuite';
 
@@ -8,12 +9,13 @@ class DynamicTag extends React.Component {
     this.state = {
       typing: false,
       inputValue: '',
-      tags: ['javascript', 'css', 'react']
+      tags: props.tags,
     };
     this.handleButtonClick = this.handleButtonClick.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleInputConfirm = this.handleInputConfirm.bind(this);
   }
+
   handleButtonClick() {
     this.setState(
       {
@@ -24,25 +26,34 @@ class DynamicTag extends React.Component {
       }
     );
   }
+
   handleInputChange(inputValue) {
     this.setState({ inputValue });
   }
+
   handleInputConfirm() {
     const { inputValue, tags } = this.state;
-    const nextTags = inputValue ? [...tags, inputValue] : tags;
+    const { onTagChange } = this.props;
+    const nextTags = inputValue ? [...new Set([...tags, inputValue])] : tags;
     this.setState({
       tags: nextTags,
       typing: false,
       inputValue: ''
     });
+    onTagChange(nextTags);
   }
+
   handleTagRemove(tag) {
     const { tags } = this.state;
+    const { onTagChange } = this.props;
+
     const nextTags = tags.filter(item => item !== tag);
     this.setState({
       tags: nextTags
     });
+    onTagChange(nextTags);
   }
+
   renderInput() {
     const { typing, inputValue } = this.state;
 
@@ -75,12 +86,14 @@ class DynamicTag extends React.Component {
   }
   render() {
     const { tags } = this.state;
+    const { editable } = this.props;
+
     return (
       <TagGroup>
         {tags.map((item, index) => (
           <Tag
             key={index}
-            closable
+            closable={editable}
             onClose={() => {
               this.handleTagRemove(item);
             }}
@@ -88,10 +101,21 @@ class DynamicTag extends React.Component {
             {item}
           </Tag>
         ))}
-        {this.renderInput()}
+        {editable && this.renderInput()}
       </TagGroup>
     );
   }
+}
+
+DynamicTag.PropTypes = {
+  editable: PropTypes.bool,
+  onTagChange: PropTypes.func,
+  tags: PropTypes.array,
+}
+
+DynamicTag.defaultProps = {
+  editable: true,
+  tags: [],
 }
 
 export default DynamicTag;

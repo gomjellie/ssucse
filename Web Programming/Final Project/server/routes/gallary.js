@@ -34,7 +34,7 @@ router.post('/img', isLoggedIn, upload.single('img'), async (req, res) => {
 
 router.post('/new', isLoggedIn, async (req, res) => {
   const { name, email } = req.session.passport.user;
-  const { files, title } = req.body;
+  const { files, title, hashTag } = req.body;
 
   files.forEach(async file => {
     await Gallary.create({
