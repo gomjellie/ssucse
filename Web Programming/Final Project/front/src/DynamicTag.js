@@ -98,7 +98,7 @@ class DynamicTag extends React.Component {
               this.handleTagRemove(item);
             }}
           >
-            {item}
+            <a>{item}</a>
           </Tag>
         ))}
         {editable && this.renderInput()}

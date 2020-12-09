@@ -24,7 +24,7 @@ const upload = multer({
       cb(null, path.basename(file.originalname, ext) + ext); // 파일이름 충돌 고려하지않음.
     },
   }),
-  limits: { fileSize: 5 * 1024 * 1024 },
+  limits: { fileSize: 20 * 1024 * 1024 },
 });
 
 router.post('/img', isLoggedIn, upload.single('img'), async (req, res) => {
@@ -42,6 +42,7 @@ router.post('/new', isLoggedIn, async (req, res) => {
       title: title,
       writerName: name,
       writerEmail: email,
+      hashTag,
     });
   });
 
@@ -59,6 +60,7 @@ router.get('/list', async (req, res) => {
       title: pic.title,
       writer: pic.writerName,
       date: pic.createdAt,
+      hashTag: pic.hashTag,
       id: pic._id,
     });
     return acc;
