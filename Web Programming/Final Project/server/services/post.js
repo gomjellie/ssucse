@@ -23,14 +23,14 @@ async function readPostList () {
   return posts;
 }
 
-async function deletePost (_id) {
-  const res = await Post.deleteOne({_id});
+async function deletePost (_id, writerEmail) {
+  const res = await Post.deleteOne({_id, writerEmail});
 
   return res;
 }
 
-async function updatePost (id, content) {
-  const res = await Post.updateOne({_id: id}, {content});
+async function updatePost (id, writerEmail, content) {
+  const res = await Post.updateOne({_id: id, writerEmail}, {content});
 
   return res;
 }

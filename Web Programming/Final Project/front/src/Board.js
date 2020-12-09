@@ -28,7 +28,7 @@ class Board extends React.Component {
   }
 
   render() {
-    const { posts, onPostEdit, onPostDelete } = this.props;
+    const { posts, onPostEdit, onPostDelete, name } = this.props;
 
     return (
       <div>
@@ -38,14 +38,18 @@ class Board extends React.Component {
               <Panel header={`${post.title} - ${post.writerName} - ${post.createdAt.substr(0, 10)}`} collapsible bordered>
                 {post.content}
                 <Divider />
-                <FlexboxGrid justify="end">
-                  <FlexboxGrid.Item>
-                    <Button size="xs" appearance="link" active onClick={() => this.open(post)}>수정하기</Button>
-                    <Divider vertical />
-                    <Button size="xs" appearance="link" active onClick={() => onPostDelete(post._id)}>삭제하기</Button>
-                  </FlexboxGrid.Item>
 
-                </FlexboxGrid>
+                {
+                  name == post.writerName &&
+                  <FlexboxGrid justify="end">
+                    <FlexboxGrid.Item>
+                      <Button size="xs" appearance="link" active onClick={() => this.open(post)}>수정하기</Button>
+                      <Divider vertical />
+                      <Button size="xs" appearance="link" active onClick={() => onPostDelete(post._id)}>삭제하기</Button>
+                    </FlexboxGrid.Item>
+
+                  </FlexboxGrid>
+                }
               </Panel>
             ))}
           </div>

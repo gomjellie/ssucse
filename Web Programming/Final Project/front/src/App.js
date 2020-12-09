@@ -4,8 +4,8 @@ import './App.css';
 import 'rsuite/dist/styles/rsuite-dark.css';
 
 import {
-  Container, Header, Navbar,
-  Row, Col, Sidebar, Sidenav, Icon, Dropdown, Nav,
+  Container, Navbar, Nav, Sidebar, Sidenav,
+  Icon, Dropdown, Alert,
 } from 'rsuite';
 
 import {
@@ -94,7 +94,12 @@ class App extends React.Component {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({id, content}),
-    });
+    })
+      .then(res => {
+        if (!res.ok) {
+          Alert.error('게시글을 수정하는데 실패했습니다.');
+        }
+      });
   }
 
   async onPostDelete(id) {
@@ -261,6 +266,7 @@ class App extends React.Component {
               <Route path="/board">
                 <Board
                   posts={this.state.posts}
+                  name={this.state.name}
                   onPostEdit={this.onPostEdit}
                   onPostDelete={this.onPostDelete}
                 />
@@ -277,6 +283,7 @@ class App extends React.Component {
                 <Gallary
                   pics={this.state.pics}
                   getPics={this.getPics}
+                  user={this.state.name}
                 />
               </Route>
               <Route path="/writeImage">

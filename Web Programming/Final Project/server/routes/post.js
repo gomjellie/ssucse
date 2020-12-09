@@ -37,10 +37,10 @@ router.get('/list', async function(req, res, next) {
 
 router.delete('/delete/:id', isLoggedIn, async (req, res, next) => {
   const id = req.params.id;
-  
-  const success = await Post.deletePost(id);
+  const {email} = req.session.passport.user;
+  const success = await Post.deletePost(id, email);
 
-  if (!success) {
+  if (success.n == 0) {
     res.status(404).json({
       message: `id: ${id}에 해당하는 포스트를 발견하지 못했습니다.`,
     });
@@ -53,10 +53,13 @@ router.delete('/delete/:id', isLoggedIn, async (req, res, next) => {
 
 router.put('/update', isLoggedIn, async (req, res, next) => {
   const { id, content } = req.body;
+  const {email} = req.session.passport.user;
 
-  const success = await Post.updatePost(id, content);
+  const success = await Post.updatePost(id, email, content);
 
-  if (!success) {
+  console.log('success: ', success);
+
+  if (success.n == 0) {
     res.status(404).json({
       message: `id: ${id} 를 업데이트하지 못했습니다`,
     });
