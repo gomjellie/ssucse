@@ -28,7 +28,7 @@ class Board extends React.Component {
   }
 
   render() {
-    const { posts, onPostEdit, onPostDelete, name } = this.props;
+    const { posts, onPostEdit, onPostDelete, getPosts, name } = this.props;
 
     return (
       <div>
@@ -45,7 +45,7 @@ class Board extends React.Component {
                     <FlexboxGrid.Item>
                       <Button size="xs" appearance="link" active onClick={() => this.open(post)}>수정하기</Button>
                       <Divider vertical />
-                      <Button size="xs" appearance="link" active onClick={() => onPostDelete(post._id)}>삭제하기</Button>
+                      <Button size="xs" appearance="link" active onClick={() => onPostDelete(post._id).then(getPosts)}>삭제하기</Button>
                     </FlexboxGrid.Item>
 
                   </FlexboxGrid>
@@ -64,7 +64,10 @@ class Board extends React.Component {
             </Input>
           </Modal.Body>
           <Modal.Footer>
-            <Button onClick={() => onPostEdit(this.state.post._id, this.state.content)} appearance="primary">수정하기</Button>
+            <Button onClick={() => {
+              onPostEdit(this.state.post._id, this.state.content).then(getPosts);
+              this.close();
+            }} appearance="primary">수정하기</Button>
             <Button onClick={this.close} appearance="subtle">취소</Button>
           </Modal.Footer>
         </Modal>

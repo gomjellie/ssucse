@@ -105,8 +105,7 @@ class App extends React.Component {
   async onPostDelete(id) {
     return fetch(`http://localhost:8000/api/post/delete/${id}`, {
       method: 'DELETE',
-    }).then(res => res.json())
-      .then(res =>console.log());
+    });
   }
 
   async getPosts() {
@@ -269,6 +268,7 @@ class App extends React.Component {
                   name={this.state.name}
                   onPostEdit={this.onPostEdit}
                   onPostDelete={this.onPostDelete}
+                  getPosts={this.getPosts}
                 />
               </Route>
               <Route path="/writePost">
