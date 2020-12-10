@@ -16,7 +16,7 @@ async function create (newPic) {
 async function getList () {
   const pics = await Gallary.find();
 
-  if (!pics) {
+  if (pics.n === 0) {
     throw new Error("Post.find() returned empty result");
   }
 

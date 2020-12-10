@@ -23,7 +23,7 @@ async function signIn (signInUser) {
     throw new Error("signInUser Must have email, name, password property");
 
   const user = await User.findOne({email: signInUser.email, password: sha256(password)});
-  if (user === null)
+  if (user.n === 0)
     throw new HttpError(404, "user not found");
   
   return user;

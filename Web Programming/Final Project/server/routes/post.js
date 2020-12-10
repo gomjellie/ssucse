@@ -71,4 +71,36 @@ router.put('/update', isLoggedIn, async (req, res, next) => {
 
 });
 
+router.get('/search', isLoggedIn, async (req, res, next) => {
+  const {writer, content, hashTag} = req.query;
+
+  if (writer !== undefined) {
+    const posts = await Post.searchWriter(writer);
+
+    res.json({
+      posts,
+    });
+  }
+
+  if (content !== undefined) {
+    const posts = await Post.searchContent(content);
+
+    res.json({
+      posts,
+    });
+  }
+
+  if (hashTag !== undefined) {
+    const posts = await Post.searchHashTag(hashTag);
+
+    res.json({
+      posts,
+    });
+  }
+
+  res.status(400).json({
+    message: "writer, content, hashTag 중 하나의 필드도 받지 못했습니다",
+  });
+});
+
 module.exports = router;

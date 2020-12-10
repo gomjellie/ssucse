@@ -16,7 +16,7 @@ async function createPost (newPost) {
 async function readPostList () {
   const posts = await Post.find();
 
-  if (!posts) {
+  if (posts.n === 0) {
     throw new Error("Post.find() returned empty result");
   }
 
@@ -35,4 +35,35 @@ async function updatePost (id, writerEmail, content) {
   return res;
 }
 
-module.exports = { createPost, readPostList, deletePost, updatePost };
+async function searchWriter (writerName) {
+  const res = await Post.find({
+    "writerName": {"$regex": writerName},
+  },
+  { '_id': 0, '__v': 0 });
+
+  return res;
+}
+
+async function searchContent (content) {
+  const res = await Post.find({
+    "content": {"$regex": content},
+  }, 
+  { '_id': 0, '__v': 0 });
+
+  return res;
+}
+
+async function searchHashTag (hashTags) {
+  const res = await Post.find({
+    hashTag: {"$in" : hashTags},
+  },
+  { '_id': 0, '__v': 0 });
+
+  return res;
+}
+
+module.exports = {
+  createPost, readPostList, deletePost, updatePost,
+  searchWriter, searchContent, searchHashTag
+};
+
