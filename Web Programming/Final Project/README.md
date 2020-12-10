@@ -6,9 +6,9 @@
 계정이름 띄어쓰기 없이 써야됨
 
 ```sh
-mongorestore --host 127.0.0.1 --port 27017 -u계정이름 --authenticationDatabase admin --db nodejs ../dump
+cd ./dump && mongorestore --host 127.0.0.1 --port 27017 -u계정이름 --authenticationDatabase admin --drop nodejs --db nodejs
 
-cd ./server && node app.js
+cd ../server && node app.js
 ```
 
 실행: 프론트
