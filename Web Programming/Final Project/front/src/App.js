@@ -137,15 +137,21 @@ class App extends React.Component {
   }
 
   onHashTagChange(hashTag) {
-    this.state.newPost.hashTag = hashTag;
+    let newPost = { ...this.state.newPost };
+    newPost.hashTag = hashTag;
+    this.setState({ newPost });
   }
 
   onContentChange(content) {
-    this.state.newPost.content = content;
+    let newPost = { ...this.state.newPost };
+    newPost.content = content;
+    this.setState({ newPost });
   }
 
   onTitleChange(title) {
-    this.state.newPost.title = title;
+    let newPost = { ...this.state.newPost };
+    newPost.title = title;
+    this.setState({ newPost });
   }
 
 

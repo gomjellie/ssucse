@@ -2,36 +2,10 @@ import React from 'react';
 
 import {
   Button, Form, FormGroup, FormControl, ControlLabel, ButtonToolbar,
-  Schema, Panel, Row, Col, Content, FlexboxGrid,
+  Schema, Panel, Content, FlexboxGrid,
 } from 'rsuite';
 
-import Loadable from 'react-loadable';
-const { StringType, NumberType } = Schema.Types;
-
-function MyLoader() {
-  return <div>loading...</div>;
-}
-
-const JSONTree = Loadable({
-  loader: () => import('react-json-tree'),
-  loading: MyLoader,
-});
-
-const JSONView = ({ formValue, formError }) => (
-  <Row style={{ marginBottom: 10 }}>
-    <Col md={12}>
-      <Panel className="json-tree-wrapper" header={<p>formValue</p>}>
-        <JSONTree data={formValue} />
-      </Panel>
-    </Col>
-
-    <Col md={12}>
-      <Panel className="json-tree-wrapper" header={<p>formError</p>}>
-        <JSONTree data={formError} />
-      </Panel>
-    </Col>
-  </Row>
-);
+const { StringType } = Schema.Types;
 
 const model = Schema.Model({
   name: StringType().isRequired('이름이 없습니다'),
@@ -58,7 +32,6 @@ class SignInForm extends React.Component {
         name: '',
         password: '',
       },
-      formError: {},
       action: 'Login',
     };
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -75,21 +48,17 @@ class SignInForm extends React.Component {
   }
 
   render() {
-    const { formError, formValue } = this.state;
+    const { formValue } = this.state;
 
     return (
       <Content>
         <FlexboxGrid justify="end">
           <FlexboxGrid.Item>
-            {/* <JSONView formValue={formValue} formError={formError} /> */}
             <Panel header={<h3>로그인</h3>} bordered >
               <Form
                 ref={ref => (this.form = ref)}
                 onChange={formValue => {
                   this.setState({ formValue });
-                }}
-                onCheck={formError => {
-                  this.setState({ formError });
                 }}
                 formValue={formValue}
                 model={model}

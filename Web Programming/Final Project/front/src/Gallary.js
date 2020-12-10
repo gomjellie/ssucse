@@ -1,11 +1,11 @@
 import React from 'react';
 
-import { Panel, FlexboxGrid, Button, Divider, Alert, Grid, Row } from 'rsuite';
+import { Panel, FlexboxGrid, Button, Divider, Alert } from 'rsuite';
 import DynamicTag from './DynamicTag';
 
 const Card = ({ pic, getPics, user }) => (
   <Panel shaded bordered bodyFill>
-    <img src={`http://localhost:8000/api/images/${pic.fileName}`} style={{ width: 260 }} />
+    <img alt="" src={`http://localhost:8000/api/images/${pic.fileName}`} style={{ width: 260 }} />
 
     <h6 style={{ marginLeft: 12, marginTop: 8 }}>{pic.title}</h6>
     <FlexboxGrid style={{ paddingLeft: 12, paddingRight: 12 }} justify="space-between">
@@ -29,7 +29,7 @@ const Card = ({ pic, getPics, user }) => (
           } active>수정하기</Button>
           <Divider vertical />
           <Button size="xs" appearance="link" onClick={() => {
-            fetch(`http://localhost:8000/api/gallary/${pic.id}`, {
+            fetch(`http://localhost:8000/api/gallary/${pic._id}`, {
               method: 'DELETE',
             }).then(() => getPics());
           }} active>삭제하기</Button>

@@ -51,12 +51,10 @@ passport.use(new LocalStrategy({
         }
       })
       .catch((e) => {
-        if (!user) {
-          return done(null, false);
-        }
+        return done(null, false);
       })
   } catch (error) {
-    console.log(error);
+    console.error(error);
     done(error);
   }
 }

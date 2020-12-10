@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Panel, Input, Alert, Divider } from 'rsuite';
+import { Panel, Input, Alert } from 'rsuite';
 import Gallary from './Gallary';
 
 class SearchGallaryHashTag extends React.Component {

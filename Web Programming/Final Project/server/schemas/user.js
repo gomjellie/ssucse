@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const sha256 = require("sha256");
 
 const { Schema } = mongoose;
 
