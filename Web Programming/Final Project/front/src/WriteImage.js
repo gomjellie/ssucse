@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Panel, Input, Button, ButtonToolbar, Uploader } from 'rsuite';
+import { Panel, Input, Button, ButtonToolbar, Uploader, Alert } from 'rsuite';
 import DynamicTag from './DynamicTag';
 
 class WriteImage extends React.Component {
@@ -38,6 +38,8 @@ class WriteImage extends React.Component {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({title, files, hashTag}),
+    }).then(() => {
+      Alert.success("사진 업로드 성공!");
     });
   }
 

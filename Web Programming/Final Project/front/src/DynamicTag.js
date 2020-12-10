@@ -85,14 +85,18 @@ class DynamicTag extends React.Component {
     );
   }
   render() {
-    const { tags } = this.state;
+    let { tags } = this.state;
+    if (this.props.editable === false) {
+      tags = this.props.tags;
+    }
+    
     const { editable, style } = this.props;
 
     return (
       <TagGroup style={style}>
         {tags.map((item, index) => (
           <Tag
-            key={index}
+            key={`${index} ${item}`}
             closable={editable}
             onClose={() => {
               this.handleTagRemove(item);
@@ -119,13 +123,3 @@ DynamicTag.defaultProps = {
 }
 
 export default DynamicTag;
-
-/**
- * css
- *
-  .tag-input,
-  .tag-add-btn {
-    display: inline-block;
-    margin-left: 10px;
-  }
-*/

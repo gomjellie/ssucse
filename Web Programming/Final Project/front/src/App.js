@@ -102,6 +102,8 @@ class App extends React.Component {
       .then(res => {
         if (!res.ok) {
           Alert.error('게시글을 수정하는데 실패했습니다.');
+        } else {
+          Alert.success("게시글 수정 성공");
         }
       });
   }
@@ -109,6 +111,8 @@ class App extends React.Component {
   async onPostDelete(id) {
     return fetch(`http://localhost:8000/api/post/delete/${id}`, {
       method: 'DELETE',
+    }).then(() => {
+      Alert.success("삭제 성공");
     });
   }
 
@@ -130,7 +134,9 @@ class App extends React.Component {
         body: JSON.stringify(this.state.newPost),
       })
         .then(res => res.json())
-        .then(console.log);
+        .then((res) => {
+          Alert.success("게시물을 성공적으로 업로드했습니다");
+        });
     } catch (error) {
 
     }
@@ -194,6 +200,7 @@ class App extends React.Component {
       .then(res => res.json())
       .then(data => {
         this.setState({ name: data.username });
+        Alert.success("회원가입 성공");
         history.push('/');
       });
   }

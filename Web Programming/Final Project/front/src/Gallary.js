@@ -52,7 +52,7 @@ class Gallary extends React.Component {
           {
             pics.map((pic, idx) => (
               <FlexboxGrid.Item key={idx} colspan={8}>
-                <Card pic={pic} getPics={getPics} user={user} />
+                <Card key={pic._id} pic={pic} getPics={getPics} user={user} />
               </FlexboxGrid.Item>
             ))
           }
