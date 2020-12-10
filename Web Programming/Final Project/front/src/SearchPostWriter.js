@@ -1,6 +1,8 @@
 import React from 'react';
 
-import { Panel, Input, Alert } from 'rsuite';
+import { Panel, Input, Alert, Divider } from 'rsuite';
+import DynamicTag from './DynamicTag';
+
 class SearchPostWriter extends React.Component {
   constructor(props) {
     super(props);
@@ -14,11 +16,11 @@ class SearchPostWriter extends React.Component {
   }
 
   onChange(query, event) {
-    this.setState({writer: query});
+    this.setState({ writer: query });
   }
 
   onSubmit() {
-    const {writer} = this.state;
+    const { writer } = this.state;
     return fetch("http://localhost:8000/api/post/search?" + new URLSearchParams({
       writer,
     }))
@@ -30,16 +32,32 @@ class SearchPostWriter extends React.Component {
         return res.json();
       })
       .then(res => {
-        this.setState({posts: res.posts});
+        if (res.posts.length === 0) {
+          Alert.info("검색 결과가 없습니다");
+        }
+        this.setState({ posts: res.posts });
       });
   }
 
   render() {
-    return (
-      <Panel header={<h3>포스트 작성자 검색</h3>} bordered >
-        <Input type="search" style={{ width: 500 }} onPressEnter={this.onSubmit} onChange={this.onChange} placeholder="글 작성자" />
+    const { posts } = this.state;
 
-      </Panel>
+    return (
+      <div>
+        <Panel style={{ width: 500 }} header={<h3>포스트 작성자 검색</h3>} bordered >
+          <Input type="search"  onPressEnter={this.onSubmit} onChange={this.onChange} placeholder="글 작성자" />
+
+        </Panel>
+        <div style={{ width: 500, paddingTop: 30 }}>
+          {posts.map((post, index) => (
+            <Panel key={index} header={`${post.title} - ${post.writerName} - ${post.createdAt.substr(0, 10)}`} collapsible bordered>
+              {post.content}
+              <Divider />
+              <DynamicTag tags={post.hashTag} />
+            </Panel>
+          ))}
+        </div>
+      </div>
     )
   }
 };
