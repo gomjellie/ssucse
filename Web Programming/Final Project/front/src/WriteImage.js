@@ -65,7 +65,7 @@ class WriteImage extends React.Component {
             );
           }}
         >
-          <div style={{ lineHeight: '200px' }}>Click or Drag files to this area to upload</div>
+          <div style={{ lineHeight: '200px' }}>클릭하거나 파일을 여기로 드래그하세요</div>
         </Uploader>
         <br />
         {/* <Input style={{ width: 500 }} placeholder="해쉬태그" onChange={onHashTagChange} /> */}

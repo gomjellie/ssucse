@@ -21,6 +21,10 @@ import Board from './Board';
 import WritePost from './WritePost';
 import WriteImage from './WriteImage';
 import Gallary from './Gallary';
+import SearchPostWriter from './SearchPostWriter';
+import SearchPostContent from './SearchPostContent';
+import SearchPostHashTag from './SearchPostHashTag';
+import SearchGallaryHashTag from './SearchGallaryHashTag';
 
 const signOut = async () => {
   return new Promise((resolve, reject) => {
@@ -238,6 +242,9 @@ class App extends React.Component {
                   >
                     <Dropdown.Item disabled={!isLoggedIn} onClick={() => history.push('/writePost')} eventKey="writePost">글쓰기</Dropdown.Item>
                     <Dropdown.Item onClick={() => {this.getPosts().then(history.push('/board'));}} eventKey="board">글목록</Dropdown.Item>
+                    <Dropdown.Item onClick={() => {history.push('/searchPostContent');}} eventKey="searchPostContent">본문 검색</Dropdown.Item>
+                    <Dropdown.Item onClick={() => {history.push('/searchPostWriter');}} eventKey="searchPostWriter">글쓴이 검색</Dropdown.Item>
+                    <Dropdown.Item onClick={() => {history.push('/searchPostHashTag');}} eventKey="searchPostHashTag">해쉬태그 검색</Dropdown.Item>
                   </Dropdown>
                   <Dropdown
                     eventKey="gallary"
@@ -248,6 +255,7 @@ class App extends React.Component {
                   >
                     <Dropdown.Item disabled={!isLoggedIn} onClick={() => history.push('/writeImage')} eventKey="writeImage">사진 업로드</Dropdown.Item>
                     <Dropdown.Item onClick={() => {this.getPics().then(history.push('/gallary'));}} eventKey="gallary">갤러리 목록</Dropdown.Item>
+                    <Dropdown.Item onClick={() => {history.push('/searchGallaryHashTag');}} eventKey="searchGallaryHashTag">해쉬태그 검색</Dropdown.Item>
                   </Dropdown>
                 </Nav>
               </Sidenav.Body>
@@ -279,12 +287,24 @@ class App extends React.Component {
                   onSubmitPost={this.onSubmitPost}
                 />
               </Route>
+              <Route path="/searchPostWriter">
+                <SearchPostWriter />
+              </Route>
+              <Route path="/searchPostContent">
+                <SearchPostContent />
+              </Route>
+              <Route path="/searchPostHashTag">
+                <SearchPostHashTag />
+              </Route>
               <Route path="/gallary">
                 <Gallary
                   pics={this.state.pics}
                   getPics={this.getPics}
                   user={this.state.name}
                 />
+              </Route>
+              <Route path="/searchGallaryHashTag">
+                <SearchGallaryHashTag />
               </Route>
               <Route path="/writeImage">
                 <WriteImage />

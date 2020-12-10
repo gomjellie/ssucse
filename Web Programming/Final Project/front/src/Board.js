@@ -41,7 +41,7 @@ class Board extends React.Component {
                 <Divider />
                 <DynamicTag tags={post.hashTag} />
                 {
-                  name == post.writerName &&
+                  name === post.writerName &&
                   <FlexboxGrid justify="end">
                     <FlexboxGrid.Item>
                       <Button size="xs" appearance="link" active onClick={() => this.open(post)}>수정하기</Button>
