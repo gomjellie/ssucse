@@ -2,7 +2,12 @@
 # 커뮤니티 서비스 만들기
 
 실행: 서버
+
+계정이름 띄어쓰기 없이 써야됨
+
 ```sh
+mongorestore --host 127.0.0.1 --port 27017 -u계정이름 --authenticationDatabase admin --db nodejs ../dump
+
 cd ./server && node app.js
 ```
 
