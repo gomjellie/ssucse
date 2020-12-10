@@ -21,7 +21,7 @@ class SearchPostContent extends React.Component {
 
   onSubmit() {
     const { content } = this.state;
-    return fetch("http://localhost:8000/api/post/search?" + new URLSearchParams({
+    return fetch(`api/post/search?` + new URLSearchParams({
       content,
     }))
       .then(res => {

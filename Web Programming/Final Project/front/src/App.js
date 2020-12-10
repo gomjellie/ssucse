@@ -28,7 +28,7 @@ import SearchGallaryHashTag from './SearchGallaryHashTag';
 
 const signOut = async () => {
   return new Promise((resolve, reject) => {
-    fetch('http://localhost:8000/api/users/signOut')
+    fetch(`api/users/signOut`)
       .then(() => {
         resolve();
       });
@@ -86,13 +86,13 @@ class App extends React.Component {
   }
 
   async getPics() {
-    return fetch('http://localhost:8000/api/gallary/list')
+    return fetch(`api/gallary/list`)
       .then(res => res.json())
       .then(res => this.setState({pics: res.pics}));
   }
 
   async onPostEdit(id, content) {
-    return fetch('http://localhost:8000/api/post/update', {
+    return fetch(`api/post/update`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -109,7 +109,7 @@ class App extends React.Component {
   }
 
   async onPostDelete(id) {
-    return fetch(`http://localhost:8000/api/post/delete/${id}`, {
+    return fetch(`api/post/delete/${id}`, {
       method: 'DELETE',
     }).then(() => {
       Alert.success("삭제 성공");
@@ -117,7 +117,7 @@ class App extends React.Component {
   }
 
   async getPosts() {
-    return fetch('http://localhost:8000/api/post/list')
+    return fetch(`api/post/list`)
       .then(res => res.json())
       .then(res => this.setState({posts: res.posts}));
   }
@@ -125,7 +125,7 @@ class App extends React.Component {
   async onSubmitPost() {
     try {
       console.log(this.state.newPost);
-      fetch('http://localhost:8000/api/post/write', {
+      fetch(`api/post/write`, {
         method: 'POST',
         mode: 'cors',
         headers: {
@@ -180,7 +180,7 @@ class App extends React.Component {
 
   componentDidMount() {
     try {
-      fetch('http://localhost:8000/api/users/info').then(res => res.json())
+      fetch(`api/users/info`).then(res => res.json())
         .then(data => this.setState({ name: data.username }));
     } catch (error) {
       console.log(this.state);
@@ -189,7 +189,7 @@ class App extends React.Component {
   }
 
   async onSubmit(action, formValue) {
-    await fetch(`http://localhost:8000/api/users/${action}`, {
+    await fetch(`api/users/${action}`, {
       method: 'POST',
       mode: 'cors',
       headers: {

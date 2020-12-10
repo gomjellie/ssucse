@@ -31,7 +31,7 @@ class WriteImage extends React.Component {
 
   handleSubmitPost() {
     const {title, files, hashTag} = this.state;
-    fetch("http://localhost:8000/api/gallary/new", {
+    fetch(`api/gallary/new`, {
       method: 'POST',
       mode: 'cors',
       headers: {
@@ -51,7 +51,7 @@ class WriteImage extends React.Component {
         <Uploader
           style={{ width: 500 }}
           listType="picture-text"
-          action="http://localhost:8000/api/gallary/img"
+          action={`api/gallary/img`}
           draggable
           fileList={this.state.files}
           onChange={this.handleFileChange}

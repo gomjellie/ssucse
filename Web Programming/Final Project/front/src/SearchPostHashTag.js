@@ -21,7 +21,7 @@ class SearchPostHashTag extends React.Component {
 
   onSubmit() {
     const { hashTag } = this.state;
-    return fetch("http://localhost:8000/api/post/search?" + new URLSearchParams({
+    return fetch(`api/post/search?` + new URLSearchParams({
       hashTag,
     }))
       .then(res => {

@@ -21,7 +21,7 @@ class SearchGallaryHashTag extends React.Component {
 
   onSubmit() {
     const { hashTag } = this.state;
-    return fetch("http://localhost:8000/api/gallary/search?" + new URLSearchParams({
+    return fetch(`api/gallary/search?` + new URLSearchParams({
       hashTag,
     }))
       .then(res => {

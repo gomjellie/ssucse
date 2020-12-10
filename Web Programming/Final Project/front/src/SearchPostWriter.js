@@ -21,7 +21,7 @@ class SearchPostWriter extends React.Component {
 
   onSubmit() {
     const { writer } = this.state;
-    return fetch("http://localhost:8000/api/post/search?" + new URLSearchParams({
+    return fetch(`api/post/search?` + new URLSearchParams({
       writer,
     }))
       .then(res => {

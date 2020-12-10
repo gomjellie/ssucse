@@ -4,6 +4,9 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import history from './history';
+// import dotenv from 'dotenv';
+
+// dotenv.config();
 
 import { Router } from "react-router-dom";
 
