@@ -54,20 +54,20 @@ router.post('/new', isLoggedIn, async (req, res) => {
 router.get('/list', async (req, res) => {
   const pics = await Gallary.getList();
 
-  const reduced = pics.reduce((acc, pic) => {
-    acc.push({
-      name: pic.fileName,
-      title: pic.title,
-      writer: pic.writerName,
-      date: pic.createdAt,
-      hashTag: pic.hashTag,
-      id: pic._id,
-    });
-    return acc;
-  }, []);
+  // const reduced = pics.reduce((acc, pic) => {
+  //   acc.push({
+  //     name: pic.fileName,
+  //     title: pic.title,
+  //     writer: pic.writerName,
+  //     date: pic.createdAt,
+  //     hashTag: pic.hashTag,
+  //     id: pic._id,
+  //   });
+  //   return acc;
+  // }, []);
 
   res.json({
-    pics: reduced,
+    pics,
   });
 });
 
@@ -84,6 +84,23 @@ router.delete('/:id', isLoggedIn, async (req, res) => {
 
   res.json({
     message: '삭제 성공',
+  });
+});
+
+router.get('/search', isLoggedIn, async (req, res, next) => {
+  const {hashTag} = req.query;
+
+  if (hashTag !== undefined) {
+    const pics = await Gallary.searchHashTag(hashTag);
+
+    res.json({
+      pics,
+    });
+    return;
+  }
+
+  res.status(400).json({
+    message: "hashTag 필드를 받지 못했습니다",
   });
 });
 

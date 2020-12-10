@@ -30,21 +30,4 @@ userSchema.virtual('id').get(function () {
   return this._id;
 });
 
-userSchema.set('toJSON', {
-  virtuals: true,
-});
-
-userSchema.set('toObject', {
-  virtuals: true,
-});
-
-userSchema.methods.hashPassword = (password) => {
-  return sha256(password);
-}
-
-userSchema.methods.comparePassword = (plainPassword) => {
-  const otherPassword = this.hashPassword(plainPassword);
-  return otherPassword === this.password;
-}
-
 module.exports = mongoose.model('User', userSchema);

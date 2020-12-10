@@ -36,4 +36,14 @@ async function updatePic (id, content) {
 //   return res;
 }
 
-module.exports = { create, getList, deletePic, updatePic };
+async function searchHashTag (hashTags) {
+  const res = await Gallary.find({
+    hashTag: {"$in" : hashTags},
+  },
+  { '_id': 0, '__v': 0 });
+
+  return res;
+}
+
+module.exports = { create, getList, deletePic, updatePic, searchHashTag };
+

@@ -44,11 +44,11 @@ class SearchPostWriter extends React.Component {
 
     return (
       <div>
-        <Panel style={{ width: 500 }} header={<h3>포스트 작성자 검색</h3>} bordered >
+        <Panel style={{ width: 550 }} header={<h3>포스트 작성자 검색</h3>} bordered >
           <Input type="search"  onPressEnter={this.onSubmit} onChange={this.onChange} placeholder="글 작성자" />
 
         </Panel>
-        <div style={{ width: 500, paddingTop: 30 }}>
+        <div style={{ width: 550, paddingTop: 30 }}>
           {posts.map((post, index) => (
             <Panel key={index} header={`${post.title} - ${post.writerName} - ${post.createdAt.substr(0, 10)}`} collapsible bordered>
               {post.content}

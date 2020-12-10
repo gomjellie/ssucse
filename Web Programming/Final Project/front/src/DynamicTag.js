@@ -86,10 +86,10 @@ class DynamicTag extends React.Component {
   }
   render() {
     const { tags } = this.state;
-    const { editable } = this.props;
+    const { editable, style } = this.props;
 
     return (
-      <TagGroup>
+      <TagGroup style={style}>
         {tags.map((item, index) => (
           <Tag
             key={index}

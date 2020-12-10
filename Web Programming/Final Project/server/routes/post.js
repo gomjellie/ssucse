@@ -80,6 +80,7 @@ router.get('/search', isLoggedIn, async (req, res, next) => {
     res.json({
       posts,
     });
+    return;
   }
 
   if (content !== undefined) {
@@ -88,6 +89,7 @@ router.get('/search', isLoggedIn, async (req, res, next) => {
     res.json({
       posts,
     });
+    return;
   }
 
   if (hashTag !== undefined) {
@@ -96,6 +98,7 @@ router.get('/search', isLoggedIn, async (req, res, next) => {
     res.json({
       posts,
     });
+    return;
   }
 
   res.status(400).json({
