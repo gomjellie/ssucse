@@ -7,4 +7,6 @@ enum ee {
 
 int main() {
 	printf("zero: %d, one: %d, seven: %d", zero, one, seven);
+
+	return 0;
 }

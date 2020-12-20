@@ -20,4 +20,6 @@ int main() {
     
     node_print(&n1);
     node_print(&n2);
+
+    return 0;
 }

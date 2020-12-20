@@ -6,4 +6,5 @@ void func11() {
 
 int main() {
     func11();
+    return 0;
 }

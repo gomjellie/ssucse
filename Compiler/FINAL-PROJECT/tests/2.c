@@ -15,4 +15,6 @@ int main() {
     printf("%s\n", ptr->name);
     n.name = "name2";
     printf("%s\n", ptr->name);
+
+    return 0;
 }

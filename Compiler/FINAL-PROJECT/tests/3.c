@@ -8,4 +8,6 @@ int main() {
 	STR s;
 	s.val = 10;
 	printf("%d", s.val);
+
+	return 0;
 }

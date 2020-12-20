@@ -148,5 +148,9 @@ L8:
 	      POP 0, 1
 	      JMP 0, L9
 L10:
+	      LDA 1, -4
+	     LITI 0, 0
+	      STO 0, 1
+	      RET 0, 0
 	      RET 0, 0
 .literal    12 "%d "
