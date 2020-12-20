@@ -347,5 +347,5 @@ void interp()
 		}
 	} while (p);
 
-	printf("end execution\n");
+	printf("\nend execution\n");
 }
